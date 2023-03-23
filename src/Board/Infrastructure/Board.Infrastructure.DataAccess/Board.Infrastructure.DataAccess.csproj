@@ -12,4 +12,17 @@
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.3" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Contexts\Account\Repository" />
+      <Folder Include="Contexts\Advertisement\Repository" />
+      <Folder Include="Contexts\Category\Repository" />
+      <Folder Include="Contexts\Comment\Repository" />
+      <Folder Include="Contexts\Message\Repository" />
+      <Folder Include="Contexts\Subcategory\Repository" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Domain\Board.Domain\Board.Domain.csproj" />
+    </ItemGroup>
+
 </Project>

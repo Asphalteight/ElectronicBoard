@@ -5,13 +5,11 @@ namespace Board.Domain.Comment;
 
 public class Comments
 {
-    public int Id { get; set; }
-    
     /// <summary>
-    /// Идентификатор объявления.
+    /// Идентификатор.
     /// </summary>
-    public int AdvertisementId { get; set; }
-    
+    public int Id { get; set; }
+
     /// <summary>
     /// Текст.
     /// </summary>
@@ -21,6 +19,11 @@ public class Comments
     /// Дата и время создания.
     /// </summary>
     public DateTime CreatedAt { get; set; }
+    
+    /// <summary>
+    /// Идентификатор объявления.
+    /// </summary>
+    public int AdvertisementId { get; set; }
     
     /// <summary>
     /// Объявление.

@@ -32,5 +32,5 @@ public class Accounts
     /// <summary>
     /// Список объявлений.
     /// </summary>
-    public virtual List<Advertisements> AdvertisementsList { get; }
+    public virtual List<Advertisements> AdvertisementsList { get; set; }
 }

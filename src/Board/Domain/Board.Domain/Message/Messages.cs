@@ -8,12 +8,12 @@ public class Messages
     public int Id { get; set; }
     
     /// <summary>
-    /// Отправитель.
+    /// Идентификатор отправителя.
     /// </summary>
     public int Sender { get; set; }
     
     /// <summary>
-    /// Получатель.
+    /// Идентификатор получателя.
     /// </summary>
     public int Reciever { get; set; }
     

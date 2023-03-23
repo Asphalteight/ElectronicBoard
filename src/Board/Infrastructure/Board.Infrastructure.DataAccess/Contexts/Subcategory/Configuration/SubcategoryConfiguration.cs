@@ -9,7 +9,7 @@ public class SubcategoryConfiguration : IEntityTypeConfiguration<Subcategories>
     public void Configure(EntityTypeBuilder<Subcategories> builder)
     {
         builder.HasKey(k => k.Id);
-        builder.Property(p => p.Name);
+        builder.Property(p => p.Name).HasMaxLength(50);
 
         builder.HasMany(f => f.AdvertisementsList)
             .WithOne(o => o.Subcategory)

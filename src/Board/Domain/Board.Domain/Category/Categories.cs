@@ -18,5 +18,5 @@ public class Categories
     /// <summary>
     /// Список подкатегорий.
     /// </summary>
-    public virtual List<Subcategories> SubcategoriesList { get; }
+    public virtual List<Subcategories> SubcategoriesList { get; set; }
 }

@@ -11,7 +11,7 @@ public class MessageConfiguration : IEntityTypeConfiguration<Messages>
         builder.HasKey(k => k.Id);
         builder.Property(p => p.Sender);
         builder.Property(p => p.Reciever);
-        builder.Property(p => p.Text);
+        builder.Property(p => p.Text).HasMaxLength(10000);
         builder.Property(p => p.SentAt).HasConversion(to => to, from => DateTime.SpecifyKind(from, DateTimeKind.Utc));
         builder.Property(p => p.IsRead);
     }

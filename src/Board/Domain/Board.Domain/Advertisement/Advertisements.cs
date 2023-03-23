@@ -33,11 +33,11 @@ public class Advertisements
     /// Дата и время создания (UTC).
     /// </summary>
     public DateTime CreatedAt { get; set; }
-    
+
     /// <summary>
     /// Активно ли.
     /// </summary>
-    public bool IsActive { get; set; }
+    public bool IsActive { get; set; } = true;
     
     /// <summary>
     /// Идентификатор подкатегории.
@@ -62,5 +62,5 @@ public class Advertisements
     /// <summary>
     /// Список комментариев.
     /// </summary>
-    public virtual List<Comments> CommentsList { get; }
+    public virtual List<Comments> CommentsList { get; set; }
 }

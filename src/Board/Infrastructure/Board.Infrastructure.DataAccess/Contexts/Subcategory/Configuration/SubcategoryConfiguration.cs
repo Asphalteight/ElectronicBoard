@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Board.Infrastructure.DataAccess.Contexts.Subcategory.Configuration;
 
+/// <summary>
+/// Конфигурация сущности подкатегории.
+/// </summary>
 public class SubcategoryConfiguration : IEntityTypeConfiguration<Subcategories>
 {
     public void Configure(EntityTypeBuilder<Subcategories> builder)

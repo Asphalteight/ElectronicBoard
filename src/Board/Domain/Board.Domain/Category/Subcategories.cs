@@ -3,7 +3,7 @@
 namespace Board.Domain.Category;
 
 /// <summary>
-/// Подкатегория.
+/// Подкатегории.
 /// </summary>
 public class Subcategories
 {

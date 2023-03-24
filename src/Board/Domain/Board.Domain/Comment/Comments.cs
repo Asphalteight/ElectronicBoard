@@ -3,6 +3,9 @@ using Board.Domain.Advertisement;
 
 namespace Board.Domain.Comment;
 
+/// <summary>
+/// Комментарии.
+/// </summary>
 public class Comments
 {
     /// <summary>

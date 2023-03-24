@@ -2,6 +2,9 @@
 
 namespace Board.Domain.Account;
 
+/// <summary>
+/// Аккаунты.
+/// </summary>
 public class Accounts
 {
     /// <summary>

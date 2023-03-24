@@ -1,7 +1,7 @@
 ﻿namespace Board.Domain.Category;
 
 /// <summary>
-/// Категория.
+/// Категории.
 /// </summary>
 public class Categories
 {

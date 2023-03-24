@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Board.Infrastructure.DataAccess.Contexts.Message.Configuration;
 
+/// <summary>
+/// Конфигурация сущности личного сообщения.
+/// </summary>
 public class MessageConfiguration : IEntityTypeConfiguration<Messages>
 {
     public void Configure(EntityTypeBuilder<Messages> builder)

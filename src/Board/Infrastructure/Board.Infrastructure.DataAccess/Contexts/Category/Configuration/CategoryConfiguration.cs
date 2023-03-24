@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Board.Infrastructure.DataAccess.Contexts.Category.Configuration;
 
+/// <summary>
+/// Конфигурация сущности категории.
+/// </summary>
 public class CategoryConfiguration : IEntityTypeConfiguration<Categories>
 {
     public void Configure(EntityTypeBuilder<Categories> builder)

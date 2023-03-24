@@ -5,7 +5,7 @@ using Board.Domain.Comment;
 namespace Board.Domain.Advertisement;
 
 /// <summary>
-/// Объявление.
+/// Объявления.
 /// </summary>
 public class Advertisements
 {

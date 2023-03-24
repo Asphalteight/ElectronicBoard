@@ -1,5 +1,8 @@
 ﻿namespace Board.Domain.Message;
 
+/// <summary>
+/// Личные сообщения.
+/// </summary>
 public class Messages
 {
     /// <summary>

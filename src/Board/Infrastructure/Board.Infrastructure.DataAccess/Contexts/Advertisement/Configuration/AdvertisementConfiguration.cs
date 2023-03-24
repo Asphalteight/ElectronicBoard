@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Board.Infrastructure.DataAccess.Contexts.Advertisement.Configuration;
 
+/// <summary>
+/// Конфигурация сущности объявления.
+/// </summary>
 public class AdvertisementConfiguration : IEntityTypeConfiguration<Advertisements>
 {
     public void Configure(EntityTypeBuilder<Advertisements> builder)

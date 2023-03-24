@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Board.Infrastructure.DataAccess.Contexts.Comment.Configuration;
 
+/// <summary>
+/// Конфигурация сущности комментария.
+/// </summary>
 public class CommentConfiguration : IEntityTypeConfiguration<Comments>
 {
     public void Configure(EntityTypeBuilder<Comments> builder)

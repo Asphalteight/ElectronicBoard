@@ -6,6 +6,11 @@
 public class UpdateSubcategoryDto
 {
     /// <summary>
+    /// Идентификатор.
+    /// </summary>
+    public string Id { get; set; }
+    
+    /// <summary>
     /// Наименование.
     /// </summary>
     public string Name { get; set; }

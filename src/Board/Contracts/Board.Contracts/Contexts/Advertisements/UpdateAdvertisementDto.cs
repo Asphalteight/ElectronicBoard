@@ -6,6 +6,11 @@
 public class UpdateAdvertisementDto
 {
     /// <summary>
+    /// Идентификатор.
+    /// </summary>
+    public string Id { get; set; }
+    
+    /// <summary>
     /// Заголовок.
     /// </summary>
     public string Title { get; set; }

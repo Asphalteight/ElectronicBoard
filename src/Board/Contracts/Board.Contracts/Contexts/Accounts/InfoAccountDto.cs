@@ -3,7 +3,7 @@
 /// <summary>
 /// Информация об аккаунте.
 /// </summary>
-public class AccountInfoDto
+public class InfoAccountDto
 {
     /// <summary>
     /// Идентификатор.

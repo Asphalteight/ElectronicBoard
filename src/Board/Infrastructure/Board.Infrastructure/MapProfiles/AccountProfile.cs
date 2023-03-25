@@ -15,7 +15,15 @@ namespace Board.Infrastructure.MapProfiles
                 .ForMember(s => s.Id, map => map.Ignore())
                 .ForMember(s => s.AdvertisementsList, map => map.Ignore());
 
-            CreateMap<Accounts, CreateAccountDto>();
+            CreateMap<Accounts, InfoAccountDto>();
+
+            CreateMap<UpdateAccountDto, Accounts>()
+                .ForMember(s => s.Id, map => map.Ignore())
+                .ForMember(s => s.AdvertisementsList, map => map.Ignore());
+            
+            CreateMap<ReplaceAccountDto, Accounts>()
+                .ForMember(s => s.Id, map => map.Ignore())
+                .ForMember(s => s.AdvertisementsList, map => map.Ignore());
         }
     }
 }

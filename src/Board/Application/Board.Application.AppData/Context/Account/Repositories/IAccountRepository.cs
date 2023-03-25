@@ -14,7 +14,7 @@ public interface IAccountRepository
     /// <param name="model">Модель аккаунта.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Идентификатор созданного акканта.</returns>
-    Task<int> CreateAsync(Accounts model, CancellationToken cancellationToken);
+    Task<int> CreateAsync(Accounts? model, CancellationToken cancellationToken);
 
     /// <summary>
     /// Изменение аккаунта.
@@ -22,7 +22,7 @@ public interface IAccountRepository
     /// <param name="model">Модель аккаунта.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Статус изменения.</returns>
-    Task<bool> UpdateAsync(Accounts model, CancellationToken cancellationToken);
+    Task<InfoAccountDto> UpdateAsync(Accounts? model, CancellationToken cancellationToken);
 
     /// <summary>
     /// Удаление аккаунта.
@@ -38,5 +38,12 @@ public interface IAccountRepository
     /// <param name="id">Идентификатор аккаунта.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Информация об аккаунте.</returns>
-    Task<InfoAccountDto?> GetByIdAsync(int id, CancellationToken cancellationToken);
+    Task<Accounts?> GetByIdAsync(int id, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Получение всех аккаунтов.
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns>Список всех аккаунтов.</returns>
+    Task<IEnumerable<InfoAccountDto>> GetAllAsync(CancellationToken cancellationToken);
 }

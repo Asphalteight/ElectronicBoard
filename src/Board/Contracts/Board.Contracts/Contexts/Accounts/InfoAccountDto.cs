@@ -8,7 +8,7 @@ public class InfoAccountDto
     /// <summary>
     /// Идентификатор.
     /// </summary>
-    public string Id { get; set; }
+    public int Id { get; set; }
     
     /// <summary>
     /// Имя.
@@ -23,7 +23,7 @@ public class InfoAccountDto
     /// <summary>
     /// Номер телефона.
     /// </summary>
-    public string? Phone { get; set; }
+    public string Phone { get; set; }
     
     /// <summary>
     /// Пароль.

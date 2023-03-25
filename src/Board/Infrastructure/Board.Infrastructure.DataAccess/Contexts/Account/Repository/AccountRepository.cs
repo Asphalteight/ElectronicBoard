@@ -21,32 +21,37 @@ public class AccountRepository : IAccountRepository
     }
 
     /// <inheritdoc/> 
-    public async Task<int> CreateAsync(Accounts model, CancellationToken cancellationToken)
+    public async Task<int> CreateAsync(Accounts? model, CancellationToken cancellationToken)
     {
-        await _repository.AddAsync(model, cancellationToken);
-        return model.Id;
+        await _repository.AddAsync(model!, cancellationToken);
+        return model!.Id;
     }
     
     /// <inheritdoc/> 
-    public async Task<bool> UpdateAsync(Accounts model, CancellationToken cancellationToken)
+    public async Task<InfoAccountDto> UpdateAsync(Accounts? model, CancellationToken cancellationToken)
     {
-        await _repository.UpdateAsync(model, cancellationToken);
-        return true;
+        await _repository.UpdateAsync(model!, cancellationToken);
+        return _mapper.Map<Accounts, InfoAccountDto>(model!);
     }
     
     /// <inheritdoc/> 
     public async Task<bool> DeleteAsync(int id, CancellationToken cancellationToken)
     {
         var model = _repository.GetAllFiltered(s => s.Id == id).FirstOrDefault();
-        await _repository.DeleteAsync(model ?? throw new InvalidOperationException(), cancellationToken);
+        if (model == null) return false;
+        await _repository.DeleteAsync(model, cancellationToken);
         return true;
     }
     
     /// <inheritdoc/> 
-    public Task<InfoAccountDto?> GetByIdAsync(int id, CancellationToken cancellationToken)
+    public async Task<Accounts?> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
-        return _repository.GetAll().Where(s => s.Id == id)
-            .ProjectTo<InfoAccountDto>(_mapper.ConfigurationProvider)
+        return await _repository.GetAll().Where(s => s.Id == id)
             .FirstOrDefaultAsync(cancellationToken);
+    }
+
+    public async Task<IEnumerable<InfoAccountDto>> GetAllAsync(CancellationToken cancellationToken)
+    {
+        return await _repository.GetAll().ProjectTo<InfoAccountDto>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken: cancellationToken);
     }
 }

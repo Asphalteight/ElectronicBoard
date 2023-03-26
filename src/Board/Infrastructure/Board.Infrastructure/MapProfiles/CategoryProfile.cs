@@ -15,7 +15,11 @@ namespace Board.Infrastructure.MapProfiles
                 .ForMember(s => s.Id, map => map.Ignore())
                 .ForMember(s => s.SubcategoriesList, map => map.Ignore());
 
-            CreateMap<Categories, CreateCategoryDto>();
+            CreateMap<Categories, InfoCategoryDto>();
+
+            CreateMap<UpdateCategoryDto, Categories>()
+                .ForMember(s => s.Id, map => map.Ignore())
+                .ForMember(s => s.SubcategoriesList, map => map.Ignore());
         }
     }
 }

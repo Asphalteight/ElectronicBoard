@@ -23,16 +23,7 @@ public class AccountService : IAccountService
         var entity = _mapper.Map<CreateAccountDto, Accounts>(model);
         return await _accountRepository.CreateAsync(entity, cancellationToken);
     }
-    
-    /// <inheritdoc/>
-    public async Task<InfoAccountDto> ReplaceAccountAsync(int id, ReplaceAccountDto dto,
-        CancellationToken cancellationToken)
-    {
-        var entity = _mapper.Map<ReplaceAccountDto, Accounts>(dto);
-        entity.Id = id;
-        return await _accountRepository.UpdateAsync(entity, cancellationToken);
-    }
-    
+
     /// <inheritdoc/>
     public async Task<InfoAccountDto> UpdateAccountAsync(int id, UpdateAccountDto dto, CancellationToken cancellationToken)
     {
@@ -43,7 +34,7 @@ public class AccountService : IAccountService
         if (dto.Phone != null) account!.Phone = dto.Phone; 
         if (dto.Password != null) account!.Password = dto.Password; 
 
-        return await _accountRepository.UpdateAsync(account, cancellationToken);
+        return await _accountRepository.UpdateAsync(account!, cancellationToken);
     }
 
     /// <inheritdoc/>
@@ -56,8 +47,8 @@ public class AccountService : IAccountService
     /// <inheritdoc/>
     public async Task<InfoAccountDto?> GetAccountByIdAsync(int id, CancellationToken cancellationToken)
     {
-        var entity = _accountRepository.GetByIdAsync(id, cancellationToken);
-        return _mapper.Map<Accounts?, InfoAccountDto>(await entity);
+        var entity = await _accountRepository.GetByIdAsync(id, cancellationToken);
+        return _mapper.Map<Accounts?, InfoAccountDto>(entity);
     }
 
     /// <inheritdoc/>

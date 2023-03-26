@@ -1,127 +1,113 @@
 ﻿using System.Net;
-using Board.Application.AppData.Context.Account.Services;
+using Board.Application.AppData.Context.Advertisement.Services;
 using Board.Contracts.Contexts;
-using Board.Contracts.Contexts.Accounts;
+using Board.Contracts.Contexts.Advertisements;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Board.Host.Api.Controllers;
 
 /// <summary>
-/// Контроллер для работы с аккаунтами.
+/// Контроллер для работы с объявлениями.
 /// </summary>
 /// <response code="500">Произошла внутренняя ошибка.</response>
 [ApiController]
 [Route("[Controller]")]
 [Produces("application/json")]
 [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status500InternalServerError)]
-public class AccountController : ControllerBase
+public class AdvertisementController : ControllerBase
 {
-    private readonly ILogger<AccountController> _logger;
-    private readonly IAccountService _accountService;
+    private readonly ILogger<AdvertisementController> _logger;
+    private readonly IAdvertisementService _advertisementService;
 
     /// <summary>
-    /// Инициализирует экземпляр <see cref="AccountController"/>
+    /// Инициализирует экземпляр <see cref="AdvertisementController"/>
     /// </summary>
     /// <param name="logger">Сервис логирования.</param>
-    /// <param name="accountService">Сервис аккаунтов.</param>
-    public AccountController(ILogger<AccountController> logger, IAccountService accountService)
+    /// <param name="advertisementService">Сервис объявлений.</param>
+    public AdvertisementController(ILogger<AdvertisementController> logger, IAdvertisementService advertisementService)
     {
         _logger = logger;
-        _accountService = accountService;
+        _advertisementService = advertisementService;
     }
 
     /// <summary>
-    /// Получить список аккаунтов.
+    /// Получить список объявлений.
     /// </summary>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <response code="200">Запрос выполнен успешно</response>
-    /// <returns>Список моделей аккаунтов.</returns>
+    /// <returns>Список моделей объявлений.</returns>
     [HttpGet]
-    [ProducesResponseType(typeof(IEnumerable<InfoAccountDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<InfoAdvertisementDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Запрос аккаунтов");
-        var result = await _accountService.GetAllAccounts(cancellationToken);
+        _logger.LogInformation("Запрос объявлений");
+        var result = await _advertisementService.GetAllAdvertisements(cancellationToken);
         return await Task.Run(() => Ok(result), cancellationToken);
     }
 
     /// <summary>
-    /// Получить аккаунт по идентификатору.
+    /// Получить объявление по идентификатору.
     /// </summary>
     /// <param name="id">Идентификатор.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <response code="200">Запрос выполнен успешно.</response>
-    /// <response code="404">Аккаунт с указанным идентификатором не найден.</response>
-    /// <returns>Модель аккаунта.</returns>
+    /// <response code="404">Объявление с указанным идентификатором не найдено.</response>
+    /// <returns>Модель объявления.</returns>
     [HttpGet("{id:int}")]
-    [ProducesResponseType(typeof(InfoAccountDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(InfoAdvertisementDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
     {
-        var result = await _accountService.GetAccountByIdAsync(id, cancellationToken);
+        var result = await _advertisementService.GetAdvertisementByIdAsync(id, cancellationToken);
+        if (result == null) return NotFound(result);
         return Ok(result);
     }
 
-    // /// <summary>
-    // /// Получить список активных категорий.
-    // /// </summary>
-    // /// <param name="cancellationToken">Токен отмены.</param>
-    // /// <response code="200">Запрос выполнен успешно.</response>
-    // /// <response code="404">Категория с указанным идентификатором не найдена.</response>
-    // /// <returns>Модель категории.</returns>
-    // [HttpGet("active")]
-    // [ProducesResponseType(typeof(SubcategoryInfoDto[]), StatusCodes.Status200OK)]
-    // public async Task<IActionResult> GetActive(CancellationToken cancellationToken)
-    // {
-    //     var result = await _categoryService.GetActiveAsync(cancellationToken);
-    //     return Ok(result);
-    // }
-
     /// <summary>
-    /// Создать новый аккаунт.
+    /// Создать новое объявление.
     /// </summary>
-    /// <param name="dto">Модель создания аккаунта.</param>
+    /// <param name="dto">Модель создания объявления.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
-    /// <response code="201">Аккаунт успешно создан.</response>
+    /// <response code="201">Объявление успешно создано.</response>
     /// <response code="400">Модель данных запроса невалидна.</response>
     /// <response code="422">Произошёл конфликт бизнес-логики.</response>
-    /// <returns>Идентификатор созданного аккаунта.</returns>
+    /// <returns>Идентификатор созданного объявления.</returns>
     [HttpPost]
     [ProducesResponseType(typeof(int), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status422UnprocessableEntity)]
-    public async Task<IActionResult> Create([FromQuery] CreateAccountDto dto, CancellationToken cancellationToken)
+    public async Task<IActionResult> Create([FromQuery] CreateAdvertisementDto dto, CancellationToken cancellationToken)
     {
-        var result = await _accountService.CreateAccountAsync(dto, cancellationToken);
+        var result = await _advertisementService.CreateAdvertisementAsync(dto, cancellationToken);
         return StatusCode((int)HttpStatusCode.Created, result);
     }
 
     /// <summary>
-    /// Обновить аккаунт.
+    /// Обновить объявление.
     /// </summary>
     /// <param name="id">Идентификатор.</param>
-    /// <param name="dto">Модель обновления аккаунта.</param>
+    /// <param name="dto">Модель обновления объявления.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <response code="200">Запрос выполнен успешно.</response>
     /// <response code="400">Модель данных запроса невалидна.</response>
     /// <response code="403">Доступ запрещён.</response>
-    /// <response code="404">Аккаунт с указанным идентификатором не найден.</response>
+    /// <response code="404">Объявление с указанным идентификатором не найдено.</response>
     /// <response code="422">Произошёл конфликт бизнес-логики.</response>
-    /// <returns>Модель обновленного аккаунта.</returns>
+    /// <returns>Модель обновленного объявления.</returns>
     [HttpPut("{id:int}")]
-    [ProducesResponseType(typeof(InfoAccountDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(InfoAdvertisementDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status422UnprocessableEntity)]
-    public async Task<IActionResult> Update(int id, [FromQuery] UpdateAccountDto dto, CancellationToken cancellationToken)
+    public async Task<IActionResult> Update(int id, [FromQuery] UpdateAdvertisementDto dto, CancellationToken cancellationToken)
     {
-        var result = await _accountService.UpdateAccountAsync(id, dto, cancellationToken);
+        var result = await _advertisementService.UpdateAdvertisementAsync(id, dto, cancellationToken);
         return await Task.Run(() => Ok(result), cancellationToken);
     }
 
     /// <summary>
-    /// Удалить аккаунт по идентификатору.
+    /// Удалить объявление по идентификатору.
     /// </summary>
     /// <param name="id">Идентификатор.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
@@ -132,7 +118,7 @@ public class AccountController : ControllerBase
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status403Forbidden)]
     public async Task<IActionResult> DeleteById(int id, CancellationToken cancellationToken)
     {
-        var result = await _accountService.DeleteAccountAsync(id, cancellationToken);
+        var result = await _advertisementService.DeleteAdvertisementAsync(id, cancellationToken);
         return await Task.Run( () => Ok(result), cancellationToken);
     }
 }

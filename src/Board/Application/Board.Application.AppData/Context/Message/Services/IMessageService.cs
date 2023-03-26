@@ -1,9 +1,11 @@
 ﻿using Board.Contracts.Contexts.Messages;
-using Board.Domain.Message;
 
-namespace Board.Application.AppData.Context.Message.Repositories;
+namespace Board.Application.AppData.Context.Message.Services;
 
-public interface IMessageRepository
+/// <summary>
+/// Сервис для работы с сообщениями.
+/// </summary>
+public interface IMessageService
 {
     /// <summary>
     /// Создание сообщения.
@@ -11,15 +13,16 @@ public interface IMessageRepository
     /// <param name="model">Модель сообщения.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Идентификатор созданного сообщения.</returns>
-    Task<int> CreateAsync(Messages model, CancellationToken cancellationToken);
+    Task<int> CreateMessageAsync(CreateMessageDto model, CancellationToken cancellationToken);
 
     /// <summary>
     /// Изменение сообщения.
     /// </summary>
-    /// <param name="model">Модель сообщения.</param>
+    /// <param name="id">Идентификатор.</param>
+    /// <param name="dto">Модель изменения.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Информация об измененном сообщении.</returns>
-    Task<InfoMessageDto> UpdateAsync(Messages model, CancellationToken cancellationToken);
+    Task<InfoMessageDto?> UpdateMessageAsync(int id, UpdateMessageDto dto, CancellationToken cancellationToken);
 
     /// <summary>
     /// Удаление сообщения.
@@ -27,20 +30,20 @@ public interface IMessageRepository
     /// <param name="id">Идентификатор удаляемого сообщения.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Статус удаления.</returns>
-    Task<bool> DeleteAsync(int id, CancellationToken cancellationToken);
-    
+    Task<bool> DeleteMessageAsync(int id, CancellationToken cancellationToken);
+
     /// <summary>
     /// Получение по идентификатору.
     /// </summary>
     /// <param name="id">Идентификатор сообщения.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
-    /// <returns>Информация о сообщении.</returns>
-    Task<Messages?> GetByIdAsync(int id, CancellationToken cancellationToken);
-    
+    /// <returns>Информация об сообщении.</returns>
+    Task<InfoMessageDto?> GetMessageByIdAsync(int id, CancellationToken cancellationToken);
+
     /// <summary>
     /// Получение всех сообщений.
     /// </summary>
     /// <param name="cancellationToken">Токен отмены.</param>
-    /// <returns>Список всех объявлений.</returns>
-    Task<IEnumerable<InfoMessageDto>> GetAllAsync(CancellationToken cancellationToken);
+    /// <returns>Список сообщений.</returns>
+    Task<IEnumerable<InfoMessageDto>> GetAllMessages(CancellationToken cancellationToken);
 }

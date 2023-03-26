@@ -8,28 +8,18 @@ public class CreateAdvertisementDto
     /// <summary>
     /// Заголовок.
     /// </summary>
-    public string Title { get; set; }
+    public string Title { get; set; } = null!;
     
     /// <summary>
     /// Описание.
     /// </summary>
-    public string Description { get; set; }
+    public string? Description { get; set; }
     
     /// <summary>
     /// Цена.
     /// </summary>
     public decimal Price { get; set; }
-    
-    /// <summary>
-    /// Дата и время создания (UTC).
-    /// </summary>
-    public DateTime CreatedAt { get; set; }
 
-    /// <summary>
-    /// Активно ли.
-    /// </summary>
-    public bool IsActive { get; set; } = true;
-    
     /// <summary>
     /// Идентификатор подкатегории.
     /// </summary>

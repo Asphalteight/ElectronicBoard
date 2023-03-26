@@ -22,15 +22,6 @@ public interface IAccountService
     /// <param name="dto">Модель изменения.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Информация об измененном аккаунте.</returns>
-    Task<InfoAccountDto> ReplaceAccountAsync(int id, ReplaceAccountDto dto, CancellationToken cancellationToken);
-    
-    /// <summary>
-    /// Частичное изменение аккаунта.
-    /// </summary>
-    /// <param name="id">Идентификатор.</param>
-    /// <param name="dto">Модель изменения.</param>
-    /// <param name="cancellationToken">Токен отмены.</param>
-    /// <returns>Информация об измененном аккаунте.</returns>
     Task<InfoAccountDto> UpdateAccountAsync(int id, UpdateAccountDto dto, CancellationToken cancellationToken);
 
     /// <summary>
@@ -52,7 +43,7 @@ public interface IAccountService
     /// <summary>
     /// Получение всех аккаунтов.
     /// </summary>
-    /// <param name="cancellationToken"></param>
+    /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Список аккаунтов.</returns>
     Task<IEnumerable<InfoAccountDto>> GetAllAccounts(CancellationToken cancellationToken);
 }

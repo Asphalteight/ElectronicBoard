@@ -8,12 +8,12 @@ public class CreateAccountDto
     /// <summary>
     /// Имя.
     /// </summary>
-    public string Name { get; set; }
+    public string Name { get; set; } = null!;
     
     /// <summary>
     /// Электронная почта.
     /// </summary>
-    public string Email { get; set; }
+    public string Email { get; set; } = null!;
     
     /// <summary>
     /// Номер телефона.
@@ -23,5 +23,5 @@ public class CreateAccountDto
     /// <summary>
     /// Пароль.
     /// </summary>
-    public string Password { get; set; }
+    public string Password { get; set; } = null!;
 }

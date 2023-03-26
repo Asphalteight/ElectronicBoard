@@ -20,10 +20,6 @@ namespace Board.Infrastructure.MapProfiles
             CreateMap<UpdateAccountDto, Accounts>()
                 .ForMember(s => s.Id, map => map.Ignore())
                 .ForMember(s => s.AdvertisementsList, map => map.Ignore());
-            
-            CreateMap<ReplaceAccountDto, Accounts>()
-                .ForMember(s => s.Id, map => map.Ignore())
-                .ForMember(s => s.AdvertisementsList, map => map.Ignore());
         }
     }
 }

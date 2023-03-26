@@ -1,7 +1,7 @@
 ﻿namespace Board.Contracts.Contexts.Accounts;
 
 /// <summary>
-/// Модель частичного изменения аккаунта.
+/// Модель изменения аккаунта.
 /// </summary>
 public class UpdateAccountDto
 {

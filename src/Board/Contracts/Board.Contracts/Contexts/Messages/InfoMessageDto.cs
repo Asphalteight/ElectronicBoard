@@ -18,7 +18,7 @@ public class InfoMessageDto
     /// <summary>
     /// Идентификатор получателя.
     /// </summary>
-    public int Reciever { get; set; }
+    public int Receiver { get; set; }
     
     /// <summary>
     /// Текст.

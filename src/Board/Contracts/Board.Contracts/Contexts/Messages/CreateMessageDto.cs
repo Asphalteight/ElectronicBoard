@@ -13,20 +13,10 @@ public class CreateMessageDto
     /// <summary>
     /// Идентификатор получателя.
     /// </summary>
-    public int Reciever { get; set; }
-    
+    public int Receiver { get; set; }
+
     /// <summary>
     /// Текст.
     /// </summary>
-    public string Text { get; set; }
-    
-    /// <summary>
-    /// Дата и время отправки.
-    /// </summary>
-    public DateTime SentAt { get; set; }
-    
-    /// <summary>
-    /// Прочитано ли.
-    /// </summary>
-    public bool IsRead { get; set; }
+    public string Text { get; set; } = null!;
 }

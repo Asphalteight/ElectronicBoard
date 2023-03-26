@@ -28,25 +28,32 @@ public class CategoryRepository : ICategoryRepository
     }
     
     /// <inheritdoc/> 
-    public async Task<bool> UpdateAsync(Categories model, CancellationToken cancellationToken)
+    public async Task<InfoCategoryDto> UpdateAsync(Categories model, CancellationToken cancellationToken)
     {
         await _repository.UpdateAsync(model, cancellationToken);
-        return true;
+        return _mapper.Map<Categories, InfoCategoryDto>(model);
     }
     
     /// <inheritdoc/> 
     public async Task<bool> DeleteAsync(int id, CancellationToken cancellationToken)
     {
         var model = _repository.GetAllFiltered(s => s.Id == id).FirstOrDefault();
-        await _repository.DeleteAsync(model ?? throw new InvalidOperationException(), cancellationToken);
+        if (model == null) return false;
+        await _repository.DeleteAsync(model, cancellationToken);
         return true;
     }
     
     /// <inheritdoc/> 
-    public Task<InfoCategoryDto?> GetByIdAsync(int id, CancellationToken cancellationToken)
+    public async Task<Categories?> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
-        return _repository.GetAll().Where(s => s.Id == id)
-            .ProjectTo<InfoCategoryDto>(_mapper.ConfigurationProvider)
+        var result = _repository.GetAll().Where(s => s.Id == id)
             .FirstOrDefaultAsync(cancellationToken);
+        return await result;
+    }
+
+    /// <inheritdoc/>
+    public async Task<IEnumerable<InfoCategoryDto>> GetAllAsync(CancellationToken cancellationToken)
+    {
+        return await _repository.GetAll().ProjectTo<InfoCategoryDto>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken: cancellationToken);
     }
 }

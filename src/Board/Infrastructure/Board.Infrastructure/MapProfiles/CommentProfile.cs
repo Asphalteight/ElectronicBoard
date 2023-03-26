@@ -16,8 +16,16 @@ namespace Board.Infrastructure.MapProfiles
                 .ForMember(s => s.CreatedAt, map => map.MapFrom(s => DateTime.UtcNow))
                 .ForMember(s => s.Account, map => map.Ignore())
                 .ForMember(s => s.Advertisement, map => map.Ignore());
+            
+            CreateMap<Comments, InfoCommentDto>();
 
-            CreateMap<Comments, CreateCommentDto>();
+            CreateMap<UpdateCommentDto, Comments>()
+                .ForMember(s => s.Id, map => map.Ignore())
+                .ForMember(s => s.CreatedAt, map => map.Ignore())
+                .ForMember(s => s.Account, map => map.Ignore())
+                .ForMember(s => s.Advertisement, map => map.Ignore())
+                .ForMember(s => s.AccountId, map => map.Ignore())
+                .ForMember(s => s.AdvertisementId, map => map.Ignore());
         }
     }
 }

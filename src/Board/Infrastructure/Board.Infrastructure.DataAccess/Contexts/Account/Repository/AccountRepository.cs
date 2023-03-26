@@ -21,17 +21,17 @@ public class AccountRepository : IAccountRepository
     }
 
     /// <inheritdoc/> 
-    public async Task<int> CreateAsync(Accounts? model, CancellationToken cancellationToken)
+    public async Task<int> CreateAsync(Accounts model, CancellationToken cancellationToken)
     {
-        await _repository.AddAsync(model!, cancellationToken);
-        return model!.Id;
+        await _repository.AddAsync(model, cancellationToken);
+        return model.Id;
     }
     
     /// <inheritdoc/> 
-    public async Task<InfoAccountDto> UpdateAsync(Accounts? model, CancellationToken cancellationToken)
+    public async Task<InfoAccountDto> UpdateAsync(Accounts model, CancellationToken cancellationToken)
     {
-        await _repository.UpdateAsync(model!, cancellationToken);
-        return _mapper.Map<Accounts, InfoAccountDto>(model!);
+        await _repository.UpdateAsync(model, cancellationToken);
+        return _mapper.Map<Accounts, InfoAccountDto>(model);
     }
     
     /// <inheritdoc/> 
@@ -46,10 +46,12 @@ public class AccountRepository : IAccountRepository
     /// <inheritdoc/> 
     public async Task<Accounts?> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
-        return await _repository.GetAll().Where(s => s.Id == id)
+         var result = await _repository.GetAll().Where(s => s.Id == id)
             .FirstOrDefaultAsync(cancellationToken);
+         return result;
     }
 
+    /// <inheritdoc/>
     public async Task<IEnumerable<InfoAccountDto>> GetAllAsync(CancellationToken cancellationToken)
     {
         return await _repository.GetAll().ProjectTo<InfoAccountDto>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken: cancellationToken);

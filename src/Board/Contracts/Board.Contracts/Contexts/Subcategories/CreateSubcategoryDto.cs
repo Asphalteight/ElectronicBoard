@@ -8,7 +8,7 @@ public class CreateSubcategoryDto
     /// <summary>
     /// Наименование.
     /// </summary>
-    public string Name { get; set; }
+    public string Name { get; set; } = null!;
     
     /// <summary>
     /// Идентификатор категории.

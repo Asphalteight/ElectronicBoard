@@ -14,11 +14,21 @@ namespace Board.Infrastructure.MapProfiles
             CreateMap<CreateAdvertisementDto, Advertisements>()
                 .ForMember(s => s.CreatedAt, map => map.MapFrom(s => DateTime.UtcNow))
                 .ForMember(s => s.Id, map => map.Ignore())
+                .ForMember(s => s.IsActive, map => map.Ignore())
                 .ForMember(s => s.Account, map => map.Ignore())
                 .ForMember(s => s.Subcategory, map => map.Ignore())
                 .ForMember(s => s.CommentsList, map => map.Ignore());
             
-            CreateMap<Advertisements, CreateAdvertisementDto>();
+            CreateMap<Advertisements, InfoAdvertisementDto>();
+
+            CreateMap<UpdateAdvertisementDto, Advertisements>()
+                .ForMember(s => s.Id, map => map.Ignore())
+                .ForMember(s => s.CreatedAt, map => map.Ignore())
+                .ForMember(s => s.Subcategory, map => map.Ignore())
+                .ForMember(s => s.Account, map => map.Ignore())
+                .ForMember(s => s.CommentsList, map => map.Ignore())
+                .ForMember(s => s.SubcategoryId, map => map.Ignore())
+                .ForMember(s => s.AccountId, map => map.Ignore());
         }
     }
 }

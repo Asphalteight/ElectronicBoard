@@ -1,12 +1,11 @@
 ﻿using Board.Contracts.Contexts.Subcategories;
-using Board.Domain.Category;
 
-namespace Board.Application.AppData.Context.Subcategory.Repositories;
+namespace Board.Application.AppData.Context.Subcategory.Services;
 
 /// <summary>
-/// Репозиторий для работы с категориями.
+/// Сервис для работы с подкатегориями.
 /// </summary>
-public interface ISubcategoryRepository
+public interface ISubcategoryService
 {
     /// <summary>
     /// Создание подкатегории.
@@ -14,15 +13,16 @@ public interface ISubcategoryRepository
     /// <param name="model">Модель подкатегории.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Идентификатор созданной подкатегории.</returns>
-    Task<int> CreateAsync(Subcategories model, CancellationToken cancellationToken);
+    Task<int> CreateSubcategoryAsync(CreateSubcategoryDto model, CancellationToken cancellationToken);
 
     /// <summary>
     /// Изменение подкатегории.
     /// </summary>
-    /// <param name="model">Модель подкатегории.</param>
+    /// <param name="id">Идентификатор.</param>
+    /// <param name="dto">Модель изменения.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Информация об измененной подкатегории.</returns>
-    Task<InfoSubcategoryDto> UpdateAsync(Subcategories model, CancellationToken cancellationToken);
+    Task<InfoSubcategoryDto> UpdateSubcategoryAsync(int id, UpdateSubcategoryDto dto, CancellationToken cancellationToken);
 
     /// <summary>
     /// Удаление подкатегории.
@@ -30,20 +30,20 @@ public interface ISubcategoryRepository
     /// <param name="id">Идентификатор удаляемой подкатегории.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Статус удаления.</returns>
-    Task<bool> DeleteAsync(int id, CancellationToken cancellationToken);
-    
+    Task<bool> DeleteSubcategoryAsync(int id, CancellationToken cancellationToken);
+
     /// <summary>
     /// Получение по идентификатору.
     /// </summary>
     /// <param name="id">Идентификатор подкатегории.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
-    /// <returns>Модель подкатегории.</returns>
-    Task<Subcategories?> GetByIdAsync(int id, CancellationToken cancellationToken);
-    
+    /// <returns>Информация о подкатегории.</returns>
+    Task<InfoSubcategoryDto?> GetSubcategoryByIdAsync(int id, CancellationToken cancellationToken);
+
     /// <summary>
     /// Получение всех категорий.
     /// </summary>
     /// <param name="cancellationToken">Токен отмены.</param>
-    /// <returns>Список всех аккаунтов.</returns>
-    Task<IEnumerable<InfoSubcategoryDto>> GetAllAsync(CancellationToken cancellationToken);
+    /// <returns>Список категорий.</returns>
+    Task<IEnumerable<InfoSubcategoryDto>> GetAllSubcategories(CancellationToken cancellationToken);
 }

@@ -8,13 +8,8 @@ public class CreateCommentDto
     /// <summary>
     /// Текст.
     /// </summary>
-    public string Text { get; set; }
-    
-    /// <summary>
-    /// Дата и время создания.
-    /// </summary>
-    public DateTime CreatedAt { get; set; }
-    
+    public string Text { get; set; } = null!;
+
     /// <summary>
     /// Идентификатор объявления.
     /// </summary>

@@ -6,12 +6,7 @@
 public class UpdateCategoryDto
 {
     /// <summary>
-    /// Идентификатор.
-    /// </summary>
-    public string Id { get; set; }
-    
-    /// <summary>
     /// Наименование.
     /// </summary>
-    public string Name { get; set; }
+    public string Name { get; set; } = null!;
 }

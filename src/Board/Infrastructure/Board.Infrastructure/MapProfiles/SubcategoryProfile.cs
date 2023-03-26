@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
-using Board.Contracts.Contexts.Accounts;
 using Board.Contracts.Contexts.Subcategories;
-using Board.Domain.Account;
 using Board.Domain.Category;
 
 namespace Board.Infrastructure.MapProfiles
@@ -17,8 +15,13 @@ namespace Board.Infrastructure.MapProfiles
                 .ForMember(s => s.Id, map => map.Ignore())
                 .ForMember(s => s.Category, map => map.Ignore())
                 .ForMember(s => s.AdvertisementsList, map => map.Ignore());
+            
+            CreateMap<Subcategories, InfoSubcategoryDto>();
 
-            CreateMap<Subcategories, CreateSubcategoryDto>();
+            CreateMap<UpdateSubcategoryDto, Subcategories>()
+                .ForMember(s => s.Id, map => map.Ignore())
+                .ForMember(s => s.Category, map => map.Ignore())
+                .ForMember(s => s.AdvertisementsList, map => map.Ignore());
         }
     }
 }

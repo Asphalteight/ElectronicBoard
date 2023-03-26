@@ -18,12 +18,12 @@ public class Messages
     /// <summary>
     /// Идентификатор получателя.
     /// </summary>
-    public int Reciever { get; set; }
+    public int Receiver { get; set; }
     
     /// <summary>
     /// Текст.
     /// </summary>
-    public string Text { get; set; }
+    public string Text { get; set; } = null!;
     
     /// <summary>
     /// Дата и время отправки.

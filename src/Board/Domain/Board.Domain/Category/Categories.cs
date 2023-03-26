@@ -13,10 +13,10 @@ public class Categories
     /// <summary>
     /// Наименование.
     /// </summary>
-    public string Name { get; set; }
+    public string Name { get; set; } = null!;
     
     /// <summary>
     /// Список подкатегорий.
     /// </summary>
-    public virtual List<Subcategories> SubcategoriesList { get; set; }
+    public virtual List<Subcategories> SubcategoriesList { get; set; } = null!;
 }

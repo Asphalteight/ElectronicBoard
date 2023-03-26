@@ -16,7 +16,7 @@ public class Comments
     /// <summary>
     /// Текст.
     /// </summary>
-    public string Text { get; set; }
+    public string Text { get; set; } = null!;
     
     /// <summary>
     /// Дата и время создания.
@@ -31,7 +31,7 @@ public class Comments
     /// <summary>
     /// Объявление.
     /// </summary>
-    public virtual Advertisements Advertisement { get; set; }
+    public virtual Advertisements Advertisement { get; set; } = null!;
     
     /// <summary>
     /// Идентификатор пользователя.
@@ -41,5 +41,5 @@ public class Comments
     /// <summary>
     /// Пользователь.
     /// </summary>
-    public virtual Accounts Account { get; set; }
+    public virtual Accounts Account { get; set; } = null!;
 }

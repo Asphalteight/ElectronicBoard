@@ -69,7 +69,6 @@ namespace Board.Host.Migrator.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
 
@@ -179,7 +178,7 @@ namespace Board.Host.Migrator.Migrations
                     b.Property<bool>("IsRead")
                         .HasColumnType("boolean");
 
-                    b.Property<int>("Reciever")
+                    b.Property<int>("Receiver")
                         .HasColumnType("integer");
 
                     b.Property<int>("Sender")

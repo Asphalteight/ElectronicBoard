@@ -15,7 +15,7 @@ public class Subcategories
     /// <summary>
     /// Наименование.
     /// </summary>
-    public string Name { get; set; }
+    public string Name { get; set; } = null!;
     
     /// <summary>
     /// Идентификатор категории.
@@ -25,10 +25,10 @@ public class Subcategories
     /// <summary>
     /// Категория.
     /// </summary>
-    public virtual Categories Category { get; set; }
+    public virtual Categories Category { get; set; } = null!;
     
     /// <summary>
     /// Список объявлений.
     /// </summary>
-    public virtual List<Advertisements> AdvertisementsList { get; set; }
+    public virtual List<Advertisements> AdvertisementsList { get; set; } = null!;
 }

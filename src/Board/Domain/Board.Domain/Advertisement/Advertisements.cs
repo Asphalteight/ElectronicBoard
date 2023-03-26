@@ -17,12 +17,12 @@ public class Advertisements
     /// <summary>
     /// Заголовок.
     /// </summary>
-    public string Title { get; set; }
+    public string Title { get; set; } = null!;
     
     /// <summary>
     /// Описание.
     /// </summary>
-    public string Description { get; set; }
+    public string? Description { get; set; }
     
     /// <summary>
     /// Цена.
@@ -47,7 +47,7 @@ public class Advertisements
     /// <summary>
     /// Подкатегория.
     /// </summary>
-    public virtual Subcategories Subcategory { get; set; }
+    public virtual Subcategories Subcategory { get; set; } = null!;
     
     /// <summary>
     /// Идентификатор пользователя.
@@ -57,10 +57,10 @@ public class Advertisements
     /// <summary>
     /// Пользователь.
     /// </summary>
-    public virtual Accounts Account { get; set; }
+    public virtual Accounts Account { get; set; } = null!;
     
     /// <summary>
     /// Список комментариев.
     /// </summary>
-    public virtual List<Comments> CommentsList { get; set; }
+    public virtual List<Comments>? CommentsList { get; set; } 
 }

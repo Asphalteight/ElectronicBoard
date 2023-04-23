@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Linq.Expressions;
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Board.Application.AppData.Context.Account.Repositories;
 using Board.Contracts.Contexts.Accounts;
@@ -51,6 +52,16 @@ public class AccountRepository : IAccountRepository
          return result;
     }
 
+    /// <inheritdoc/>
+    public async Task<Accounts> FindWhere(Expression<Func<Accounts, bool>> predicate, CancellationToken cancellation)
+    {
+        var data = _repository.GetAllFiltered(predicate);
+
+        Accounts account = await data.Where(predicate).FirstOrDefaultAsync(cancellation);
+
+        return account;
+    }
+    
     /// <inheritdoc/>
     public async Task<IEnumerable<InfoAccountDto>> GetAllAsync(CancellationToken cancellationToken)
     {

@@ -1,4 +1,5 @@
-﻿using Board.Domain.Account;
+﻿using System.Linq.Expressions;
+using Board.Domain.Account;
 using Board.Contracts.Contexts.Accounts;
 
 namespace Board.Application.AppData.Context.Account.Repositories;
@@ -40,6 +41,14 @@ public interface IAccountRepository
     /// <returns>Модель аккаунта.</returns>
     Task<Accounts?> GetByIdAsync(int id, CancellationToken cancellationToken);
 
+    /// <summary>
+    /// Поиск пользователя по фильтру.
+    /// </summary>
+    /// <param name="predicate"></param>
+    /// <param name="cancellation"></param>
+    /// <returns></returns>
+    Task<Accounts> FindWhere(Expression<Func<Accounts, bool>> predicate, CancellationToken cancellation);
+    
     /// <summary>
     /// Получение всех аккаунтов.
     /// </summary>

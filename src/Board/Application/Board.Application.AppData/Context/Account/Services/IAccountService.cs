@@ -13,7 +13,22 @@ public interface IAccountService
     /// <param name="model">Модель аккаунта.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Идентификатор созданного аккаунта.</returns>
-    Task<int> CreateAccountAsync(CreateAccountDto model, CancellationToken cancellationToken);
+    Task<int> RegisterAccountAsync(CreateAccountDto model, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Авторизация в аккаунте.
+    /// </summary>
+    /// <param name="model">Модель для логина.</param>
+    /// <param name="cancellation">Токен отмены.</param>
+    /// <returns>Токен.</returns>
+    Task<string> LoginAsync(LoginAccountDto model, CancellationToken cancellation);
+
+    /// <summary>
+    /// Получение текущего пользователя.
+    /// </summary>
+    /// <param name="cancellation">Токен отмены.</param>
+    /// <returns>Текущий пользователь.</returns>
+    Task<InfoAccountDto> GetCurrentAsync(CancellationToken cancellation);
 
     /// <summary>
     /// Изменение аккаунта.

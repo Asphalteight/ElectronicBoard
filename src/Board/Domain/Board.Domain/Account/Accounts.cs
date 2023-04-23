@@ -33,6 +33,11 @@ public class Accounts
     public string Password { get; set; } = null!;
     
     /// <summary>
+    /// Дата/время регистрации.
+    /// </summary>
+    public DateTime CreatedAt { get; set; }
+    
+    /// <summary>
     /// Список объявлений.
     /// </summary>
     public virtual List<Advertisements>? AdvertisementsList { get; set; }

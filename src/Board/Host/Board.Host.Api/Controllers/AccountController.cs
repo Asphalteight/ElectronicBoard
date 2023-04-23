@@ -2,6 +2,9 @@
 using Board.Application.AppData.Context.Account.Services;
 using Board.Contracts.Contexts;
 using Board.Contracts.Contexts.Accounts;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Board.Host.Api.Controllers;
@@ -13,6 +16,7 @@ namespace Board.Host.Api.Controllers;
 [ApiController]
 [Route("[Controller]")]
 [Produces("application/json")]
+[AllowAnonymous]
 [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status500InternalServerError)]
 public class AccountController : ControllerBase
 {
@@ -62,38 +66,58 @@ public class AccountController : ControllerBase
         return Ok(result);
     }
 
-    // /// <summary>
-    // /// Получить список активных категорий.
-    // /// </summary>
-    // /// <param name="cancellationToken">Токен отмены.</param>
-    // /// <response code="200">Запрос выполнен успешно.</response>
-    // /// <response code="404">Категория с указанным идентификатором не найдена.</response>
-    // /// <returns>Модель категории.</returns>
-    // [HttpGet("active")]
-    // [ProducesResponseType(typeof(SubcategoryInfoDto[]), StatusCodes.Status200OK)]
-    // public async Task<IActionResult> GetActive(CancellationToken cancellationToken)
-    // {
-    //     var result = await _categoryService.GetActiveAsync(cancellationToken);
-    //     return Ok(result);
-    // }
 
     /// <summary>
-    /// Создать новый аккаунт.
+    /// Зарегистрировать новый аккаунт.
     /// </summary>
-    /// <param name="dto">Модель создания аккаунта.</param>
+    /// <param name="dto">Модель регистрации аккаунта.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
-    /// <response code="201">Аккаунт успешно создан.</response>
+    /// <response code="201">Аккаунт успешно зарегистрирован.</response>
     /// <response code="400">Модель данных запроса невалидна.</response>
     /// <response code="422">Произошёл конфликт бизнес-логики.</response>
-    /// <returns>Идентификатор созданного аккаунта.</returns>
-    [HttpPost]
+    /// <returns>Идентификатор зарегистрированного аккаунта.</returns>
+    [HttpPost("registration")]
     [ProducesResponseType(typeof(int), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status422UnprocessableEntity)]
-    public async Task<IActionResult> Create([FromQuery] CreateAccountDto dto, CancellationToken cancellationToken)
+    public async Task<IActionResult> RegisterAccount([FromBody] CreateAccountDto dto, CancellationToken cancellationToken)
     {
-        var result = await _accountService.CreateAccountAsync(dto, cancellationToken);
-        return StatusCode((int)HttpStatusCode.Created, result);
+        var result = await _accountService.RegisterAccountAsync(dto, cancellationToken);
+        return await Task.Run(() => CreatedAtAction(nameof(Login), result), cancellationToken);
+    }
+    
+    /// <summary>
+    /// Войти в аккаунт.
+    /// </summary>
+    /// <param name="dto">Модель входа в аккаунт.</param>
+    /// <param name="cancellation">Токен отмены.</param>
+    /// <response code="200">Запрос выполнен успешно</response>
+    /// <response code="400">Модель данных запроса невалидна.</response>
+    /// <response code="403">Доступ запрещён (пользователь заблокирован).</response>
+    /// <response code="404">Пользователь не найден.</response>
+    /// <returns>Модель с данными входа.</returns>
+    [HttpPost("login")]
+    [ProducesResponseType(typeof(LoginResultDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Login([FromBody] LoginAccountDto dto, CancellationToken cancellation)
+    {
+        _logger.LogInformation("Вход в аккаунт.");
+
+        var result = await _accountService.LoginAsync(dto, cancellation);
+
+        return await Task.Run(() => Ok(result), cancellation);
+    }
+
+    /// <summary>
+    /// Выйти из аккаунта.
+    /// </summary>
+    /// <param name="token"></param>
+    [HttpPost("logout")]
+    public async Task Logout(string token)
+    {
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
     }
 
     /// <summary>

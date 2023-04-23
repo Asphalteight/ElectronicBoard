@@ -1,4 +1,6 @@
-﻿namespace Board.Contracts.Contexts.Accounts;
+﻿using System.Security.Claims;
+
+namespace Board.Contracts.Contexts.Accounts;
 
 /// <summary>
 /// Информация об аккаунте.

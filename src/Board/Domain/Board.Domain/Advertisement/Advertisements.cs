@@ -46,14 +46,14 @@ public class Advertisements
     public bool IsActive { get; set; } = true;
     
     /// <summary>
-    /// Идентификатор подкатегории.
+    /// Идентификатор категории.
     /// </summary>
-    public int SubcategoryId { get; set; }
+    public int CategoryId { get; set; }
 
     /// <summary>
-    /// Подкатегория.
+    /// Категория.
     /// </summary>
-    public virtual Subcategories Subcategory { get; set; } = null!;
+    public virtual Categories Category { get; set; } = null!;
     
     /// <summary>
     /// Набор изображений.

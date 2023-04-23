@@ -29,4 +29,9 @@ public class UpdateAdvertisementDto
     /// Активно ли объявление.
     /// </summary>
     public bool IsActive { get; set; } = true;
+    
+    /// <summary>
+    /// Идентификатор категории.
+    /// </summary>
+    public int CategoryId { get; set; }
 }

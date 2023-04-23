@@ -26,7 +26,7 @@ public class CreateAdvertisementDto
     public string Address { get; set; } = null!;
     
     /// <summary>
-    /// Идентификатор подкатегории.
+    /// Идентификатор категории.
     /// </summary>
-    public int SubcategoryId { get; set; }
+    public int CategoryId { get; set; }
 }

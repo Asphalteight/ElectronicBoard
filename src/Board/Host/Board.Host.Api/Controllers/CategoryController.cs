@@ -40,7 +40,7 @@ public class CategoryController : ControllerBase
     [ProducesResponseType(typeof(IEnumerable<InfoCategoryDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Запрос категориов");
+        _logger.LogInformation("Запрос категорий");
         var result = await _categoryService.GetAllCategories(cancellationToken);
         return await Task.Run(() => Ok(result), cancellationToken);
     }

@@ -16,7 +16,7 @@ namespace Board.Infrastructure.MapProfiles
                 .ForMember(s => s.Id, map => map.Ignore())
                 .ForMember(s => s.AccountId, map => map.Ignore())
                 .ForMember(s => s.Account, map => map.Ignore())
-                .ForMember(s => s.Subcategory, map => map.Ignore())
+                .ForMember(s => s.Category, map => map.Ignore())
                 .ForMember(s => s.ImageKit, map => map.Ignore())
                 .ForMember(s => s.IsActive, map => map.MapFrom(s => true))
                 .ForMember(s => s.CommentsList, map => map.Ignore());
@@ -26,10 +26,9 @@ namespace Board.Infrastructure.MapProfiles
             CreateMap<UpdateAdvertisementDto, Advertisements>()
                 .ForMember(s => s.Id, map => map.Ignore())
                 .ForMember(s => s.CreatedAt, map =>  map.Ignore())
-                .ForMember(s => s.Subcategory, map => map.Ignore())
+                .ForMember(s => s.Category, map => map.Ignore())
                 .ForMember(s => s.Account, map => map.Ignore())
                 .ForMember(s => s.CommentsList, map => map.Ignore())
-                .ForMember(s => s.SubcategoryId, map => map.Ignore())
                 .ForMember(s => s.ImageKit, map => map.Ignore())
                 .ForMember(s => s.AccountId, map => map.Ignore());
         }

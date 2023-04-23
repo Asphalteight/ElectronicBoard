@@ -73,6 +73,9 @@ namespace Board.Host.Migrator.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("character varying(250)");
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -86,9 +89,6 @@ namespace Board.Host.Migrator.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
 
-                    b.Property<int>("SubcategoryId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(25)
@@ -98,7 +98,7 @@ namespace Board.Host.Migrator.Migrations
 
                     b.HasIndex("AccountId");
 
-                    b.HasIndex("SubcategoryId");
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Advertisements");
                 });
@@ -116,32 +116,14 @@ namespace Board.Host.Migrator.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
+                    b.Property<int>("ParentCategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(0);
+
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("Board.Domain.Category.Subcategories", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("Subcategories");
                 });
 
             modelBuilder.Entity("Board.Domain.Comment.Comments", b =>
@@ -263,24 +245,13 @@ namespace Board.Host.Migrator.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Board.Domain.Category.Subcategories", "Subcategory")
+                    b.HasOne("Board.Domain.Category.Categories", "Category")
                         .WithMany("AdvertisementsList")
-                        .HasForeignKey("SubcategoryId")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Account");
-
-                    b.Navigation("Subcategory");
-                });
-
-            modelBuilder.Entity("Board.Domain.Category.Subcategories", b =>
-                {
-                    b.HasOne("Board.Domain.Category.Categories", "Category")
-                        .WithMany("SubcategoriesList")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.Navigation("Category");
                 });
@@ -329,11 +300,6 @@ namespace Board.Host.Migrator.Migrations
                 });
 
             modelBuilder.Entity("Board.Domain.Category.Categories", b =>
-                {
-                    b.Navigation("SubcategoriesList");
-                });
-
-            modelBuilder.Entity("Board.Domain.Category.Subcategories", b =>
                 {
                     b.Navigation("AdvertisementsList");
                 });

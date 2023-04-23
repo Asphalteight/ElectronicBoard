@@ -31,14 +31,14 @@ public class InfoAdvertisementDto
     public DateTime CreatedAt { get; set; }
 
     /// <summary>
-    /// Активно ли.
+    /// Активно ли объявление.
     /// </summary>
     public bool IsActive { get; set; } = true;
     
     /// <summary>
-    /// Идентификатор подкатегории.
+    /// Идентификатор категории.
     /// </summary>
-    public int SubcategoryId { get; set; }
+    public int CategoryId { get; set; }
 
     /// <summary>
     /// Идентификатор пользователя.

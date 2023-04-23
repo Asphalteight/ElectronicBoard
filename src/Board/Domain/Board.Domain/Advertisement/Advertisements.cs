@@ -1,6 +1,7 @@
 ﻿using Board.Domain.Account;
 using Board.Domain.Category;
 using Board.Domain.Comment;
+using Board.Domain.ImageKit;
 
 namespace Board.Domain.Advertisement;
 
@@ -30,12 +31,17 @@ public class Advertisements
     public decimal Price { get; set; }
     
     /// <summary>
+    /// Адрес.
+    /// </summary>
+    public string Address { get; set; } = null!;
+    
+    /// <summary>
     /// Дата и время создания (UTC).
     /// </summary>
     public DateTime CreatedAt { get; set; }
 
     /// <summary>
-    /// Активно ли.
+    /// Активно ли объявление.
     /// </summary>
     public bool IsActive { get; set; } = true;
     
@@ -43,11 +49,16 @@ public class Advertisements
     /// Идентификатор подкатегории.
     /// </summary>
     public int SubcategoryId { get; set; }
-    
+
     /// <summary>
     /// Подкатегория.
     /// </summary>
     public virtual Subcategories Subcategory { get; set; } = null!;
+    
+    /// <summary>
+    /// Набор изображений.
+    /// </summary>
+    public ImageKits ImageKit { get; set; }
     
     /// <summary>
     /// Идентификатор пользователя.

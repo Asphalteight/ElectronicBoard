@@ -21,12 +21,12 @@ public class CreateAdvertisementDto
     public decimal Price { get; set; }
 
     /// <summary>
+    /// Адрес.
+    /// </summary>
+    public string Address { get; set; } = null!;
+    
+    /// <summary>
     /// Идентификатор подкатегории.
     /// </summary>
     public int SubcategoryId { get; set; }
-
-    /// <summary>
-    /// Идентификатор пользователя.
-    /// </summary>
-    public int AccountId { get; set; }
 }

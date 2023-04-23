@@ -8,8 +8,8 @@ public class UpdateAdvertisementDto
     /// <summary>
     /// Заголовок.
     /// </summary>
-    public string? Title { get; set; }
-    
+    public string Title { get; set; } = null!;
+
     /// <summary>
     /// Описание.
     /// </summary>
@@ -21,7 +21,12 @@ public class UpdateAdvertisementDto
     public decimal Price { get; set; }
 
     /// <summary>
-    /// Активно ли.
+    /// Адрес.
+    /// </summary>
+    public string Address { get; set; } = null!;
+    
+    /// <summary>
+    /// Активно ли объявление.
     /// </summary>
     public bool IsActive { get; set; } = true;
 }

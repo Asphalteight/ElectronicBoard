@@ -1,115 +1,115 @@
 ﻿using System.Net;
-using Board.Application.AppData.Context.Advertisement.Services;
+using Board.Application.AppData.Context.ImageKit.Services;
 using Board.Contracts.Contexts;
-using Board.Contracts.Contexts.Advertisements;
+using Board.Contracts.ImageKits;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Board.Host.Api.Controllers;
 
 /// <summary>
-/// Контроллер для работы с объявлениями.
+/// Контроллер для работы с наборами изображений.
 /// </summary>
 /// <response code="500">Произошла внутренняя ошибка.</response>
 [ApiController]
 [Route("[Controller]")]
 [Produces("application/json")]
 [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status500InternalServerError)]
-public class AdvertisementController : ControllerBase
+public class ImageKitController : ControllerBase
 {
-    private readonly ILogger<AdvertisementController> _logger;
-    private readonly IAdvertisementService _advertisementService;
+    private readonly ILogger<ImageKitController> _logger;
+    private readonly IImageKitService _imageKitService;
 
     /// <summary>
-    /// Инициализирует экземпляр <see cref="AdvertisementController"/>
+    /// Инициализирует экземпляр <see cref="ImageKitController"/>
     /// </summary>
     /// <param name="logger">Сервис логирования.</param>
-    /// <param name="advertisementService">Сервис объявлений.</param>
-    public AdvertisementController(ILogger<AdvertisementController> logger, IAdvertisementService advertisementService)
+    /// <param name="imageKitService">Сервис наборов изображений.</param>
+    public ImageKitController(ILogger<ImageKitController> logger, IImageKitService imageKitService)
     {
         _logger = logger;
-        _advertisementService = advertisementService;
+        _imageKitService = imageKitService;
     }
 
     /// <summary>
-    /// Получить список объявлений.
+    /// Получить список наборов изображений.
     /// </summary>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <response code="200">Запрос выполнен успешно</response>
     /// <returns>Список моделей объявлений.</returns>
     [HttpGet]
-    [ProducesResponseType(typeof(IEnumerable<InfoAdvertisementDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<InfoImageKitDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {
         _logger.LogInformation("Запрос объявлений");
-        var result = await _advertisementService.GetAllAdvertisements(cancellationToken);
+        var result = await _imageKitService.GetAllImageKits(cancellationToken);
         return await Task.Run(() => Ok(result), cancellationToken);
     }
 
     /// <summary>
-    /// Получить объявление по идентификатору.
+    /// Получить набор изображений по идентификатору.
     /// </summary>
     /// <param name="id">Идентификатор.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <response code="200">Запрос выполнен успешно.</response>
-    /// <response code="404">Объявление с указанным идентификатором не найдено.</response>
-    /// <returns>Модель объявления.</returns>
+    /// <response code="404">Набор изображений с указанным идентификатором не найден.</response>
+    /// <returns>Модель набора изображений.</returns>
     [HttpGet("{id:int}")]
-    [ProducesResponseType(typeof(InfoAdvertisementDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(InfoImageKitDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
     {
-        var result = await _advertisementService.GetAdvertisementByIdAsync(id, cancellationToken);
+        var result = await _imageKitService.GetImageKitByIdAsync(id, cancellationToken);
         if (result == null) return NotFound(result);
         return Ok(result);
     }
 
     /// <summary>
-    /// Создать новое объявление.
+    /// Создать новый набор изображений.
     /// </summary>
-    /// <param name="dto">Модель создания объявления.</param>
+    /// <param name="dto">Модель создания набора изображений.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
-    /// <response code="201">Объявление успешно создано.</response>
+    /// <response code="201">Набор изображений успешно создано.</response>
     /// <response code="400">Модель данных запроса невалидна.</response>
     /// <response code="422">Произошёл конфликт бизнес-логики.</response>
-    /// <returns>Идентификатор созданного объявления.</returns>
+    /// <returns>Идентификатор созданного набора изображений.</returns>
     [HttpPost]
     [Authorize]
     [ProducesResponseType(typeof(int), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status422UnprocessableEntity)]
-    public async Task<IActionResult> Create([FromQuery] CreateAdvertisementDto dto, CancellationToken cancellationToken)
+    public async Task<IActionResult> Create([FromQuery] CreateImageKitDto dto, CancellationToken cancellationToken)
     {
-        var result = await _advertisementService.CreateAdvertisementAsync(dto, cancellationToken);
+        var result = await _imageKitService.CreateImageKitAsync(dto, cancellationToken);
         return StatusCode((int)HttpStatusCode.Created, result);
     }
 
     /// <summary>
-    /// Обновить объявление.
+    /// Обновить набор изображений.
     /// </summary>
     /// <param name="id">Идентификатор.</param>
-    /// <param name="dto">Модель обновления объявления.</param>
+    /// <param name="dto">Модель обновления набора изображений.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <response code="200">Запрос выполнен успешно.</response>
     /// <response code="400">Модель данных запроса невалидна.</response>
     /// <response code="403">Доступ запрещён.</response>
-    /// <response code="404">Объявление с указанным идентификатором не найдено.</response>
+    /// <response code="404">Набора изображений с указанным идентификатором не найден.</response>
     /// <response code="422">Произошёл конфликт бизнес-логики.</response>
-    /// <returns>Модель обновленного объявления.</returns>
+    /// <returns>Модель обновленного набора изображений.</returns>
     [HttpPut("{id:int}")]
-    [ProducesResponseType(typeof(InfoAdvertisementDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(InfoImageKitDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status422UnprocessableEntity)]
-    public async Task<IActionResult> Update(int id, [FromQuery] UpdateAdvertisementDto dto, CancellationToken cancellationToken)
+    public async Task<IActionResult> Update(int id, [FromQuery] UpdateImageKitDto dto, CancellationToken cancellationToken)
     {
-        var result = await _advertisementService.UpdateAdvertisementAsync(id, dto, cancellationToken);
+        var result = await _imageKitService.UpdateImageKitAsync(id, dto, cancellationToken);
         return await Task.Run(() => Ok(result), cancellationToken);
     }
 
     /// <summary>
-    /// Удалить объявление по идентификатору.
+    /// Удалить набор изображений по идентификатору.
     /// </summary>
     /// <param name="id">Идентификатор.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
@@ -120,7 +120,7 @@ public class AdvertisementController : ControllerBase
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status403Forbidden)]
     public async Task<IActionResult> DeleteById(int id, CancellationToken cancellationToken)
     {
-        var result = await _advertisementService.DeleteAdvertisementAsync(id, cancellationToken);
+        var result = await _imageKitService.DeleteImageKitAsync(id, cancellationToken);
         return await Task.Run( () => Ok(result), cancellationToken);
     }
 }

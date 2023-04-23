@@ -3,6 +3,7 @@ using System;
 using Board.Host.Migrator;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Board.Host.Migrator.Migrations
 {
     [DbContext(typeof(DbContextMigration))]
-    partial class DbContextMigrationModelSnapshot : ModelSnapshot
+    [Migration("20230326164747_Renamed_receiver_message")]
+    partial class Renamed_receiver_message
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,9 +32,6 @@ namespace Board.Host.Migrator.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -67,11 +67,6 @@ namespace Board.Host.Migrator.Migrations
 
                     b.Property<int>("AccountId")
                         .HasColumnType("integer");
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("character varying(250)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -175,56 +170,6 @@ namespace Board.Host.Migrator.Migrations
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("Board.Domain.File.Files", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<byte[]>("Content")
-                        .IsRequired()
-                        .HasColumnType("bytea");
-
-                    b.Property<string>("ContentType")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("Length")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Files");
-                });
-
-            modelBuilder.Entity("Board.Domain.ImageKit.ImageKits", b =>
-                {
-                    b.Property<int>("AdvertisementId")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid?>("FirstImageId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("SecondImageId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("ThirdImageId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("AdvertisementId");
-
-                    b.ToTable("ImageKits");
-                });
-
             modelBuilder.Entity("Board.Domain.Message.Messages", b =>
                 {
                     b.Property<int>("Id")
@@ -304,17 +249,6 @@ namespace Board.Host.Migrator.Migrations
                     b.Navigation("Advertisement");
                 });
 
-            modelBuilder.Entity("Board.Domain.ImageKit.ImageKits", b =>
-                {
-                    b.HasOne("Board.Domain.Advertisement.Advertisements", "Advertisement")
-                        .WithOne("ImageKit")
-                        .HasForeignKey("Board.Domain.ImageKit.ImageKits", "AdvertisementId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Advertisement");
-                });
-
             modelBuilder.Entity("Board.Domain.Account.Accounts", b =>
                 {
                     b.Navigation("AdvertisementsList");
@@ -323,9 +257,6 @@ namespace Board.Host.Migrator.Migrations
             modelBuilder.Entity("Board.Domain.Advertisement.Advertisements", b =>
                 {
                     b.Navigation("CommentsList");
-
-                    b.Navigation("ImageKit")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Board.Domain.Category.Categories", b =>

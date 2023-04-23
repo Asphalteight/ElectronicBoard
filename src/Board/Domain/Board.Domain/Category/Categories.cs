@@ -1,4 +1,6 @@
-﻿namespace Board.Domain.Category;
+﻿using Board.Domain.Advertisement;
+
+namespace Board.Domain.Category;
 
 /// <summary>
 /// Категории.
@@ -11,12 +13,18 @@ public class Categories
     public int Id { get; set; }
     
     /// <summary>
+    /// Идентификатор родительской категории.
+    /// </summary>
+    public int ParentCategoryId { get; set; }
+    
+    /// <summary>
     /// Наименование.
     /// </summary>
     public string Name { get; set; } = null!;
-    
+
     /// <summary>
-    /// Список подкатегорий.
+    /// Список объявлений.
     /// </summary>
-    public virtual List<Subcategories> SubcategoriesList { get; set; } = null!;
+    public virtual List<Advertisements> AdvertisementsList { get; set; } = null!;
+
 }

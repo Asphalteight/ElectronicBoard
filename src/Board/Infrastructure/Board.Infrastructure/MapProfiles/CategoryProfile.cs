@@ -13,13 +13,13 @@ namespace Board.Infrastructure.MapProfiles
         {
             CreateMap<CreateCategoryDto, Categories>()
                 .ForMember(s => s.Id, map => map.Ignore())
-                .ForMember(s => s.SubcategoriesList, map => map.Ignore());
+                .ForMember(s => s.AdvertisementsList, map => map.Ignore());
 
             CreateMap<Categories, InfoCategoryDto>();
 
             CreateMap<UpdateCategoryDto, Categories>()
                 .ForMember(s => s.Id, map => map.Ignore())
-                .ForMember(s => s.SubcategoriesList, map => map.Ignore());
+                .ForMember(s => s.AdvertisementsList, map => map.Ignore());
         }
     }
 }

@@ -46,7 +46,15 @@ public class FileController : ControllerBase
     public async Task<IActionResult> GetInfoById(Guid id, CancellationToken cancellationToken)
     {
         var result = await _fileService.GetInfoByIdAsync(id, cancellationToken);
-        return result == null ? NotFound() : Ok(result);
+        _logger.LogInformation("Запрошен файл с идентификатором: {0}", result?.Id);
+
+        if (result == null)
+        {
+            _logger.LogError("Файл с запрашиваемым идентификатором \"{0}\" не найден", id);
+            return NotFound();
+        }
+        
+        return Ok(result);
     }
 
     /// <summary>
@@ -56,7 +64,7 @@ public class FileController : ControllerBase
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <response code="201">Файл успешно загружен.</response>
     /// <response code="400">Модель данных запроса невалидна.</response>
-    [HttpPost]
+    [HttpPost("create")]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
     [RequestFormLimits(ValueLengthLimit = int.MaxValue, MultipartBodyLengthLimit = long.MaxValue)]
@@ -74,7 +82,10 @@ public class FileController : ControllerBase
                 Name = file.FileName
             };
             result.Add(await _fileService.UploadAsync(fileDto, cancellationToken));
+            
+            _logger.LogInformation("Добавлен новый файл с идентификатором: {0}", result);
         }
+        
         return StatusCode((int)HttpStatusCode.Created, result);
     }
 
@@ -92,13 +103,16 @@ public class FileController : ControllerBase
     public async Task<IActionResult> Download(Guid id, CancellationToken cancellationToken)
     {
         var result = await _fileService.DownloadAsync(id, cancellationToken);
-
+        _logger.LogInformation("Скачивание файла с идентификатором: {0}", id);
+        
         if (result == null) 
-        { 
-            return NotFound(); 
+        {
+            _logger.LogError("Файл для скачивания с запрашиваемым идентификатором \"{0}\" не найден", id);
+            return NotFound();
         }
 
         Response.ContentLength = result.Content.Length;
+        
         return File(result.Content, result.ContentType, result.Name, true);
     }
 
@@ -116,6 +130,8 @@ public class FileController : ControllerBase
     public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
     {
         await _fileService.DeleteAsync(id, cancellationToken);
+        _logger.LogInformation("Удаление файла с идентификатором: {0}", id);
+        
         return NoContent();
     }
 

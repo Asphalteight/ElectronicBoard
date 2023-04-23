@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
 using Board.Application.AppData.Context.Account.Services;
 using Board.Application.AppData.Context.Advertisement.Repositories;
-using Board.Application.AppData.Context.ImageKit.Services;
 using Board.Contracts.Contexts.Advertisements;
-using Board.Contracts.ImageKits;
 using Board.Domain.Advertisement;
 
 namespace Board.Application.AppData.Context.Advertisement.Services;
@@ -13,15 +11,13 @@ public class AdvertisementService : IAdvertisementService
 {
     private readonly IAdvertisementRepository _advertisementRepository;
     private readonly IAccountService _accountService;
-    private readonly IImageKitService _imageKitService;
     private readonly IMapper _mapper;
 
-    public AdvertisementService(IAdvertisementRepository advertisementRepository, IAccountService accountService, IMapper mapper, IImageKitService imageKitService)
+    public AdvertisementService(IAdvertisementRepository advertisementRepository, IAccountService accountService, IMapper mapper)
     {
         _advertisementRepository = advertisementRepository;
         _accountService = accountService;
         _mapper = mapper;
-        _imageKitService = imageKitService;
     }
 
     /// <inheritdoc/>
@@ -29,21 +25,14 @@ public class AdvertisementService : IAdvertisementService
     {
         var entity = _mapper.Map<CreateAdvertisementDto, Advertisements>(model);
         var currentUser = await _accountService.GetCurrentAsync(cancellationToken);
-        
+
+        if (currentUser?.Id == null)
+        {
+            return 0;
+        }
         entity.AccountId = currentUser.Id;
 
-        var advertisementId = await _advertisementRepository.CreateAsync(entity, cancellationToken);
-        
-        var imageKit = new CreateImageKitDto()
-        {
-            AdvertisementId = advertisementId,
-            FirstImageId = new Guid(),
-            SecondImageId = new Guid(),
-            ThirdImageId = new Guid()
-        };
-        await _imageKitService.CreateImageKitAsync(imageKit, cancellationToken);
-
-        return advertisementId;
+        return await _advertisementRepository.CreateAsync(entity, cancellationToken);
     }
 
     /// <inheritdoc/>

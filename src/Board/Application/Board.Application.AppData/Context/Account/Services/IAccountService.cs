@@ -28,7 +28,7 @@ public interface IAccountService
     /// </summary>
     /// <param name="cancellation">Токен отмены.</param>
     /// <returns>Текущий пользователь.</returns>
-    Task<InfoAccountDto> GetCurrentAsync(CancellationToken cancellation);
+    Task<InfoAccountDto?> GetCurrentAsync(CancellationToken cancellation);
 
     /// <summary>
     /// Изменение аккаунта.

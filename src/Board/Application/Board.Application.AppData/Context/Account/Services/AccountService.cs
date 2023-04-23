@@ -89,7 +89,7 @@ public class AccountService : IAccountService
     }
 
     /// <inheritdoc />
-    public async Task<InfoAccountDto> GetCurrentAsync(CancellationToken cancellation)
+    public async Task<InfoAccountDto?> GetCurrentAsync(CancellationToken cancellation)
     {
         var claims = _httpContextAccessor.HttpContext?.User.Claims;
         var claimId = claims!.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;

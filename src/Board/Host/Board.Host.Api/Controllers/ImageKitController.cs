@@ -41,8 +41,9 @@ public class ImageKitController : ControllerBase
     [ProducesResponseType(typeof(IEnumerable<InfoImageKitDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Запрос объявлений");
+        _logger.LogInformation("Запрошены все наборы изображений");
         var result = await _imageKitService.GetAllImageKits(cancellationToken);
+        
         return await Task.Run(() => Ok(result), cancellationToken);
     }
 
@@ -60,7 +61,14 @@ public class ImageKitController : ControllerBase
     public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
     {
         var result = await _imageKitService.GetImageKitByIdAsync(id, cancellationToken);
-        if (result == null) return NotFound(result);
+        _logger.LogInformation("Запрошен набор изображений для объявления: {0}", id);
+
+        if (result == null)
+        {
+            _logger.LogError("Набор изображения с запрашиваемым идентификатором объявления \"{0}\" не найден", id);
+            return NotFound();
+        }
+        
         return Ok(result);
     }
 
@@ -73,7 +81,7 @@ public class ImageKitController : ControllerBase
     /// <response code="400">Модель данных запроса невалидна.</response>
     /// <response code="422">Произошёл конфликт бизнес-логики.</response>
     /// <returns>Идентификатор созданного набора изображений.</returns>
-    [HttpPost]
+    [HttpPost("create")]
     [Authorize]
     [ProducesResponseType(typeof(int), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
@@ -81,6 +89,8 @@ public class ImageKitController : ControllerBase
     public async Task<IActionResult> Create([FromQuery] CreateImageKitDto dto, CancellationToken cancellationToken)
     {
         var result = await _imageKitService.CreateImageKitAsync(dto, cancellationToken);
+        _logger.LogInformation("Создан новый набор изоображений с идентификатором объявления: {0}", result);
+        
         return StatusCode((int)HttpStatusCode.Created, result);
     }
 
@@ -105,6 +115,8 @@ public class ImageKitController : ControllerBase
     public async Task<IActionResult> Update(int id, [FromQuery] UpdateImageKitDto dto, CancellationToken cancellationToken)
     {
         var result = await _imageKitService.UpdateImageKitAsync(id, dto, cancellationToken);
+        _logger.LogInformation("Обновлен набор изображений с идентификатором объявления: {0}", result?.AdvertisementId);
+        
         return await Task.Run(() => Ok(result), cancellationToken);
     }
 
@@ -121,6 +133,8 @@ public class ImageKitController : ControllerBase
     public async Task<IActionResult> DeleteById(int id, CancellationToken cancellationToken)
     {
         var result = await _imageKitService.DeleteImageKitAsync(id, cancellationToken);
+        _logger.LogInformation("Удален набор изображений с идентификатором объявления: {0}, с результатом {1}", id, result);
+        
         return await Task.Run( () => Ok(result), cancellationToken);
     }
 }

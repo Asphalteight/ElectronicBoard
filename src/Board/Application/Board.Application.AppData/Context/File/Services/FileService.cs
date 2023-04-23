@@ -28,13 +28,13 @@ public class FileService : IFileService
     }
 
     /// <inheritdoc/>
-    public Task<FileDto> DownloadAsync(Guid id, CancellationToken cancellationToken)
+    public Task<FileDto?> DownloadAsync(Guid id, CancellationToken cancellationToken)
     {
         return _fileRepository.DownloadAsync(id, cancellationToken);
     }
 
     /// <inheritdoc/>
-    public Task<FileInfoDto> GetInfoByIdAsync(Guid id, CancellationToken cancellationToken)
+    public Task<FileInfoDto?> GetInfoByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         return _fileRepository.GetInfoByIdAsync(id, cancellationToken);
     }

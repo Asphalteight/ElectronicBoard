@@ -40,8 +40,9 @@ public class MessageController : ControllerBase
     [ProducesResponseType(typeof(IEnumerable<InfoMessageDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Запрос сообщений");
+        _logger.LogInformation("Запрошены все сообщения");
         var result = await _messageService.GetAllMessages(cancellationToken);
+        
         return await Task.Run(() => Ok(result), cancellationToken);
     }
 
@@ -59,7 +60,14 @@ public class MessageController : ControllerBase
     public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
     {
         var result = await _messageService.GetMessageByIdAsync(id, cancellationToken);
-        if (result == null) return NotFound(result);
+        _logger.LogInformation("Запрошено сообщение с идентификатором: {0}", result?.Id);
+
+        if (result == null)
+        {
+            _logger.LogError("Сообщение с запрашиваемым идентификатором \"{0}\" не найдено", id);
+            return NotFound();
+        }
+        
         return Ok(result);
     }
 
@@ -72,13 +80,15 @@ public class MessageController : ControllerBase
     /// <response code="400">Модель данных запроса невалидна.</response>
     /// <response code="422">Произошёл конфликт бизнес-логики.</response>
     /// <returns>Идентификатор созданного сообщения.</returns>
-    [HttpPost]
+    [HttpPost("create")]
     [ProducesResponseType(typeof(int), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status422UnprocessableEntity)]
     public async Task<IActionResult> Create([FromQuery] CreateMessageDto dto, CancellationToken cancellationToken)
     {
         var result = await _messageService.CreateMessageAsync(dto, cancellationToken);
+        _logger.LogInformation("Создано новое сообщение с идентификатором: {0}", result);
+        
         return StatusCode((int)HttpStatusCode.Created, result);
     }
 
@@ -103,6 +113,8 @@ public class MessageController : ControllerBase
     public async Task<IActionResult> Update(int id, [FromQuery] UpdateMessageDto dto, CancellationToken cancellationToken)
     {
         var result = await _messageService.UpdateMessageAsync(id, dto, cancellationToken);
+        _logger.LogInformation("Обновлено сообщение с идентификатором: {0}", result?.Id);
+        
         return await Task.Run(() => Ok(result), cancellationToken);
     }
 
@@ -119,6 +131,8 @@ public class MessageController : ControllerBase
     public async Task<IActionResult> DeleteById(int id, CancellationToken cancellationToken)
     {
         var result = await _messageService.DeleteMessageAsync(id, cancellationToken);
+        _logger.LogInformation("Удалено сообщение с идентификатором: {0}, с результатом {1}", id, result);
+        
         return await Task.Run( () => Ok(result), cancellationToken);
     }
 }

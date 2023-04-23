@@ -40,8 +40,9 @@ public class CategoryController : ControllerBase
     [ProducesResponseType(typeof(IEnumerable<InfoCategoryDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Запрос категорий");
+        _logger.LogInformation("Запрошены все категории");
         var result = await _categoryService.GetAllCategories(cancellationToken);
+        
         return await Task.Run(() => Ok(result), cancellationToken);
     }
 
@@ -59,6 +60,14 @@ public class CategoryController : ControllerBase
     public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
     {
         var result = await _categoryService.GetCategoryByIdAsync(id, cancellationToken);
+        _logger.LogInformation("Запрошена категория с идентификатором: {0}", result?.Id);
+
+        if (result == null)
+        {
+            _logger.LogError("Категория с запрашиваемым идентификатором \"{0}\" не найдена", id);
+            return NotFound();
+        }
+        
         return Ok(result);
     }
 
@@ -71,13 +80,15 @@ public class CategoryController : ControllerBase
     /// <response code="400">Модель данных запроса невалидна.</response>
     /// <response code="422">Произошёл конфликт бизнес-логики.</response>
     /// <returns>Идентификатор созданной категории.</returns>
-    [HttpPost]
+    [HttpPost("create")]
     [ProducesResponseType(typeof(int), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status422UnprocessableEntity)]
     public async Task<IActionResult> Create([FromQuery] CreateCategoryDto dto, CancellationToken cancellationToken)
     {
         var result = await _categoryService.CreateCategoryAsync(dto, cancellationToken);
+        _logger.LogInformation("Создана новая категория с идентификатором: {0}", result);
+        
         return StatusCode((int)HttpStatusCode.Created, result);
     }
 
@@ -102,6 +113,8 @@ public class CategoryController : ControllerBase
     public async Task<IActionResult> Update(int id, [FromQuery] UpdateCategoryDto dto, CancellationToken cancellationToken)
     {
         var result = await _categoryService.UpdateCategoryAsync(id, dto, cancellationToken);
+        _logger.LogInformation("Обновлена категория с идентификатором: {0}", result?.Id);
+        
         return await Task.Run(() => Ok(result), cancellationToken);
     }
 
@@ -118,6 +131,8 @@ public class CategoryController : ControllerBase
     public async Task<IActionResult> DeleteById(int id, CancellationToken cancellationToken)
     {
         var result = await _categoryService.DeleteCategoryAsync(id, cancellationToken);
+        _logger.LogInformation("Удалена категория с идентификатором: {0}, с результатом {1}", id, result);
+        
         return await Task.Run( () => Ok(result), cancellationToken);
     }
 }

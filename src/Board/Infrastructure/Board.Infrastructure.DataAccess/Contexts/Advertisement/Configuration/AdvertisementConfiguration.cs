@@ -1,5 +1,4 @@
 ﻿using Board.Domain.Advertisement;
-using Board.Domain.ImageKit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -18,7 +17,7 @@ public class AdvertisementConfiguration : IEntityTypeConfiguration<Advertisement
         builder.Property(p => p.Address).HasMaxLength(250);
         builder.Property(p => p.CreatedAt).HasConversion(to => to, from => DateTime.SpecifyKind(from, DateTimeKind.Utc));
 
-        builder.HasOne<ImageKits>(p => p.ImageKit).WithOne(s => s.Advertisement);
+        builder.HasOne(p => p.ImageKit).WithOne(s => s.Advertisement).OnDelete(DeleteBehavior.Cascade);
         
         builder.HasMany(f => f.CommentsList)
             .WithOne(o => o.Advertisement)

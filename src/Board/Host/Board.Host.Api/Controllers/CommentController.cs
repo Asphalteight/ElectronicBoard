@@ -40,8 +40,9 @@ public class CommentController : ControllerBase
     [ProducesResponseType(typeof(IEnumerable<InfoCommentDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Запрос комментариев");
+        _logger.LogInformation("Запрошены все комментарии");
         var result = await _commentService.GetAllComments(cancellationToken);
+        
         return await Task.Run(() => Ok(result), cancellationToken);
     }
 
@@ -59,6 +60,14 @@ public class CommentController : ControllerBase
     public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
     {
         var result = await _commentService.GetCommentByIdAsync(id, cancellationToken);
+        _logger.LogInformation("Запрошен комментарий с идентификатором: {0}", result?.Id);
+
+        if (result == null)
+        {
+            _logger.LogError("Комментарий с запрашиваемым идентификатором \"{0}\" не найден", id);
+            return NotFound();
+        }
+        
         return Ok(result);
     }
 
@@ -71,13 +80,15 @@ public class CommentController : ControllerBase
     /// <response code="400">Модель данных запроса невалидна.</response>
     /// <response code="422">Произошёл конфликт бизнес-логики.</response>
     /// <returns>Идентификатор созданного комментария.</returns>
-    [HttpPost]
+    [HttpPost("create")]
     [ProducesResponseType(typeof(int), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status422UnprocessableEntity)]
     public async Task<IActionResult> Create([FromQuery] CreateCommentDto dto, CancellationToken cancellationToken)
     {
         var result = await _commentService.CreateCommentAsync(dto, cancellationToken);
+        _logger.LogInformation("Создан новый комментарий с идентификатором: {0}", result);
+        
         return StatusCode((int)HttpStatusCode.Created, result);
     }
 
@@ -102,6 +113,8 @@ public class CommentController : ControllerBase
     public async Task<IActionResult> Update(int id, [FromQuery] UpdateCommentDto dto, CancellationToken cancellationToken)
     {
         var result = await _commentService.UpdateCommentAsync(id, dto, cancellationToken);
+        _logger.LogInformation("Обновлен комментарий с идентификатором: {0}", result?.Id);
+        
         return await Task.Run(() => Ok(result), cancellationToken);
     }
 
@@ -118,6 +131,8 @@ public class CommentController : ControllerBase
     public async Task<IActionResult> DeleteById(int id, CancellationToken cancellationToken)
     {
         var result = await _commentService.DeleteCommentAsync(id, cancellationToken);
+        _logger.LogInformation("Удален комментарий с идентификатором: {0}, с результатом {1}", id, result);
+        
         return await Task.Run( () => Ok(result), cancellationToken);
     }
 }

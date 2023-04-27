@@ -118,6 +118,16 @@
             <response code="404">Объявление с указанным идентификатором не найдено.</response>
             <returns>Модель объявления.</returns>
         </member>
+        <member name="M:Board.Host.Api.Controllers.AdvertisementController.GetById(Board.Contracts.Contexts.Advertisements.SearchAdvertisementDto,System.Threading.CancellationToken)">
+            <summary>
+            Поиск объявления по фильтру.
+            </summary>
+            <param name="search">Идентификатор.</param>
+            <param name="cancellationToken">Токен отмены.</param>
+            <response code="200">Запрос выполнен успешно.</response>
+            <response code="404">Объявление с указанным идентификатором не найдено.</response>
+            <returns>Модель объявления.</returns>
+        </member>
         <member name="M:Board.Host.Api.Controllers.AdvertisementController.Create(Board.Contracts.Contexts.Advertisements.CreateAdvertisementDto,System.Threading.CancellationToken)">
             <summary>
             Создать новое объявление.
@@ -180,7 +190,17 @@
             <param name="id">Идентификатор.</param>
             <param name="cancellationToken">Токен отмены.</param>
             <response code="200">Запрос выполнен успешно.</response>
-            <response code="404">Объявления с указанным идентификатором не найдена.</response>
+            <response code="404">Категория с указанным идентификатором не найдена.</response>
+            <returns>Модель категории.</returns>
+        </member>
+        <member name="M:Board.Host.Api.Controllers.CategoryController.GetChildById(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Получить все дочерние подкатегории для категории.
+            </summary>
+            <param name="id">Идентификатор.</param>
+            <param name="cancellationToken">Токен отмены.</param>
+            <response code="200">Запрос выполнен успешно.</response>
+            <response code="404">Категория с указанным идентификатором не найдена.</response>
             <returns>Модель категории.</returns>
         </member>
         <member name="M:Board.Host.Api.Controllers.CategoryController.Create(Board.Contracts.Contexts.Categories.CreateCategoryDto,System.Threading.CancellationToken)">
@@ -204,7 +224,7 @@
             <response code="200">Запрос выполнен успешно.</response>
             <response code="400">Модель данных запроса невалидна.</response>
             <response code="403">Доступ запрещён.</response>
-            <response code="404">Объявления с указанным идентификатором не найдена.</response>
+            <response code="404">Категория с указанным идентификатором не найдена.</response>
             <response code="422">Произошёл конфликт бизнес-логики.</response>
             <returns>Модель обновленной категории.</returns>
         </member>

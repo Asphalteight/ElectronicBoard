@@ -43,6 +43,14 @@ public interface IAdvertisementRepository
     Task<Advertisements?> GetByIdAsync(int id, CancellationToken cancellationToken);
     
     /// <summary>
+    /// Поиск по условию.
+    /// </summary>
+    /// <param name="dto">Модель поиска объявления.</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
+    /// <returns>Список найденных объявлений.</returns>
+    Task<IEnumerable<InfoAdvertisementDto?>> FindAsync(SearchAdvertisementDto dto, CancellationToken cancellationToken);
+    
+    /// <summary>
     /// Получение всех объявлений.
     /// </summary>
     /// <param name="cancellationToken">Токен отмены.</param>

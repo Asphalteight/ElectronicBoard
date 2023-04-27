@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Board.Contracts.Contexts.Advertisements;
 using Board.Domain.Advertisement;
+using Microsoft.VisualBasic.CompilerServices;
 
 namespace Board.Infrastructure.MapProfiles
 {
@@ -23,6 +24,8 @@ namespace Board.Infrastructure.MapProfiles
             
             CreateMap<Advertisements, InfoAdvertisementDto>();
 
+            CreateMap<Advertisements, ShortInfoAdvertisementDto>();
+            
             CreateMap<UpdateAdvertisementDto, Advertisements>()
                 .ForMember(s => s.Id, map => map.Ignore())
                 .ForMember(s => s.CreatedAt, map =>  map.Ignore())

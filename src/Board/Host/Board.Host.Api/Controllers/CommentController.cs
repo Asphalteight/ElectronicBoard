@@ -60,7 +60,7 @@ public class CommentController : ControllerBase
     public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
     {
         var result = await _commentService.GetCommentByIdAsync(id, cancellationToken);
-        _logger.LogInformation("Запрошен комментарий с идентификатором: {0}", result?.Id);
+        _logger.LogInformation("Запрошен комментарий с идентификатором: {0}", id);
 
         if (result == null)
         {
@@ -113,7 +113,7 @@ public class CommentController : ControllerBase
     public async Task<IActionResult> Update(int id, [FromQuery] UpdateCommentDto dto, CancellationToken cancellationToken)
     {
         var result = await _commentService.UpdateCommentAsync(id, dto, cancellationToken);
-        _logger.LogInformation("Обновлен комментарий с идентификатором: {0}", result?.Id);
+        _logger.LogInformation("Обновлен комментарий с идентификатором: {0}", id);
         
         return await Task.Run(() => Ok(result), cancellationToken);
     }

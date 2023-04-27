@@ -47,6 +47,12 @@ public class CategoryService : ICategoryService
         return _mapper.Map<Categories?, InfoCategoryDto>(entity);
     }
 
+    public async Task<IEnumerable<InfoCategoryDto>?> GetChildByIdAsync(int id, CancellationToken cancellationToken)
+    {
+        var entities = _categoryRepository.GetChildByIdAsync(id, cancellationToken);
+        return await entities;
+    }
+
     /// <inheritdoc/>
     public async Task<IEnumerable<InfoCategoryDto>> GetAllCategories(CancellationToken cancellationToken)
     {

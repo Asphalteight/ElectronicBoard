@@ -64,7 +64,7 @@ public class AccountController : ControllerBase
     public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
     {
         var result = await _accountService.GetAccountByIdAsync(id, cancellationToken);
-        _logger.LogInformation("Запрошен аккаунт с идентификатором: {0}", result?.Id);
+        _logger.LogInformation("Запрошен аккаунт с идентификатором: {0}", id);
 
         if (result == null)
         {
@@ -151,7 +151,7 @@ public class AccountController : ControllerBase
     public async Task<IActionResult> Update(int id, [FromQuery] UpdateAccountDto dto, CancellationToken cancellationToken)
     {
         var result = await _accountService.UpdateAccountAsync(id, dto, cancellationToken);
-        _logger.LogInformation("Обновлен аккаунт с идентификатором: {0}", result?.Id);
+        _logger.LogInformation("Обновлен аккаунт с идентификатором: {0}", id);
         
         return await Task.Run(() => Ok(result), cancellationToken);
     }

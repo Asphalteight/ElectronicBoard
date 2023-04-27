@@ -1,5 +1,4 @@
-﻿using Board.Contracts;
-using Board.Contracts.File;
+﻿using Board.Contracts.File;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using Board.Application.AppData.Context.File.Services;
@@ -46,7 +45,7 @@ public class FileController : ControllerBase
     public async Task<IActionResult> GetInfoById(Guid id, CancellationToken cancellationToken)
     {
         var result = await _fileService.GetInfoByIdAsync(id, cancellationToken);
-        _logger.LogInformation("Запрошен файл с идентификатором: {0}", result?.Id);
+        _logger.LogInformation("Запрошен файл с идентификатором: {0}", id);
 
         if (result == null)
         {

@@ -147,6 +147,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors(core => core.WithOrigins("http://localhost:4200"));
+
 app.UseAuthentication();
 
 app.UseAuthorization();

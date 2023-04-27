@@ -115,7 +115,7 @@ public class ImageKitController : ControllerBase
     public async Task<IActionResult> Update(int id, [FromQuery] UpdateImageKitDto dto, CancellationToken cancellationToken)
     {
         var result = await _imageKitService.UpdateImageKitAsync(id, dto, cancellationToken);
-        _logger.LogInformation("Обновлен набор изображений с идентификатором объявления: {0}", result?.AdvertisementId);
+        _logger.LogInformation("Обновлен набор изображений с идентификатором объявления: {0}", id);
         
         return await Task.Run(() => Ok(result), cancellationToken);
     }

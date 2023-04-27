@@ -61,7 +61,7 @@ public class AdvertisementController : ControllerBase
     public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
     {
         var result = await _advertisementService.GetAdvertisementByIdAsync(id, cancellationToken);
-        _logger.LogInformation("Запрошено объявление с идентификатором: {0}", result?.Id);
+        _logger.LogInformation("Запрошено объявление с идентификатором: {0}", id);
 
         if (result == null)
         {
@@ -70,6 +70,25 @@ public class AdvertisementController : ControllerBase
         }
         
         return Ok(result);
+    }
+    
+    /// <summary>
+    /// Поиск объявления по фильтру.
+    /// </summary>
+    /// <param name="search">Идентификатор.</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
+    /// <response code="200">Запрос выполнен успешно.</response>
+    /// <response code="404">Объявление с указанным идентификатором не найдено.</response>
+    /// <returns>Модель объявления.</returns>
+    [HttpGet("search")]
+    [ProducesResponseType(typeof(InfoAdvertisementDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetById([FromQuery]SearchAdvertisementDto search, CancellationToken cancellationToken)
+    {
+        var result = await _advertisementService.FindAdvertisementAsync(search, cancellationToken);
+        _logger.LogInformation("Поиск объявлений с запросом: {0}", search);
+
+        return await Task.Run(() => Ok(result), cancellationToken);
     }
 
     /// <summary>
@@ -121,7 +140,7 @@ public class AdvertisementController : ControllerBase
     public async Task<IActionResult> Update(int id, [FromQuery] UpdateAdvertisementDto dto, CancellationToken cancellationToken)
     {
         var result = await _advertisementService.UpdateAdvertisementAsync(id, dto, cancellationToken);
-        _logger.LogInformation("Обновлено объявление с идентификатором: {0}", result?.Id);
+        _logger.LogInformation("Обновлено объявление с идентификатором: {0}", id);
         
         return await Task.Run(() => Ok(result), cancellationToken);
     }

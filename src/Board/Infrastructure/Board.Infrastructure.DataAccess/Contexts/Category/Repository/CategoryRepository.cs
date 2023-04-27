@@ -51,9 +51,15 @@ public class CategoryRepository : ICategoryRepository
         return await result;
     }
 
+    public async Task<IEnumerable<InfoCategoryDto>?> GetChildByIdAsync(int id, CancellationToken cancellationToken)
+    {
+        var result = _repository.GetAll().ProjectTo<InfoCategoryDto>(_mapper.ConfigurationProvider).Where(s => s.ParentCategoryId == id).ToListAsync(cancellationToken);
+        return await result;
+    }
+
     /// <inheritdoc/>
     public async Task<IEnumerable<InfoCategoryDto>> GetAllAsync(CancellationToken cancellationToken)
     {
-        return await _repository.GetAll().ProjectTo<InfoCategoryDto>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken: cancellationToken);
+        return await _repository.GetAll().ProjectTo<InfoCategoryDto>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken);
     }
 }

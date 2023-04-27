@@ -50,7 +50,22 @@ public class AdvertisementRepository : IAdvertisementRepository
             .FirstOrDefaultAsync(cancellationToken);
         return result;
     }
-    
+
+    public async Task<IEnumerable<InfoAdvertisementDto?>> FindAsync(SearchAdvertisementDto dto, CancellationToken cancellationToken)
+    {
+        var allAdvertisements = _repository.GetAll().ProjectTo<InfoAdvertisementDto>(_mapper.ConfigurationProvider);
+
+        var bestMatch = allAdvertisements.Where(s => s.Title.Contains(dto.Text));
+            
+        var filteredDescription = allAdvertisements.Where(s => s.Description.Contains(dto.Text));
+        bestMatch = filteredDescription.Count() > bestMatch.Count() ? filteredDescription : bestMatch;
+            
+        var filteredAddress = allAdvertisements.Where(s => s.Address.Contains(dto.Text));
+        bestMatch = filteredAddress.Count() > bestMatch.Count() ? filteredAddress : bestMatch;
+
+        return await bestMatch.ToListAsync(cancellationToken);
+    }
+
     /// <inheritdoc/>
     public async Task<IEnumerable<InfoAdvertisementDto>> GetAllAsync(CancellationToken cancellationToken)
     {

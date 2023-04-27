@@ -52,7 +52,7 @@ public class CategoryController : ControllerBase
     /// <param name="id">Идентификатор.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <response code="200">Запрос выполнен успешно.</response>
-    /// <response code="404">Объявления с указанным идентификатором не найдена.</response>
+    /// <response code="404">Категория с указанным идентификатором не найдена.</response>
     /// <returns>Модель категории.</returns>
     [HttpGet("{id:int}")]
     [ProducesResponseType(typeof(InfoCategoryDto), StatusCodes.Status200OK)]
@@ -60,7 +60,32 @@ public class CategoryController : ControllerBase
     public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
     {
         var result = await _categoryService.GetCategoryByIdAsync(id, cancellationToken);
-        _logger.LogInformation("Запрошена категория с идентификатором: {0}", result?.Id);
+        _logger.LogInformation("Запрошена категория с идентификатором: {0}", id);
+
+        if (result == null)
+        {
+            _logger.LogError("Категория с запрашиваемым идентификатором \"{0}\" не найдена", id);
+            return NotFound();
+        }
+        
+        return Ok(result);
+    }
+    
+    /// <summary>
+    /// Получить все дочерние подкатегории для категории.
+    /// </summary>
+    /// <param name="id">Идентификатор.</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
+    /// <response code="200">Запрос выполнен успешно.</response>
+    /// <response code="404">Категория с указанным идентификатором не найдена.</response>
+    /// <returns>Модель категории.</returns>
+    [HttpGet("childFor/{id:int}")]
+    [ProducesResponseType(typeof(InfoCategoryDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetChildById(int id, CancellationToken cancellationToken)
+    {
+        var result = await _categoryService.GetChildByIdAsync(id, cancellationToken);
+        _logger.LogInformation("Запрошены все дочерние подкатегории для катеории с идентификатором: {0}", id);
 
         if (result == null)
         {
@@ -101,7 +126,7 @@ public class CategoryController : ControllerBase
     /// <response code="200">Запрос выполнен успешно.</response>
     /// <response code="400">Модель данных запроса невалидна.</response>
     /// <response code="403">Доступ запрещён.</response>
-    /// <response code="404">Объявления с указанным идентификатором не найдена.</response>
+    /// <response code="404">Категория с указанным идентификатором не найдена.</response>
     /// <response code="422">Произошёл конфликт бизнес-логики.</response>
     /// <returns>Модель обновленной категории.</returns>
     [HttpPut("{id:int}")]
@@ -113,7 +138,7 @@ public class CategoryController : ControllerBase
     public async Task<IActionResult> Update(int id, [FromQuery] UpdateCategoryDto dto, CancellationToken cancellationToken)
     {
         var result = await _categoryService.UpdateCategoryAsync(id, dto, cancellationToken);
-        _logger.LogInformation("Обновлена категория с идентификатором: {0}", result?.Id);
+        _logger.LogInformation("Обновлена категория с идентификатором: {0}", id);
         
         return await Task.Run(() => Ok(result), cancellationToken);
     }

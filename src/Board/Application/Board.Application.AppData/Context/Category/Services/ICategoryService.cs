@@ -39,6 +39,14 @@ public interface ICategoryService
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Информация о категории.</returns>
     Task<InfoCategoryDto?> GetCategoryByIdAsync(int id, CancellationToken cancellationToken);
+    
+    /// <summary>
+    /// Получение подкатегорий по идентификатору родителя.
+    /// </summary>
+    /// <param name="id">Идентификатор категории.</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
+    /// <returns>Список подкатегорий.</returns>
+    Task<IEnumerable<InfoCategoryDto>?> GetChildByIdAsync(int id, CancellationToken cancellationToken);
 
     /// <summary>
     /// Получение всех категорий.

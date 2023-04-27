@@ -61,6 +61,13 @@ public class AdvertisementService : IAdvertisementService
         return _mapper.Map<Advertisements?, InfoAdvertisementDto>(entity);
     }
 
+    public async Task<IEnumerable<InfoAdvertisementDto?>> FindAdvertisementAsync(SearchAdvertisementDto dto, CancellationToken cancellationToken)
+    {
+        var result = _advertisementRepository.FindAsync(dto, cancellationToken);
+
+        return await result;
+    }
+
     /// <inheritdoc/>
     public async Task<IEnumerable<InfoAdvertisementDto>> GetAllAdvertisements(CancellationToken cancellationToken)
     {

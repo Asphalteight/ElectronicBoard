@@ -60,7 +60,7 @@ public class MessageController : ControllerBase
     public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
     {
         var result = await _messageService.GetMessageByIdAsync(id, cancellationToken);
-        _logger.LogInformation("Запрошено сообщение с идентификатором: {0}", result?.Id);
+        _logger.LogInformation("Запрошено сообщение с идентификатором: {0}", id);
 
         if (result == null)
         {
@@ -113,7 +113,7 @@ public class MessageController : ControllerBase
     public async Task<IActionResult> Update(int id, [FromQuery] UpdateMessageDto dto, CancellationToken cancellationToken)
     {
         var result = await _messageService.UpdateMessageAsync(id, dto, cancellationToken);
-        _logger.LogInformation("Обновлено сообщение с идентификатором: {0}", result?.Id);
+        _logger.LogInformation("Обновлено сообщение с идентификатором: {0}", id);
         
         return await Task.Run(() => Ok(result), cancellationToken);
     }

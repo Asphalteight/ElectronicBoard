@@ -107,7 +107,8 @@ public class CategoryController : ControllerBase
     /// <response code="422">Произошёл конфликт бизнес-логики.</response>
     /// <returns>Идентификатор созданной категории.</returns>
     [HttpPost("create")]
-    [Authorize(Policy = "Admin")]
+    [Authorize]
+    [Authorize(Policy = "AdminPolicy")]
     [ProducesResponseType(typeof(int), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status422UnprocessableEntity)]
@@ -132,6 +133,8 @@ public class CategoryController : ControllerBase
     /// <response code="422">Произошёл конфликт бизнес-логики.</response>
     /// <returns>Модель обновленной категории.</returns>
     [HttpPut("{id:int}")]
+    [Authorize]
+    [Authorize(Policy = "AdminPolicy")]
     [ProducesResponseType(typeof(InfoCategoryDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status403Forbidden)]
@@ -158,6 +161,8 @@ public class CategoryController : ControllerBase
     /// <response code="204">Запрос выполнен успешно.</response>
     /// <response code="403">Доступ запрещён.</response>
     [HttpDelete("{id:int}")]
+    [Authorize]
+    [Authorize(Policy = "AdminPolicy")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status403Forbidden)]
     public async Task<IActionResult> DeleteById(int id, CancellationToken cancellationToken)

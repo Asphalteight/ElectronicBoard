@@ -483,10 +483,30 @@
             <response code="204">Запрос выполнен успешно.</response>
             <response code="403">Доступ запрещён.</response>
         </member>
-        <member name="T:Program">
+        <member name="T:Board.Host.Api.Modules.AuthModule">
             <summary>
-            Класс программы
+            Модуль для настройки аутентификации и авторизации.
             </summary>
+        </member>
+        <member name="M:Board.Host.Api.Modules.AuthModule.AddAuthModule(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Добавление модуля Swagger.
+            </summary>
+            <param name="services"></param>
+            <param name="configuration">Конфигурация</param>
+            <returns></returns>
+        </member>
+        <member name="T:Board.Host.Api.Modules.SwaggerModule">
+            <summary>
+            Модуль для настройки Swagger.
+            </summary>
+        </member>
+        <member name="M:Board.Host.Api.Modules.SwaggerModule.AddSwaggerModule(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Добавление модуля Swagger.
+            </summary>
+            <param name="services"></param>
+            <returns></returns>
         </member>
     </members>
 </doc>

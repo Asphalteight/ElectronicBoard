@@ -40,6 +40,8 @@ public class AccountController : ControllerBase
     /// <response code="200">Запрос выполнен успешно</response>
     /// <returns>Список моделей аккаунтов.</returns>
     [HttpGet]
+    [Authorize]
+    [Authorize(Policy = "AdminPolicy")]
     [ProducesResponseType(typeof(IEnumerable<InfoAccountDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {
@@ -147,6 +149,7 @@ public class AccountController : ControllerBase
     /// <response code="422">Произошёл конфликт бизнес-логики.</response>
     /// <returns>Модель обновленного аккаунта.</returns>
     [HttpPut("{id:int}")]
+    [Authorize]
     [ProducesResponseType(typeof(InfoAccountDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status403Forbidden)]
@@ -173,6 +176,8 @@ public class AccountController : ControllerBase
     /// <response code="204">Запрос выполнен успешно.</response>
     /// <response code="403">Доступ запрещён.</response>
     [HttpDelete("{id:int}")]
+    [Authorize]
+    [Authorize(Policy = "AdminPolicy")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status403Forbidden)]
     public async Task<IActionResult> DeleteById(int id, CancellationToken cancellationToken)

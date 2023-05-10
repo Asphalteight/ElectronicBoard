@@ -107,6 +107,7 @@ public class CommentController : ControllerBase
     /// <response code="422">Произошёл конфликт бизнес-логики.</response>
     /// <returns>Модель обновленного комментария.</returns>
     [HttpPut("{id:int}")]
+    [Authorize]
     [ProducesResponseType(typeof(InfoCommentDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status403Forbidden)]
@@ -133,6 +134,8 @@ public class CommentController : ControllerBase
     /// <response code="204">Запрос выполнен успешно.</response>
     /// <response code="403">Доступ запрещён.</response>
     [HttpDelete("{id:int}")]
+    [Authorize]
+    [Authorize(Policy = "AdminPolicy")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status403Forbidden)]
     public async Task<IActionResult> DeleteById(int id, CancellationToken cancellationToken)

@@ -3,6 +3,7 @@ using System.Net;
 using Board.Application.AppData.Context.File.Services;
 using Board.Contracts.Contexts;
 using Board.Contracts.Files;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Board.Host.Api.Controllers;
 
@@ -123,6 +124,8 @@ public class FileController : ControllerBase
     /// <response code="403">Доступ запрещён.</response>
     /// <response code="404">Файл с указанным идентификатором не найден.</response>
     [HttpDelete("{id}")]
+    [Authorize]
+    [Authorize(Policy = "AdminPolicy")]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)

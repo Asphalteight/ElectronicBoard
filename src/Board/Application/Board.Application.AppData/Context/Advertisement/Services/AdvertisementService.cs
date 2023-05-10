@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Board.Application.AppData.Context.Account.Services;
 using Board.Application.AppData.Context.Advertisement.Repositories;
+using Board.Application.AppData.Context.ImageKit.Services;
 using Board.Contracts.Contexts.Advertisements;
+using Board.Contracts.ImageKits;
 using Board.Domain.Advertisement;
 
 namespace Board.Application.AppData.Context.Advertisement.Services;
@@ -11,12 +13,14 @@ public class AdvertisementService : IAdvertisementService
 {
     private readonly IAdvertisementRepository _advertisementRepository;
     private readonly IAccountService _accountService;
+    private readonly IImageKitService _imageKitService;
     private readonly IMapper _mapper;
 
-    public AdvertisementService(IAdvertisementRepository advertisementRepository, IAccountService accountService, IMapper mapper)
+    public AdvertisementService(IAdvertisementRepository advertisementRepository, IAccountService accountService, IImageKitService imageKitService, IMapper mapper)
     {
         _advertisementRepository = advertisementRepository;
         _accountService = accountService;
+        _imageKitService = imageKitService;
         _mapper = mapper;
     }
 
@@ -32,17 +36,27 @@ public class AdvertisementService : IAdvertisementService
         }
         entity.AccountId = currentUser.Id;
 
-        return await _advertisementRepository.CreateAsync(entity, cancellationToken);
+        var advertId = await _advertisementRepository.CreateAsync(entity, cancellationToken);
+        await _imageKitService.CreateImageKitAsync(new CreateImageKitDto()
+        {
+            AdvertisementId = advertId
+        }, cancellationToken);
+        
+        return advertId;
     }
 
     /// <inheritdoc/>
     public async Task<InfoAdvertisementDto?> UpdateAdvertisementAsync(int id, UpdateAdvertisementDto dto, CancellationToken cancellationToken)
     {
         var advertisement = await _advertisementRepository.GetByIdAsync(id, cancellationToken);
-        if (advertisement == null) return null;
-        var result = _mapper.Map(dto, advertisement);
+        if (advertisement == null)
+        {
+            return null;
+        }
+        
+        var updated = _mapper.Map(dto, advertisement);
 
-        return await _advertisementRepository.UpdateAsync(result, cancellationToken);
+        return await _advertisementRepository.UpdateAsync(updated, cancellationToken);
     }
 
     /// <inheritdoc/>

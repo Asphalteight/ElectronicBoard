@@ -2,6 +2,7 @@
 using Board.Application.AppData.Context.Category.Services;
 using Board.Contracts.Contexts;
 using Board.Contracts.Contexts.Categories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Board.Host.Api.Controllers;
@@ -106,10 +107,11 @@ public class CategoryController : ControllerBase
     /// <response code="422">Произошёл конфликт бизнес-логики.</response>
     /// <returns>Идентификатор созданной категории.</returns>
     [HttpPost("create")]
+    [Authorize(Policy = "Admin")]
     [ProducesResponseType(typeof(int), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status422UnprocessableEntity)]
-    public async Task<IActionResult> Create([FromQuery] CreateCategoryDto dto, CancellationToken cancellationToken)
+    public async Task<IActionResult> Create([FromBody] CreateCategoryDto dto, CancellationToken cancellationToken)
     {
         var result = await _categoryService.CreateCategoryAsync(dto, cancellationToken);
         _logger.LogInformation("Создана новая категория с идентификатором: {0}", result);
@@ -138,6 +140,11 @@ public class CategoryController : ControllerBase
     public async Task<IActionResult> Update(int id, [FromQuery] UpdateCategoryDto dto, CancellationToken cancellationToken)
     {
         var result = await _categoryService.UpdateCategoryAsync(id, dto, cancellationToken);
+        if (result == null)
+        {
+            _logger.LogError("Ошибка при обновлении категории");
+            return BadRequest();
+        }
         _logger.LogInformation("Обновлена категория с идентификатором: {0}", id);
         
         return await Task.Run(() => Ok(result), cancellationToken);

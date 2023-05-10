@@ -37,7 +37,7 @@ public interface IAccountService
     /// <param name="dto">Модель изменения.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Информация об измененном аккаунте.</returns>
-    Task<InfoAccountDto> UpdateAccountAsync(int id, UpdateAccountDto dto, CancellationToken cancellationToken);
+    Task<InfoAccountDto?> UpdateAccountAsync(int id, UpdateAccountDto dto, CancellationToken cancellationToken);
 
     /// <summary>
     /// Удаление аккаунта.

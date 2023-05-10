@@ -21,23 +21,29 @@ public class CommentService : ICommentService
     public async Task<int> CreateCommentAsync(CreateCommentDto model, CancellationToken cancellationToken)
     {
         var entity = _mapper.Map<CreateCommentDto, Comments>(model);
+        
         return await _commentRepository.CreateAsync(entity, cancellationToken);
     }
 
     /// <inheritdoc/>
-    public async Task<InfoCommentDto> UpdateCommentAsync(int id, UpdateCommentDto dto, CancellationToken cancellationToken)
+    public async Task<InfoCommentDto?> UpdateCommentAsync(int id, UpdateCommentDto dto, CancellationToken cancellationToken)
     {
         var comment = await _commentRepository.GetByIdAsync(id, cancellationToken);
+        if (comment == null)
+        {
+            return null;
+        }
+        
+        var updated = _mapper.Map(dto, comment);
 
-        if (dto.Text != null) comment!.Text = dto.Text;
-
-        return await _commentRepository.UpdateAsync(comment!, cancellationToken);
+        return await _commentRepository.UpdateAsync(updated, cancellationToken);
     }
 
     /// <inheritdoc/>
     public async Task<bool> DeleteCommentAsync(int id, CancellationToken cancellationToken)
     {
         var result = _commentRepository.DeleteAsync(id, cancellationToken);
+        
         return await result;
     }
 
@@ -45,6 +51,7 @@ public class CommentService : ICommentService
     public async Task<InfoCommentDto?> GetCommentByIdAsync(int id, CancellationToken cancellationToken)
     {
         var entity = await _commentRepository.GetByIdAsync(id, cancellationToken);
+        
         return _mapper.Map<Comments?, InfoCommentDto>(entity);
     }
 
@@ -52,6 +59,7 @@ public class CommentService : ICommentService
     public async Task<IEnumerable<InfoCommentDto>> GetAllComments(CancellationToken cancellationToken)
     {
         var entities = _commentRepository.GetAllAsync(cancellationToken);
+        
         return await entities;
     }
 }

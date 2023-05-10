@@ -3,6 +3,7 @@ using System;
 using Board.Host.Migrator;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Board.Host.Migrator.Migrations
 {
     [DbContext(typeof(DbContextMigration))]
-    partial class DbContextMigrationModelSnapshot : ModelSnapshot
+    [Migration("20230510123704_Add_account_pictureId")]
+    partial class Add_account_pictureId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,7 +60,7 @@ namespace Board.Host.Migrator.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Accounts", (string)null);
+                    b.ToTable("Accounts");
                 });
 
             modelBuilder.Entity("Board.Domain.Advertisement.Advertisements", b =>
@@ -103,7 +106,7 @@ namespace Board.Host.Migrator.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Advertisements", (string)null);
+                    b.ToTable("Advertisements");
                 });
 
             modelBuilder.Entity("Board.Domain.Category.Categories", b =>
@@ -126,7 +129,7 @@ namespace Board.Host.Migrator.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("Board.Domain.Comment.Comments", b =>
@@ -157,7 +160,7 @@ namespace Board.Host.Migrator.Migrations
 
                     b.HasIndex("AdvertisementId");
 
-                    b.ToTable("Comments", (string)null);
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("Board.Domain.File.Files", b =>
@@ -188,7 +191,7 @@ namespace Board.Host.Migrator.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Files", (string)null);
+                    b.ToTable("Files");
                 });
 
             modelBuilder.Entity("Board.Domain.ImageKit.ImageKits", b =>
@@ -207,7 +210,7 @@ namespace Board.Host.Migrator.Migrations
 
                     b.HasKey("AdvertisementId");
 
-                    b.ToTable("ImageKits", (string)null);
+                    b.ToTable("ImageKits");
                 });
 
             modelBuilder.Entity("Board.Domain.Message.Messages", b =>
@@ -239,7 +242,7 @@ namespace Board.Host.Migrator.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Messages", (string)null);
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("Board.Domain.Advertisement.Advertisements", b =>

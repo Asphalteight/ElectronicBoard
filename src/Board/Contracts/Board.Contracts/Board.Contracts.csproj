@@ -8,11 +8,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Middleware\Attributes" />
-      <Folder Include="Middleware\Interfaces" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\..\Domain\Board.Domain\Board.Domain.csproj" />
     </ItemGroup>
 

@@ -1,5 +1,4 @@
-﻿using System.Net;
-using Board.Application.AppData.Context.Account.Services;
+﻿using Board.Application.AppData.Context.Account.Services;
 using Board.Contracts.Contexts;
 using Board.Contracts.Contexts.Accounts;
 using Microsoft.AspNetCore.Authentication;
@@ -92,6 +91,11 @@ public class AccountController : ControllerBase
     public async Task<IActionResult> RegisterAccount([FromBody] CreateAccountDto dto, CancellationToken cancellationToken)
     {
         var result = await _accountService.RegisterAccountAsync(dto, cancellationToken);
+        if (result == 0)
+        {
+            _logger.LogError("Ошибка при создании аккаунта, Email: {0}", dto.Email);
+            return BadRequest();
+        }
         _logger.LogInformation("Зарегистрирован новый аккаунт с идентификатором: {0}", result);
         
         return await Task.Run(() => CreatedAtAction(nameof(Login), result), cancellationToken);
@@ -112,7 +116,7 @@ public class AccountController : ControllerBase
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Login([FromBody] LoginAccountDto dto, CancellationToken cancellation)
+    public async Task<IActionResult> Login([FromQuery] LoginAccountDto dto, CancellationToken cancellation)
     {
         var result = await _accountService.LoginAsync(dto, cancellation);
         _logger.LogInformation("Совершен вход аккаунт, Email: {0}", dto.Email);
@@ -151,6 +155,11 @@ public class AccountController : ControllerBase
     public async Task<IActionResult> Update(int id, [FromQuery] UpdateAccountDto dto, CancellationToken cancellationToken)
     {
         var result = await _accountService.UpdateAccountAsync(id, dto, cancellationToken);
+        if (result == null)
+        {
+            _logger.LogError("Ошибка при обновлении аккаунта, Id: {0}", id);
+            return BadRequest();
+        }
         _logger.LogInformation("Обновлен аккаунт с идентификатором: {0}", id);
         
         return await Task.Run(() => Ok(result), cancellationToken);

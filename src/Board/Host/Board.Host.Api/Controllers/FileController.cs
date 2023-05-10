@@ -1,5 +1,4 @@
-﻿using Board.Contracts.File;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using Board.Application.AppData.Context.File.Services;
 using Board.Contracts.Contexts;

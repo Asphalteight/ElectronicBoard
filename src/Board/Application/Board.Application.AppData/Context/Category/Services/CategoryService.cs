@@ -21,22 +21,29 @@ public class CategoryService : ICategoryService
     public async Task<int> CreateCategoryAsync(CreateCategoryDto model, CancellationToken cancellationToken)
     {
         var entity = _mapper.Map<CreateCategoryDto, Categories>(model);
+        
         return await _categoryRepository.CreateAsync(entity, cancellationToken);
     }
     
     /// <inheritdoc/>
-    public async Task<InfoCategoryDto> UpdateCategoryAsync(int id, UpdateCategoryDto dto,
-        CancellationToken cancellationToken)
+    public async Task<InfoCategoryDto?> UpdateCategoryAsync(int id, UpdateCategoryDto dto, CancellationToken cancellationToken)
     {
-        var entity = _mapper.Map<UpdateCategoryDto, Categories>(dto);
-        entity.Id = id;
-        return await _categoryRepository.UpdateAsync(entity, cancellationToken);
+        var category = await _categoryRepository.GetByIdAsync(id, cancellationToken);
+        if (category == null)
+        {
+            return null;
+        }
+        
+        var updated = _mapper.Map(dto, category);
+
+        return await _categoryRepository.UpdateAsync(updated, cancellationToken);
     }
 
     /// <inheritdoc/>
     public async Task<bool> DeleteCategoryAsync(int id, CancellationToken cancellationToken)
     {
         var result = _categoryRepository.DeleteAsync(id, cancellationToken);
+        
         return await result;
     }
 
@@ -44,12 +51,14 @@ public class CategoryService : ICategoryService
     public async Task<InfoCategoryDto?> GetCategoryByIdAsync(int id, CancellationToken cancellationToken)
     {
         var entity = await _categoryRepository.GetByIdAsync(id, cancellationToken);
+        
         return _mapper.Map<Categories?, InfoCategoryDto>(entity);
     }
 
     public async Task<IEnumerable<InfoCategoryDto>?> GetChildByIdAsync(int id, CancellationToken cancellationToken)
     {
         var entities = _categoryRepository.GetChildByIdAsync(id, cancellationToken);
+        
         return await entities;
     }
 
@@ -57,6 +66,7 @@ public class CategoryService : ICategoryService
     public async Task<IEnumerable<InfoCategoryDto>> GetAllCategories(CancellationToken cancellationToken)
     {
         var entities = _categoryRepository.GetAllAsync(cancellationToken);
+        
         return await entities;
     }
 }

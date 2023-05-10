@@ -139,11 +139,11 @@ builder.Services.AddSwaggerGen(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+//}
 
 app.UseHttpsRedirection();
 
@@ -172,3 +172,8 @@ static MapperConfiguration GetMapperConfiguration()
     configuration.AssertConfigurationIsValid();
     return configuration;
 }
+
+/// <summary>
+/// Класс программы
+/// </summary>
+public partial class Program {}

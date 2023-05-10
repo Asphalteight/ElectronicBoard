@@ -29,26 +29,18 @@ public class AccountService : IAccountService
 
      /// <inheritdoc />
     public async Task<int> RegisterAccountAsync(CreateAccountDto accountDto, CancellationToken cancellation)
-    {
-        var account = new Accounts
-        {
-            
-            Name = accountDto.Name,
-            Email = accountDto.Email,
-            Phone = accountDto.Phone,
-            Password = accountDto.Password,
-        };
+     {
+         var account = _mapper.Map<CreateAccountDto, Accounts>(accountDto);
+         var existingAccount = await _accountRepository.FindWhere(acc => acc.Email == accountDto.Email, cancellation);
+         if (existingAccount != null)
+         {
+             return 0;
+         }
+         
+         await _accountRepository.CreateAsync(account, cancellation);
 
-        var existingAccount = await _accountRepository.FindWhere(acc => acc.Email == accountDto.Email, cancellation);
-        if (existingAccount != null)
-        {
-            throw new Exception($"Пользователь с Email '{accountDto.Email}' уже зарегистрирован!");
-        }
-        
-        await _accountRepository.CreateAsync(account, cancellation);
-
-        return account.Id;
-    }
+         return account.Id;
+     }
 
     /// <inheritdoc />
     public async Task<string> LoginAsync(LoginAccountDto accountDto, CancellationToken cancellation)
@@ -78,7 +70,7 @@ public class AccountService : IAccountService
             expires: DateTime.UtcNow.AddDays(1),
             notBefore: DateTime.UtcNow,
             signingCredentials: new SigningCredentials(
-                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)),
+                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key!)),
                 SecurityAlgorithms.HmacSha256
                 )
             );
@@ -117,22 +109,24 @@ public class AccountService : IAccountService
     }
 
     /// <inheritdoc/>
-    public async Task<InfoAccountDto> UpdateAccountAsync(int id, UpdateAccountDto dto, CancellationToken cancellationToken)
+    public async Task<InfoAccountDto?> UpdateAccountAsync(int id, UpdateAccountDto dto, CancellationToken cancellationToken)
     {
         var account = await _accountRepository.GetByIdAsync(id, cancellationToken);
-
-        if (dto.Name != null) account!.Name = dto.Name; 
-        if (dto.Email != null) account!.Email = dto.Email; 
-        if (dto.Phone != null) account!.Phone = dto.Phone; 
-        if (dto.Password != null) account!.Password = dto.Password; 
-
-        return await _accountRepository.UpdateAsync(account!, cancellationToken);
+        if (account == null)
+        {
+            return null;
+        }
+        
+        var updated = _mapper.Map(dto, account);
+        
+        return await _accountRepository.UpdateAsync(updated, cancellationToken);
     }
 
     /// <inheritdoc/>
     public async Task<bool> DeleteAccountAsync(int id, CancellationToken cancellationToken)
     {
         var result = _accountRepository.DeleteAsync(id, cancellationToken);
+        
         return await result;
     }
 
@@ -140,6 +134,7 @@ public class AccountService : IAccountService
     public async Task<InfoAccountDto?> GetAccountByIdAsync(int id, CancellationToken cancellationToken)
     {
         var entity = await _accountRepository.GetByIdAsync(id, cancellationToken);
+        
         return _mapper.Map<Accounts?, InfoAccountDto>(entity);
     }
 
@@ -147,6 +142,7 @@ public class AccountService : IAccountService
     public async Task<IEnumerable<InfoAccountDto>> GetAllAccounts(CancellationToken cancellationToken)
     {
         var entities = _accountRepository.GetAllAsync(cancellationToken);
+        
         return await entities;
     }
 }

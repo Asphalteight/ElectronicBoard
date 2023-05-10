@@ -18,7 +18,7 @@ public class Advertisements
     /// <summary>
     /// Заголовок.
     /// </summary>
-    public string Title { get; set; } = null!;
+    public string Title { get; set; }
     
     /// <summary>
     /// Описание.
@@ -33,7 +33,7 @@ public class Advertisements
     /// <summary>
     /// Адрес.
     /// </summary>
-    public string Address { get; set; } = null!;
+    public string Address { get; set; }
     
     /// <summary>
     /// Дата и время создания (UTC).
@@ -43,7 +43,7 @@ public class Advertisements
     /// <summary>
     /// Активно ли объявление.
     /// </summary>
-    public bool IsActive { get; set; } = true;
+    public bool IsActive { get; set; }
     
     /// <summary>
     /// Идентификатор категории.
@@ -53,7 +53,7 @@ public class Advertisements
     /// <summary>
     /// Категория.
     /// </summary>
-    public virtual Categories Category { get; set; } = null!;
+    public virtual Categories Category { get; set; }
     
     /// <summary>
     /// Набор изображений.
@@ -68,7 +68,7 @@ public class Advertisements
     /// <summary>
     /// Пользователь.
     /// </summary>
-    public virtual Accounts Account { get; set; } = null!;
+    public virtual Accounts Account { get; set; }
     
     /// <summary>
     /// Список комментариев.

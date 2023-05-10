@@ -1,7 +1,4 @@
-﻿using Board.Contracts.Contexts.Advertisements;
-using Board.Contracts.File;
-using Board.Contracts.Files;
-using Board.Domain.Advertisement;
+﻿using Board.Contracts.Files;
 using Board.Domain.File;
 
 namespace Board.Application.AppData.Context.File.Repositories;

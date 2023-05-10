@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Board.Application.AppData.Context.File.Repositories;
-using Board.Contracts.File;
 using Board.Contracts.Files;
 using Board.Domain.File;
 using Board.Infrastructure.Repository;
@@ -56,6 +55,7 @@ namespace Board.Infrastructure.DataAccess.File.Repository
         public async Task<Guid> UploadAsync(Files model, CancellationToken cancellationToken)
         {
             await _repository.AddAsync(model, cancellationToken);
+            
             return model.Id;
         }
     }

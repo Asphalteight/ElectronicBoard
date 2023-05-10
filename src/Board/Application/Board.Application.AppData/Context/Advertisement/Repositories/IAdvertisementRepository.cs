@@ -1,7 +1,5 @@
 ﻿using Board.Contracts.Contexts.Advertisements;
-using Board.Contracts.ImageKits;
 using Board.Domain.Advertisement;
-using Board.Domain.ImageKit;
 
 namespace Board.Application.AppData.Context.Advertisement.Repositories;
 

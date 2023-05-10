@@ -13,17 +13,17 @@ public class Files
     /// <summary>
     /// Имя.
     /// </summary>
-    public string Name { get; set; } = null!;
+    public string Name { get; set; }
 
     /// <summary>
     /// Содержимое.
     /// </summary>
-    public byte[] Content { get; set; } = null!;
+    public byte[] Content { get; set; }
 
     /// <summary>
     /// Тип контента.
     /// </summary>
-    public string ContentType { get; set; } = null!;
+    public string ContentType { get; set; }
 
     /// <summary>
     /// Размер файла.

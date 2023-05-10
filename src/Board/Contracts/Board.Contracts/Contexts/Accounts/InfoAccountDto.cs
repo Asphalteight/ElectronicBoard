@@ -1,6 +1,4 @@
-﻿using System.Security.Claims;
-
-namespace Board.Contracts.Contexts.Accounts;
+﻿namespace Board.Contracts.Contexts.Accounts;
 
 /// <summary>
 /// Информация об аккаунте.
@@ -31,4 +29,9 @@ public class InfoAccountDto
     /// Пароль.
     /// </summary>
     public string Password { get; set; }
+    
+    /// <summary>
+    /// Идентификатор картинки для аватара.
+    /// </summary>
+    public Guid? PictureId { get; set; }
 }

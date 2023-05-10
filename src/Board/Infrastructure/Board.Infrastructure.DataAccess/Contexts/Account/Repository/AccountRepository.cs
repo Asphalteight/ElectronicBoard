@@ -25,6 +25,7 @@ public class AccountRepository : IAccountRepository
     public async Task<int> CreateAsync(Accounts model, CancellationToken cancellationToken)
     {
         await _repository.AddAsync(model, cancellationToken);
+        
         return model.Id;
     }
     
@@ -32,6 +33,7 @@ public class AccountRepository : IAccountRepository
     public async Task<InfoAccountDto> UpdateAsync(Accounts model, CancellationToken cancellationToken)
     {
         await _repository.UpdateAsync(model, cancellationToken);
+        
         return _mapper.Map<Accounts, InfoAccountDto>(model);
     }
     
@@ -39,8 +41,13 @@ public class AccountRepository : IAccountRepository
     public async Task<bool> DeleteAsync(int id, CancellationToken cancellationToken)
     {
         var model = _repository.GetAllFiltered(s => s.Id == id).FirstOrDefault();
-        if (model == null) return false;
+        if (model == null)
+        {
+            return false;
+        }
+        
         await _repository.DeleteAsync(model, cancellationToken);
+        
         return true;
     }
     
@@ -53,11 +60,11 @@ public class AccountRepository : IAccountRepository
     }
 
     /// <inheritdoc/>
-    public async Task<Accounts> FindWhere(Expression<Func<Accounts, bool>> predicate, CancellationToken cancellation)
+    public async Task<Accounts?> FindWhere(Expression<Func<Accounts, bool>> predicate, CancellationToken cancellation)
     {
         var data = _repository.GetAllFiltered(predicate);
 
-        Accounts account = await data.Where(predicate).FirstOrDefaultAsync(cancellation);
+        var account = await data.Where(predicate).FirstOrDefaultAsync(cancellation);
 
         return account;
     }
@@ -65,6 +72,6 @@ public class AccountRepository : IAccountRepository
     /// <inheritdoc/>
     public async Task<IEnumerable<InfoAccountDto>> GetAllAsync(CancellationToken cancellationToken)
     {
-        return await _repository.GetAll().ProjectTo<InfoAccountDto>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken: cancellationToken);
+        return await _repository.GetAll().ProjectTo<InfoAccountDto>(_mapper.ConfigurationProvider).OrderBy(o => o.Id).ToListAsync(cancellationToken: cancellationToken);
     }
 }

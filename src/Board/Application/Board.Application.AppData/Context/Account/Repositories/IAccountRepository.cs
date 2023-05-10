@@ -47,7 +47,7 @@ public interface IAccountRepository
     /// <param name="predicate"></param>
     /// <param name="cancellation"></param>
     /// <returns></returns>
-    Task<Accounts> FindWhere(Expression<Func<Accounts, bool>> predicate, CancellationToken cancellation);
+    Task<Accounts?> FindWhere(Expression<Func<Accounts, bool>> predicate, CancellationToken cancellation);
     
     /// <summary>
     /// Получение всех аккаунтов.

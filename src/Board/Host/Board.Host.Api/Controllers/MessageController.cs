@@ -2,6 +2,7 @@
 using Board.Application.AppData.Context.Message.Services;
 using Board.Contracts.Contexts;
 using Board.Contracts.Contexts.Messages;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Board.Host.Api.Controllers;
@@ -81,10 +82,11 @@ public class MessageController : ControllerBase
     /// <response code="422">Произошёл конфликт бизнес-логики.</response>
     /// <returns>Идентификатор созданного сообщения.</returns>
     [HttpPost("create")]
+    [Authorize]
     [ProducesResponseType(typeof(int), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status422UnprocessableEntity)]
-    public async Task<IActionResult> Create([FromQuery] CreateMessageDto dto, CancellationToken cancellationToken)
+    public async Task<IActionResult> Create([FromBody] CreateMessageDto dto, CancellationToken cancellationToken)
     {
         var result = await _messageService.CreateMessageAsync(dto, cancellationToken);
         _logger.LogInformation("Создано новое сообщение с идентификатором: {0}", result);
@@ -113,6 +115,11 @@ public class MessageController : ControllerBase
     public async Task<IActionResult> Update(int id, [FromQuery] UpdateMessageDto dto, CancellationToken cancellationToken)
     {
         var result = await _messageService.UpdateMessageAsync(id, dto, cancellationToken);
+        if (result == null)
+        {
+            _logger.LogError("Ошибка при обновлении сообщения");
+            return BadRequest();
+        }
         _logger.LogInformation("Обновлено сообщение с идентификатором: {0}", id);
         
         return await Task.Run(() => Ok(result), cancellationToken);

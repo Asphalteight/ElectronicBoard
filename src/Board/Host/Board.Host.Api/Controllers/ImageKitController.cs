@@ -86,7 +86,7 @@ public class ImageKitController : ControllerBase
     [ProducesResponseType(typeof(int), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status422UnprocessableEntity)]
-    public async Task<IActionResult> Create([FromQuery] CreateImageKitDto dto, CancellationToken cancellationToken)
+    public async Task<IActionResult> Create([FromBody] CreateImageKitDto dto, CancellationToken cancellationToken)
     {
         var result = await _imageKitService.CreateImageKitAsync(dto, cancellationToken);
         _logger.LogInformation("Создан новый набор изоображений с идентификатором объявления: {0}", result);
@@ -115,6 +115,11 @@ public class ImageKitController : ControllerBase
     public async Task<IActionResult> Update(int id, [FromQuery] UpdateImageKitDto dto, CancellationToken cancellationToken)
     {
         var result = await _imageKitService.UpdateImageKitAsync(id, dto, cancellationToken);
+        if (result == null)
+        {
+            _logger.LogError("Ошибка при обновлении набора изображений");
+            return BadRequest();
+        }
         _logger.LogInformation("Обновлен набор изображений с идентификатором объявления: {0}", id);
         
         return await Task.Run(() => Ok(result), cancellationToken);

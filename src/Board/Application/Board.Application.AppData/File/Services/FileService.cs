@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Board.Application.AppData.Context.File.Repositories;
-using Board.Contracts.File;
 using Board.Contracts.Files;
 using Board.Domain.File;
 
@@ -43,6 +42,7 @@ public class FileService : IFileService
     public Task<Guid> UploadAsync(FileDto model, CancellationToken cancellationToken)
     {
         var file = _mapper.Map<FileDto, Files>(model);
+        
         return _fileRepository.UploadAsync(file, cancellationToken);
     }
 }

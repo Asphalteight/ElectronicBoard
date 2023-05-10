@@ -23,7 +23,7 @@ public class Messages
     /// <summary>
     /// Текст.
     /// </summary>
-    public string Text { get; set; } = null!;
+    public string Text { get; set; }
     
     /// <summary>
     /// Дата и время отправки.

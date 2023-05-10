@@ -22,7 +22,7 @@ public interface ICategoryService
     /// <param name="dto">Модель изменения.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Информация об измененной категории.</returns>
-    Task<InfoCategoryDto> UpdateCategoryAsync(int id, UpdateCategoryDto dto, CancellationToken cancellationToken);
+    Task<InfoCategoryDto?> UpdateCategoryAsync(int id, UpdateCategoryDto dto, CancellationToken cancellationToken);
 
     /// <summary>
     /// Удаление категории.

@@ -1,6 +1,4 @@
-﻿using Board.Contracts.Contexts.Advertisements;
-using Board.Contracts.File;
-using Board.Contracts.Files;
+﻿using Board.Contracts.Files;
 
 namespace Board.Application.AppData.Context.File.Services;
 

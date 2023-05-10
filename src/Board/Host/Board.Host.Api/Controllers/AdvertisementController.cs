@@ -83,7 +83,7 @@ public class AdvertisementController : ControllerBase
     [HttpGet("search")]
     [ProducesResponseType(typeof(InfoAdvertisementDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetById([FromQuery]SearchAdvertisementDto search, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetById([FromQuery] SearchAdvertisementDto search, CancellationToken cancellationToken)
     {
         var result = await _advertisementService.FindAdvertisementAsync(search, cancellationToken);
         _logger.LogInformation("Поиск объявлений с запросом: {0}", search);
@@ -105,7 +105,7 @@ public class AdvertisementController : ControllerBase
     [ProducesResponseType(typeof(int), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status422UnprocessableEntity)]
-    public async Task<IActionResult> Create([FromQuery] CreateAdvertisementDto dto, CancellationToken cancellationToken)
+    public async Task<IActionResult> Create([FromBody] CreateAdvertisementDto dto, CancellationToken cancellationToken)
     {
         var result = await _advertisementService.CreateAdvertisementAsync(dto, cancellationToken);
         _logger.LogInformation("Создано новое объявление с идентификатором: {0}", result);
@@ -140,6 +140,11 @@ public class AdvertisementController : ControllerBase
     public async Task<IActionResult> Update(int id, [FromQuery] UpdateAdvertisementDto dto, CancellationToken cancellationToken)
     {
         var result = await _advertisementService.UpdateAdvertisementAsync(id, dto, cancellationToken);
+        if (result == null)
+        {
+            _logger.LogError("Ошибка при обновлении объявления");
+            return BadRequest();
+        }
         _logger.LogInformation("Обновлено объявление с идентификатором: {0}", id);
         
         return await Task.Run(() => Ok(result), cancellationToken);

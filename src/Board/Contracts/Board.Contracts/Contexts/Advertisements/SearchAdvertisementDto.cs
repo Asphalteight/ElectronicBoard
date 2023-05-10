@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace Board.Contracts.Contexts.Advertisements;
+﻿namespace Board.Contracts.Contexts.Advertisements;
 
 /// <summary>
 /// Модель поиска объявления.
@@ -10,7 +8,7 @@ public class SearchAdvertisementDto
     /// <summary>
     /// Текст поиска.
     /// </summary>
-    public string Text { get; set; } = null!;
+    public string? Text { get; set; }
 
     /// <summary>
     /// Цена.
@@ -26,4 +24,7 @@ public class SearchAdvertisementDto
     /// Идентификатор категории.
     /// </summary>
     public int CategoryId { get; set; }
+    
+    public int Take { get; set; }
+    public int Skip { get; set; }
 }

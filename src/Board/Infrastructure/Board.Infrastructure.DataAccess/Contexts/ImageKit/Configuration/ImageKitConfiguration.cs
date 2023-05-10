@@ -1,12 +1,11 @@
-﻿using Board.Domain.Advertisement;
-using Board.Domain.ImageKit;
+﻿using Board.Domain.ImageKit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Board.Infrastructure.DataAccess.Contexts.ImageKit.Configuration;
 
 /// <summary>
-/// Конфигурация сущности объявления.
+/// Конфигурация сущности набора изображений.
 /// </summary>
 public class ImageKitConfiguration : IEntityTypeConfiguration<ImageKits>
 {

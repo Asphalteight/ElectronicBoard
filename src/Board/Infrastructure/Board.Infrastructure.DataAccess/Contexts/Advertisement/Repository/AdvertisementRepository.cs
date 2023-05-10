@@ -24,6 +24,7 @@ public class AdvertisementRepository : IAdvertisementRepository
     public async Task<int> CreateAsync(Advertisements model, CancellationToken cancellationToken)
     {
         await _repository.AddAsync(model, cancellationToken);
+        
         return model.Id;
     }
     
@@ -31,6 +32,7 @@ public class AdvertisementRepository : IAdvertisementRepository
     public async Task<InfoAdvertisementDto> UpdateAsync(Advertisements model, CancellationToken cancellationToken)
     {
         await _repository.UpdateAsync(model, cancellationToken);
+        
         return _mapper.Map<Advertisements, InfoAdvertisementDto>(model);
     }
     
@@ -38,8 +40,13 @@ public class AdvertisementRepository : IAdvertisementRepository
     public async Task<bool> DeleteAsync(int id, CancellationToken cancellationToken)
     {
         var model = _repository.GetAllFiltered(s => s.Id == id).FirstOrDefault();
-        if (model == null) return false;
+        if (model == null)
+        {
+            return false;
+        }
+        
         await _repository.DeleteAsync(model, cancellationToken);
+        
         return true;
     }
     
@@ -48,6 +55,7 @@ public class AdvertisementRepository : IAdvertisementRepository
     {
         var result = await _repository.GetAll().Where(s => s.Id == id)
             .FirstOrDefaultAsync(cancellationToken);
+        
         return result;
     }
 
@@ -55,6 +63,10 @@ public class AdvertisementRepository : IAdvertisementRepository
     {
         var allAdvertisements = _repository.GetAll().ProjectTo<InfoAdvertisementDto>(_mapper.ConfigurationProvider);
 
+        if (string.IsNullOrEmpty(dto.Text))
+        {
+            return await allAdvertisements.Skip(dto.Skip).Take(dto.Take).ToListAsync(cancellationToken);
+        }
         var bestMatch = allAdvertisements.Where(s => s.Title.Contains(dto.Text));
             
         var filteredDescription = allAdvertisements.Where(s => s.Description.Contains(dto.Text));
@@ -69,6 +81,6 @@ public class AdvertisementRepository : IAdvertisementRepository
     /// <inheritdoc/>
     public async Task<IEnumerable<InfoAdvertisementDto>> GetAllAsync(CancellationToken cancellationToken)
     {
-        return await _repository.GetAll().ProjectTo<InfoAdvertisementDto>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken: cancellationToken);
+        return await _repository.GetAll().ProjectTo<InfoAdvertisementDto>(_mapper.ConfigurationProvider).OrderBy(o => o.Id).ToListAsync(cancellationToken: cancellationToken);
     }
 }

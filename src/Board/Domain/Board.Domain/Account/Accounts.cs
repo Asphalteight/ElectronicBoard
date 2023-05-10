@@ -15,12 +15,12 @@ public class Accounts
     /// <summary>
     /// Имя.
     /// </summary>
-    public string Name { get; set; } = null!;
+    public string Name { get; set; }
     
     /// <summary>
     /// Электронная почта.
     /// </summary>
-    public string Email { get; set; } = null!;
+    public string Email { get; set; }
     
     /// <summary>
     /// Номер телефона.
@@ -30,12 +30,17 @@ public class Accounts
     /// <summary>
     /// Пароль.
     /// </summary>
-    public string Password { get; set; } = null!;
+    public string Password { get; set; }
     
     /// <summary>
     /// Дата/время регистрации.
     /// </summary>
     public DateTime CreatedAt { get; set; }
+    
+    /// <summary>
+    /// Идентификатор картинки для аватара.
+    /// </summary>
+    public Guid? PictureId { get; set; }
     
     /// <summary>
     /// Список объявлений.

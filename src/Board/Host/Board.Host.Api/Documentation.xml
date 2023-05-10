@@ -483,5 +483,10 @@
             <response code="204">Запрос выполнен успешно.</response>
             <response code="403">Доступ запрещён.</response>
         </member>
+        <member name="T:Program">
+            <summary>
+            Класс программы
+            </summary>
+        </member>
     </members>
 </doc>

@@ -40,21 +40,24 @@ namespace Board.Host.Migrator.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("character varying(25)");
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasMaxLength(127)
-                        .HasColumnType("character varying(127)");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("Phone")
                         .HasMaxLength(15)
                         .HasColumnType("character varying(15)");
 
+                    b.Property<Guid?>("PictureId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Accounts");
+                    b.ToTable("Accounts", (string)null);
                 });
 
             modelBuilder.Entity("Board.Domain.Advertisement.Advertisements", b =>
@@ -91,8 +94,8 @@ namespace Board.Host.Migrator.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("character varying(25)");
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
 
                     b.HasKey("Id");
 
@@ -100,7 +103,7 @@ namespace Board.Host.Migrator.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Advertisements");
+                    b.ToTable("Advertisements", (string)null);
                 });
 
             modelBuilder.Entity("Board.Domain.Category.Categories", b =>
@@ -123,7 +126,7 @@ namespace Board.Host.Migrator.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("Board.Domain.Comment.Comments", b =>
@@ -145,8 +148,8 @@ namespace Board.Host.Migrator.Migrations
 
                     b.Property<string>("Text")
                         .IsRequired()
-                        .HasMaxLength(10000)
-                        .HasColumnType("character varying(10000)");
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
 
                     b.HasKey("Id");
 
@@ -154,7 +157,7 @@ namespace Board.Host.Migrator.Migrations
 
                     b.HasIndex("AdvertisementId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("Board.Domain.File.Files", b =>
@@ -185,7 +188,7 @@ namespace Board.Host.Migrator.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Files");
+                    b.ToTable("Files", (string)null);
                 });
 
             modelBuilder.Entity("Board.Domain.ImageKit.ImageKits", b =>
@@ -204,7 +207,7 @@ namespace Board.Host.Migrator.Migrations
 
                     b.HasKey("AdvertisementId");
 
-                    b.ToTable("ImageKits");
+                    b.ToTable("ImageKits", (string)null);
                 });
 
             modelBuilder.Entity("Board.Domain.Message.Messages", b =>
@@ -216,7 +219,9 @@ namespace Board.Host.Migrator.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("IsRead")
-                        .HasColumnType("boolean");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
                     b.Property<int>("Receiver")
                         .HasColumnType("integer");
@@ -229,12 +234,12 @@ namespace Board.Host.Migrator.Migrations
 
                     b.Property<string>("Text")
                         .IsRequired()
-                        .HasMaxLength(10000)
-                        .HasColumnType("character varying(10000)");
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Messages");
+                    b.ToTable("Messages", (string)null);
                 });
 
             modelBuilder.Entity("Board.Domain.Advertisement.Advertisements", b =>

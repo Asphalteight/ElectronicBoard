@@ -41,8 +41,9 @@ public class AdvertisementController : ControllerBase
     [ProducesResponseType(typeof(IEnumerable<InfoAdvertisementDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Запрос объявлений");
+        _logger.LogInformation("Запрошены все объявления");
         var result = await _advertisementService.GetAllAdvertisements(cancellationToken);
+        
         return await Task.Run(() => Ok(result), cancellationToken);
     }
 
@@ -60,8 +61,34 @@ public class AdvertisementController : ControllerBase
     public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
     {
         var result = await _advertisementService.GetAdvertisementByIdAsync(id, cancellationToken);
-        if (result == null) return NotFound(result);
+        _logger.LogInformation("Запрошено объявление с идентификатором: {0}", id);
+
+        if (result == null)
+        {
+            _logger.LogError("Объявление с запрашиваемым идентификатором \"{0}\" не найдено", id);
+            return NotFound();
+        }
+        
         return Ok(result);
+    }
+    
+    /// <summary>
+    /// Поиск объявления по фильтру.
+    /// </summary>
+    /// <param name="search">Идентификатор.</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
+    /// <response code="200">Запрос выполнен успешно.</response>
+    /// <response code="404">Объявление с указанным идентификатором не найдено.</response>
+    /// <returns>Модель объявления.</returns>
+    [HttpGet("search")]
+    [ProducesResponseType(typeof(InfoAdvertisementDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetById([FromQuery] SearchAdvertisementDto search, CancellationToken cancellationToken)
+    {
+        var result = await _advertisementService.FindAdvertisementAsync(search, cancellationToken);
+        _logger.LogInformation("Поиск объявлений с запросом: {0}", search);
+
+        return await Task.Run(() => Ok(result), cancellationToken);
     }
 
     /// <summary>
@@ -73,14 +100,22 @@ public class AdvertisementController : ControllerBase
     /// <response code="400">Модель данных запроса невалидна.</response>
     /// <response code="422">Произошёл конфликт бизнес-логики.</response>
     /// <returns>Идентификатор созданного объявления.</returns>
-    [HttpPost]
+    [HttpPost("create")]
     [Authorize]
     [ProducesResponseType(typeof(int), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status422UnprocessableEntity)]
-    public async Task<IActionResult> Create([FromQuery] CreateAdvertisementDto dto, CancellationToken cancellationToken)
+    public async Task<IActionResult> Create([FromBody] CreateAdvertisementDto dto, CancellationToken cancellationToken)
     {
         var result = await _advertisementService.CreateAdvertisementAsync(dto, cancellationToken);
+        _logger.LogInformation("Создано новое объявление с идентификатором: {0}", result);
+
+        if (result == 0)
+        {
+            _logger.LogError("Ошибка при создании объявления");
+            return BadRequest();
+        }
+        
         return StatusCode((int)HttpStatusCode.Created, result);
     }
 
@@ -97,6 +132,7 @@ public class AdvertisementController : ControllerBase
     /// <response code="422">Произошёл конфликт бизнес-логики.</response>
     /// <returns>Модель обновленного объявления.</returns>
     [HttpPut("{id:int}")]
+    [Authorize]
     [ProducesResponseType(typeof(InfoAdvertisementDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status403Forbidden)]
@@ -105,6 +141,13 @@ public class AdvertisementController : ControllerBase
     public async Task<IActionResult> Update(int id, [FromQuery] UpdateAdvertisementDto dto, CancellationToken cancellationToken)
     {
         var result = await _advertisementService.UpdateAdvertisementAsync(id, dto, cancellationToken);
+        if (result == null)
+        {
+            _logger.LogError("Ошибка при обновлении объявления");
+            return BadRequest();
+        }
+        _logger.LogInformation("Обновлено объявление с идентификатором: {0}", id);
+        
         return await Task.Run(() => Ok(result), cancellationToken);
     }
 
@@ -116,11 +159,15 @@ public class AdvertisementController : ControllerBase
     /// <response code="204">Запрос выполнен успешно.</response>
     /// <response code="403">Доступ запрещён.</response>
     [HttpDelete("{id:int}")]
+    [Authorize]
+    [Authorize(Policy = "AdminPolicy")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status403Forbidden)]
     public async Task<IActionResult> DeleteById(int id, CancellationToken cancellationToken)
     {
         var result = await _advertisementService.DeleteAdvertisementAsync(id, cancellationToken);
+        _logger.LogInformation("Удалено объявление с идентификатором: {0}, с результатом {1}", id, result);
+        
         return await Task.Run( () => Ok(result), cancellationToken);
     }
 }

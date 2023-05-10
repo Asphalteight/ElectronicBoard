@@ -26,6 +26,11 @@ public class InfoAdvertisementDto
     public decimal Price { get; set; }
     
     /// <summary>
+    /// Адрес.
+    /// </summary>
+    public string Address { get; set; } = null!;
+    
+    /// <summary>
     /// Дата и время создания (UTC).
     /// </summary>
     public DateTime CreatedAt { get; set; }

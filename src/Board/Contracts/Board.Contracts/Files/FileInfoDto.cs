@@ -1,4 +1,4 @@
-﻿namespace Board.Contracts.File
+﻿namespace Board.Contracts.Files
 {
     /// <summary>
     /// Модель информации о файле.
@@ -13,7 +13,7 @@
         /// <summary>
         /// Наименование файла.
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
 
         /// <summary>
         /// Дата создания файла.

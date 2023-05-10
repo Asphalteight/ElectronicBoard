@@ -12,10 +12,8 @@ public class MessageConfiguration : IEntityTypeConfiguration<Messages>
     public void Configure(EntityTypeBuilder<Messages> builder)
     {
         builder.HasKey(k => k.Id);
-        builder.Property(p => p.Sender);
-        builder.Property(p => p.Receiver);
-        builder.Property(p => p.Text).HasMaxLength(10000);
+        builder.Property(p => p.Text).HasMaxLength(500);
         builder.Property(p => p.SentAt).HasConversion(to => to, from => DateTime.SpecifyKind(from, DateTimeKind.Utc));
-        builder.Property(p => p.IsRead);
+        builder.Property(p => p.IsRead).HasDefaultValue(false);
     }
 }

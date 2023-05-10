@@ -1,15 +1,11 @@
-﻿using Board.Contracts.Contexts.Advertisements;
-using Board.Contracts.File;
-using Board.Contracts.Files;
-using Board.Domain.Advertisement;
-using Board.Domain.File;
+﻿using Board.Contracts.Files;
 
-namespace Board.Application.AppData.Context.File.Repositories;
+namespace Board.Application.AppData.Context.File.Services;
 
 /// <summary>
-/// Репозиторий для работы с файлами.
+/// Сервис для работы с файлами.
 /// </summary>
-public interface IFileRepository
+public interface IFileService
 {
     /// <summary>
     /// Получение информации о файле по его идентификатору.
@@ -25,7 +21,7 @@ public interface IFileRepository
     /// <param name="model">Модель файла.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Идентификатор загруженного файла.</returns>
-    Task<Guid> UploadAsync(Files model, CancellationToken cancellationToken);
+    Task<Guid> UploadAsync(FileDto model, CancellationToken cancellationToken);
 
     /// <summary>
     /// Скачивание файла.

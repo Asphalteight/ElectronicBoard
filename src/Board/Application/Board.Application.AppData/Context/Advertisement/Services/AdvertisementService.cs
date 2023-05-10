@@ -16,12 +16,12 @@ public class AdvertisementService : IAdvertisementService
     private readonly IImageKitService _imageKitService;
     private readonly IMapper _mapper;
 
-    public AdvertisementService(IAdvertisementRepository advertisementRepository, IAccountService accountService, IMapper mapper, IImageKitService imageKitService)
+    public AdvertisementService(IAdvertisementRepository advertisementRepository, IAccountService accountService, IImageKitService imageKitService, IMapper mapper)
     {
         _advertisementRepository = advertisementRepository;
         _accountService = accountService;
-        _mapper = mapper;
         _imageKitService = imageKitService;
+        _mapper = mapper;
     }
 
     /// <inheritdoc/>
@@ -29,31 +29,34 @@ public class AdvertisementService : IAdvertisementService
     {
         var entity = _mapper.Map<CreateAdvertisementDto, Advertisements>(model);
         var currentUser = await _accountService.GetCurrentAsync(cancellationToken);
-        
+
+        if (currentUser?.Id == null)
+        {
+            return 0;
+        }
         entity.AccountId = currentUser.Id;
 
-        var advertisementId = await _advertisementRepository.CreateAsync(entity, cancellationToken);
-        
-        var imageKit = new CreateImageKitDto()
+        var advertId = await _advertisementRepository.CreateAsync(entity, cancellationToken);
+        await _imageKitService.CreateImageKitAsync(new CreateImageKitDto()
         {
-            AdvertisementId = advertisementId,
-            FirstImageId = new Guid(),
-            SecondImageId = new Guid(),
-            ThirdImageId = new Guid()
-        };
-        await _imageKitService.CreateImageKitAsync(imageKit, cancellationToken);
-
-        return advertisementId;
+            AdvertisementId = advertId
+        }, cancellationToken);
+        
+        return advertId;
     }
 
     /// <inheritdoc/>
     public async Task<InfoAdvertisementDto?> UpdateAdvertisementAsync(int id, UpdateAdvertisementDto dto, CancellationToken cancellationToken)
     {
         var advertisement = await _advertisementRepository.GetByIdAsync(id, cancellationToken);
-        if (advertisement == null) return null;
-        var result = _mapper.Map(dto, advertisement);
+        if (advertisement == null)
+        {
+            return null;
+        }
+        
+        var updated = _mapper.Map(dto, advertisement);
 
-        return await _advertisementRepository.UpdateAsync(result, cancellationToken);
+        return await _advertisementRepository.UpdateAsync(updated, cancellationToken);
     }
 
     /// <inheritdoc/>
@@ -70,6 +73,13 @@ public class AdvertisementService : IAdvertisementService
         var entity = await _advertisementRepository.GetByIdAsync(id, cancellationToken);
         
         return _mapper.Map<Advertisements?, InfoAdvertisementDto>(entity);
+    }
+
+    public async Task<IEnumerable<InfoAdvertisementDto?>> FindAdvertisementAsync(SearchAdvertisementDto dto, CancellationToken cancellationToken)
+    {
+        var result = _advertisementRepository.FindAsync(dto, cancellationToken);
+
+        return await result;
     }
 
     /// <inheritdoc/>

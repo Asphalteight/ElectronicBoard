@@ -24,6 +24,7 @@ public class MessageRepository : IMessageRepository
     public async Task<int> CreateAsync(Messages model, CancellationToken cancellationToken)
     {
         await _repository.AddAsync(model, cancellationToken);
+        
         return model.Id;
     }
     
@@ -31,6 +32,7 @@ public class MessageRepository : IMessageRepository
     public async Task<InfoMessageDto> UpdateAsync(Messages model, CancellationToken cancellationToken)
     {
         await _repository.UpdateAsync(model, cancellationToken);
+        
         return _mapper.Map<Messages, InfoMessageDto>(model);
     }
     
@@ -38,8 +40,13 @@ public class MessageRepository : IMessageRepository
     public async Task<bool> DeleteAsync(int id, CancellationToken cancellationToken)
     {
         var model = _repository.GetAllFiltered(s => s.Id == id).FirstOrDefault();
-        if (model == null) return false;
+        if (model == null)
+        {
+            return false;
+        }
+        
         await _repository.DeleteAsync(model, cancellationToken);
+        
         return true;
     }
     
@@ -48,12 +55,13 @@ public class MessageRepository : IMessageRepository
     {
         var result = _repository.GetAll().Where(s => s.Id == id)
             .FirstOrDefaultAsync(cancellationToken);
+        
         return await result;
     }
     
     /// <inheritdoc/>
     public async Task<IEnumerable<InfoMessageDto>> GetAllAsync(CancellationToken cancellationToken)
     {
-        return await _repository.GetAll().ProjectTo<InfoMessageDto>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken: cancellationToken);
+        return await _repository.GetAll().ProjectTo<InfoMessageDto>(_mapper.ConfigurationProvider).OrderBy(o => o.Id).ToListAsync(cancellationToken: cancellationToken);
     }
 }

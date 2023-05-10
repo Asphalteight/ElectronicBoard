@@ -1,7 +1,5 @@
 ﻿using Board.Contracts.Contexts.Advertisements;
-using Board.Contracts.ImageKits;
 using Board.Domain.Advertisement;
-using Board.Domain.ImageKit;
 
 namespace Board.Application.AppData.Context.Advertisement.Repositories;
 
@@ -41,6 +39,14 @@ public interface IAdvertisementRepository
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Информация об объявлении.</returns>
     Task<Advertisements?> GetByIdAsync(int id, CancellationToken cancellationToken);
+    
+    /// <summary>
+    /// Поиск по условию.
+    /// </summary>
+    /// <param name="dto">Модель поиска объявления.</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
+    /// <returns>Список найденных объявлений.</returns>
+    Task<IEnumerable<InfoAdvertisementDto?>> FindAsync(SearchAdvertisementDto dto, CancellationToken cancellationToken);
     
     /// <summary>
     /// Получение всех объявлений.

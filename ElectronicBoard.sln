@@ -30,6 +30,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Board.Host.Api", "src\Board
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Board.Host.Migrator", "src\Board\Host\Board.Host.Migrator\Board.Host.Migrator.csproj", "{AF915E9D-50F7-48F7-BDAA-E4F663A8CA29}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{E4FCBF8D-6CBF-4BC8-B2BB-965513EE45E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api.Tests", "tests\Api.Tests\Api.Tests.csproj", "{2EEBE068-A499-49A6-9C83-F2AD048A687C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,6 +54,7 @@ Global
 		{3DA3B331-9F93-4FBC-A794-E54C47AE2B6F} = {FFE05BEB-8AAE-4963-A7D2-0B754A86AB7E}
 		{06CF7150-E507-4C64-A58C-5BF9B0C5FC14} = {B3CE4FB7-6DA2-4CF8-9B48-522A031DF85D}
 		{AF915E9D-50F7-48F7-BDAA-E4F663A8CA29} = {B3CE4FB7-6DA2-4CF8-9B48-522A031DF85D}
+		{2EEBE068-A499-49A6-9C83-F2AD048A687C} = {E4FCBF8D-6CBF-4BC8-B2BB-965513EE45E3}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{7CE8AEDA-1850-4B76-8497-AFDFCCAE3CA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -80,5 +85,9 @@ Global
 		{AF915E9D-50F7-48F7-BDAA-E4F663A8CA29}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF915E9D-50F7-48F7-BDAA-E4F663A8CA29}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF915E9D-50F7-48F7-BDAA-E4F663A8CA29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EEBE068-A499-49A6-9C83-F2AD048A687C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EEBE068-A499-49A6-9C83-F2AD048A687C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EEBE068-A499-49A6-9C83-F2AD048A687C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EEBE068-A499-49A6-9C83-F2AD048A687C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

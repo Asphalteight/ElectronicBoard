@@ -1,6 +1,4 @@
-﻿using Board.Domain.Advertisement;
-
-namespace Board.Contracts.ImageKits;
+﻿namespace Board.Contracts.ImageKits;
 
 /// <summary>
 /// Информация о наборе изображений для объявления.

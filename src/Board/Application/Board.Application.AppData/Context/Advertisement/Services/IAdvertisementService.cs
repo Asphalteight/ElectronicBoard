@@ -39,6 +39,14 @@ public interface IAdvertisementService
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Информация об объявлении.</returns>
     Task<InfoAdvertisementDto?> GetAdvertisementByIdAsync(int id, CancellationToken cancellationToken);
+    
+    /// <summary>
+    /// Получение по фильтру.
+    /// </summary>
+    /// <param name="dto">Модель поиска объявления.</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
+    /// <returns>Список найденных объявлений.</returns>
+    Task<IEnumerable<InfoAdvertisementDto?>> FindAdvertisementAsync(SearchAdvertisementDto dto, CancellationToken cancellationToken);
 
     /// <summary>
     /// Получение всех объявлений.

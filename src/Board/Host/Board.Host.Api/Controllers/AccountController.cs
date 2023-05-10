@@ -1,5 +1,4 @@
-﻿using System.Net;
-using Board.Application.AppData.Context.Account.Services;
+﻿using Board.Application.AppData.Context.Account.Services;
 using Board.Contracts.Contexts;
 using Board.Contracts.Contexts.Accounts;
 using Microsoft.AspNetCore.Authentication;
@@ -41,11 +40,14 @@ public class AccountController : ControllerBase
     /// <response code="200">Запрос выполнен успешно</response>
     /// <returns>Список моделей аккаунтов.</returns>
     [HttpGet]
+    [Authorize]
+    [Authorize(Policy = "AdminPolicy")]
     [ProducesResponseType(typeof(IEnumerable<InfoAccountDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Запрос аккаунтов");
+        _logger.LogInformation("Запрошены все аккаунты");
         var result = await _accountService.GetAllAccounts(cancellationToken);
+
         return await Task.Run(() => Ok(result), cancellationToken);
     }
 
@@ -63,6 +65,14 @@ public class AccountController : ControllerBase
     public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
     {
         var result = await _accountService.GetAccountByIdAsync(id, cancellationToken);
+        _logger.LogInformation("Запрошен аккаунт с идентификатором: {0}", id);
+
+        if (result == null)
+        {
+            _logger.LogError("Аккаунт с запрашиваемым идентификатором \"{0}\" не найден", id);
+            return NotFound();
+        }
+        
         return Ok(result);
     }
 
@@ -83,6 +93,13 @@ public class AccountController : ControllerBase
     public async Task<IActionResult> RegisterAccount([FromBody] CreateAccountDto dto, CancellationToken cancellationToken)
     {
         var result = await _accountService.RegisterAccountAsync(dto, cancellationToken);
+        if (result == 0)
+        {
+            _logger.LogError("Ошибка при создании аккаунта, Email: {0}", dto.Email);
+            return BadRequest();
+        }
+        _logger.LogInformation("Зарегистрирован новый аккаунт с идентификатором: {0}", result);
+        
         return await Task.Run(() => CreatedAtAction(nameof(Login), result), cancellationToken);
     }
     
@@ -101,12 +118,11 @@ public class AccountController : ControllerBase
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Login([FromBody] LoginAccountDto dto, CancellationToken cancellation)
+    public async Task<IActionResult> Login([FromQuery] LoginAccountDto dto, CancellationToken cancellation)
     {
-        _logger.LogInformation("Вход в аккаунт.");
-
         var result = await _accountService.LoginAsync(dto, cancellation);
-
+        _logger.LogInformation("Совершен вход аккаунт, Email: {0}", dto.Email);
+        
         return await Task.Run(() => Ok(result), cancellation);
     }
 
@@ -133,6 +149,7 @@ public class AccountController : ControllerBase
     /// <response code="422">Произошёл конфликт бизнес-логики.</response>
     /// <returns>Модель обновленного аккаунта.</returns>
     [HttpPut("{id:int}")]
+    [Authorize]
     [ProducesResponseType(typeof(InfoAccountDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status403Forbidden)]
@@ -141,6 +158,13 @@ public class AccountController : ControllerBase
     public async Task<IActionResult> Update(int id, [FromQuery] UpdateAccountDto dto, CancellationToken cancellationToken)
     {
         var result = await _accountService.UpdateAccountAsync(id, dto, cancellationToken);
+        if (result == null)
+        {
+            _logger.LogError("Ошибка при обновлении аккаунта, Id: {0}", id);
+            return BadRequest();
+        }
+        _logger.LogInformation("Обновлен аккаунт с идентификатором: {0}", id);
+        
         return await Task.Run(() => Ok(result), cancellationToken);
     }
 
@@ -152,11 +176,15 @@ public class AccountController : ControllerBase
     /// <response code="204">Запрос выполнен успешно.</response>
     /// <response code="403">Доступ запрещён.</response>
     [HttpDelete("{id:int}")]
+    [Authorize]
+    [Authorize(Policy = "AdminPolicy")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status403Forbidden)]
     public async Task<IActionResult> DeleteById(int id, CancellationToken cancellationToken)
     {
         var result = await _accountService.DeleteAccountAsync(id, cancellationToken);
+        _logger.LogInformation("Удален аккаунт с идентификатором: {0}, с результатом {1}", id, result);
+        
         return await Task.Run( () => Ok(result), cancellationToken);
     }
 }

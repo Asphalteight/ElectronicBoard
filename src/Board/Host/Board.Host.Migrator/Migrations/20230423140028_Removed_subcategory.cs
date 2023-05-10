@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Board.Host.Migrator.Migrations
 {
     /// <inheritdoc />
-    public partial class RemovedSubcategory : Migration
+    public partial class Removed_subcategory : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

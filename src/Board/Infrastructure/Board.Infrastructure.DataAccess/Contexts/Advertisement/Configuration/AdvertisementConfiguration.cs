@@ -1,5 +1,4 @@
 ﻿using Board.Domain.Advertisement;
-using Board.Domain.ImageKit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -13,12 +12,12 @@ public class AdvertisementConfiguration : IEntityTypeConfiguration<Advertisement
     public void Configure(EntityTypeBuilder<Advertisements> builder)
     {
         builder.HasKey(k => k.Id);
-        builder.Property(p => p.Title).HasMaxLength(25);
+        builder.Property(p => p.Title).HasMaxLength(30);
         builder.Property(p => p.Description).HasMaxLength(500);
         builder.Property(p => p.Address).HasMaxLength(250);
         builder.Property(p => p.CreatedAt).HasConversion(to => to, from => DateTime.SpecifyKind(from, DateTimeKind.Utc));
 
-        builder.HasOne<ImageKits>(p => p.ImageKit).WithOne(s => s.Advertisement);
+        builder.HasOne(p => p.ImageKit).WithOne(s => s.Advertisement).OnDelete(DeleteBehavior.Cascade);
         
         builder.HasMany(f => f.CommentsList)
             .WithOne(o => o.Advertisement)

@@ -23,6 +23,8 @@ namespace Board.Infrastructure.MapProfiles
             
             CreateMap<Advertisements, InfoAdvertisementDto>();
 
+            CreateMap<Advertisements, ShortInfoAdvertisementDto>();
+            
             CreateMap<UpdateAdvertisementDto, Advertisements>()
                 .ForMember(s => s.Id, map => map.Ignore())
                 .ForMember(s => s.CreatedAt, map =>  map.Ignore())

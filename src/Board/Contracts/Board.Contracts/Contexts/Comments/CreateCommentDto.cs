@@ -1,4 +1,6 @@
-﻿namespace Board.Contracts.Contexts.Comments;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Board.Contracts.Contexts.Comments;
 
 /// <summary>
 /// Модель создания комментария.
@@ -8,6 +10,8 @@ public class CreateCommentDto
     /// <summary>
     /// Текст.
     /// </summary>
+    [Required(ErrorMessage = "Пустой текст комментария")]
+    [StringLength(500, ErrorMessage = "Длина комментария превышает 500 символов")]
     public string Text { get; set; } = null!;
 
     /// <summary>

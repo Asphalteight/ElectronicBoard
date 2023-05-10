@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Board.Host.Migrator.Migrations
 {
     [DbContext(typeof(DbContextMigration))]
-    [Migration("20230423140028_RemovedSubcategory")]
-    partial class RemovedSubcategory
+    [Migration("20230510124918_Insert_categories")]
+    partial class Insert_categories
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -43,17 +43,20 @@ namespace Board.Host.Migrator.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("character varying(25)");
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasMaxLength(127)
-                        .HasColumnType("character varying(127)");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("Phone")
                         .HasMaxLength(15)
                         .HasColumnType("character varying(15)");
+
+                    b.Property<Guid?>("PictureId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -94,8 +97,8 @@ namespace Board.Host.Migrator.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("character varying(25)");
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
 
                     b.HasKey("Id");
 
@@ -148,8 +151,8 @@ namespace Board.Host.Migrator.Migrations
 
                     b.Property<string>("Text")
                         .IsRequired()
-                        .HasMaxLength(10000)
-                        .HasColumnType("character varying(10000)");
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
 
                     b.HasKey("Id");
 
@@ -219,7 +222,9 @@ namespace Board.Host.Migrator.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("IsRead")
-                        .HasColumnType("boolean");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
                     b.Property<int>("Receiver")
                         .HasColumnType("integer");
@@ -232,8 +237,8 @@ namespace Board.Host.Migrator.Migrations
 
                     b.Property<string>("Text")
                         .IsRequired()
-                        .HasMaxLength(10000)
-                        .HasColumnType("character varying(10000)");
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
 
                     b.HasKey("Id");
 

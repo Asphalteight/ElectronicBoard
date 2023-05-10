@@ -1,4 +1,6 @@
-﻿namespace Board.Contracts.Contexts.Messages;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Board.Contracts.Contexts.Messages;
 
 /// <summary>
 /// Модель создания сообщения.
@@ -18,5 +20,7 @@ public class CreateMessageDto
     /// <summary>
     /// Текст.
     /// </summary>
+    [Required(ErrorMessage = "Пустой текст сообщения")]
+    [StringLength(500, ErrorMessage = "Длина сообщения превышает 500 символов")]
     public string Text { get; set; } = null!;
 }

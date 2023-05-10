@@ -2,6 +2,7 @@
 using Board.Application.AppData.Context.Category.Services;
 using Board.Contracts.Contexts;
 using Board.Contracts.Contexts.Categories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Board.Host.Api.Controllers;
@@ -40,8 +41,9 @@ public class CategoryController : ControllerBase
     [ProducesResponseType(typeof(IEnumerable<InfoCategoryDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Запрос категорий");
+        _logger.LogInformation("Запрошены все категории");
         var result = await _categoryService.GetAllCategories(cancellationToken);
+        
         return await Task.Run(() => Ok(result), cancellationToken);
     }
 
@@ -51,7 +53,7 @@ public class CategoryController : ControllerBase
     /// <param name="id">Идентификатор.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <response code="200">Запрос выполнен успешно.</response>
-    /// <response code="404">Объявления с указанным идентификатором не найдена.</response>
+    /// <response code="404">Категория с указанным идентификатором не найдена.</response>
     /// <returns>Модель категории.</returns>
     [HttpGet("{id:int}")]
     [ProducesResponseType(typeof(InfoCategoryDto), StatusCodes.Status200OK)]
@@ -59,6 +61,39 @@ public class CategoryController : ControllerBase
     public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
     {
         var result = await _categoryService.GetCategoryByIdAsync(id, cancellationToken);
+        _logger.LogInformation("Запрошена категория с идентификатором: {0}", id);
+
+        if (result == null)
+        {
+            _logger.LogError("Категория с запрашиваемым идентификатором \"{0}\" не найдена", id);
+            return NotFound();
+        }
+        
+        return Ok(result);
+    }
+    
+    /// <summary>
+    /// Получить все дочерние подкатегории для категории.
+    /// </summary>
+    /// <param name="id">Идентификатор.</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
+    /// <response code="200">Запрос выполнен успешно.</response>
+    /// <response code="404">Категория с указанным идентификатором не найдена.</response>
+    /// <returns>Модель категории.</returns>
+    [HttpGet("childFor/{id:int}")]
+    [ProducesResponseType(typeof(InfoCategoryDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetChildById(int id, CancellationToken cancellationToken)
+    {
+        var result = await _categoryService.GetChildByIdAsync(id, cancellationToken);
+        _logger.LogInformation("Запрошены все дочерние подкатегории для катеории с идентификатором: {0}", id);
+
+        if (result == null)
+        {
+            _logger.LogError("Категория с запрашиваемым идентификатором \"{0}\" не найдена", id);
+            return NotFound();
+        }
+        
         return Ok(result);
     }
 
@@ -71,13 +106,17 @@ public class CategoryController : ControllerBase
     /// <response code="400">Модель данных запроса невалидна.</response>
     /// <response code="422">Произошёл конфликт бизнес-логики.</response>
     /// <returns>Идентификатор созданной категории.</returns>
-    [HttpPost]
+    [HttpPost("create")]
+    [Authorize]
+    [Authorize(Policy = "AdminPolicy")]
     [ProducesResponseType(typeof(int), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status422UnprocessableEntity)]
-    public async Task<IActionResult> Create([FromQuery] CreateCategoryDto dto, CancellationToken cancellationToken)
+    public async Task<IActionResult> Create([FromBody] CreateCategoryDto dto, CancellationToken cancellationToken)
     {
         var result = await _categoryService.CreateCategoryAsync(dto, cancellationToken);
+        _logger.LogInformation("Создана новая категория с идентификатором: {0}", result);
+        
         return StatusCode((int)HttpStatusCode.Created, result);
     }
 
@@ -90,10 +129,12 @@ public class CategoryController : ControllerBase
     /// <response code="200">Запрос выполнен успешно.</response>
     /// <response code="400">Модель данных запроса невалидна.</response>
     /// <response code="403">Доступ запрещён.</response>
-    /// <response code="404">Объявления с указанным идентификатором не найдена.</response>
+    /// <response code="404">Категория с указанным идентификатором не найдена.</response>
     /// <response code="422">Произошёл конфликт бизнес-логики.</response>
     /// <returns>Модель обновленной категории.</returns>
     [HttpPut("{id:int}")]
+    [Authorize]
+    [Authorize(Policy = "AdminPolicy")]
     [ProducesResponseType(typeof(InfoCategoryDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status403Forbidden)]
@@ -102,6 +143,13 @@ public class CategoryController : ControllerBase
     public async Task<IActionResult> Update(int id, [FromQuery] UpdateCategoryDto dto, CancellationToken cancellationToken)
     {
         var result = await _categoryService.UpdateCategoryAsync(id, dto, cancellationToken);
+        if (result == null)
+        {
+            _logger.LogError("Ошибка при обновлении категории");
+            return BadRequest();
+        }
+        _logger.LogInformation("Обновлена категория с идентификатором: {0}", id);
+        
         return await Task.Run(() => Ok(result), cancellationToken);
     }
 
@@ -113,11 +161,15 @@ public class CategoryController : ControllerBase
     /// <response code="204">Запрос выполнен успешно.</response>
     /// <response code="403">Доступ запрещён.</response>
     [HttpDelete("{id:int}")]
+    [Authorize]
+    [Authorize(Policy = "AdminPolicy")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status403Forbidden)]
     public async Task<IActionResult> DeleteById(int id, CancellationToken cancellationToken)
     {
         var result = await _categoryService.DeleteCategoryAsync(id, cancellationToken);
+        _logger.LogInformation("Удалена категория с идентификатором: {0}, с результатом {1}", id, result);
+        
         return await Task.Run( () => Ok(result), cancellationToken);
     }
 }

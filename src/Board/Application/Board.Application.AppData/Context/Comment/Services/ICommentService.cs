@@ -22,7 +22,7 @@ public interface ICommentService
     /// <param name="dto">Модель изменения.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Информация об измененном комментарии.</returns>
-    Task<InfoCommentDto> UpdateCommentAsync(int id, UpdateCommentDto dto, CancellationToken cancellationToken);
+    Task<InfoCommentDto?> UpdateCommentAsync(int id, UpdateCommentDto dto, CancellationToken cancellationToken);
 
     /// <summary>
     /// Удаление комментария.

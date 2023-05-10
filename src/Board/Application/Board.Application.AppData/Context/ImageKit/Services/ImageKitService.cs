@@ -29,9 +29,14 @@ public class ImageKitService : IImageKitService
     public async Task<InfoImageKitDto?> UpdateImageKitAsync(int id, UpdateImageKitDto dto, CancellationToken cancellationToken)
     {
         var kit = await _imageKitRepository.GetByIdAsync(id, cancellationToken);
-        if (kit == null) return null;
-
-        return await _imageKitRepository.UpdateAsync(kit, cancellationToken);
+        if (kit == null)
+        {
+            return null;
+        }
+        
+        var updated = _mapper.Map(dto, kit);
+        
+        return await _imageKitRepository.UpdateAsync(updated, cancellationToken);
     }
 
     /// <inheritdoc/>

@@ -109,3 +109,8 @@ static MapperConfiguration GetMapperConfiguration()
     
     return configuration;
 }
+
+public partial class Program
+{
+    
+}

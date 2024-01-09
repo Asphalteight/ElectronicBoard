@@ -1,5 +1,8 @@
 ﻿using Board.Contracts.Contexts.Advertisements;
 using Board.Domain.Advertisement;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Board.Application.AppData.Context.Advertisement.Repositories;
 
@@ -38,7 +41,7 @@ public interface IAdvertisementRepository
     /// <param name="id">Идентификатор объявления.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Информация об объявлении.</returns>
-    Task<Advertisements?> GetByIdAsync(int id, CancellationToken cancellationToken);
+    Task<Advertisements> GetByIdAsync(int id, CancellationToken cancellationToken);
     
     /// <summary>
     /// Поиск по условию.
@@ -46,7 +49,7 @@ public interface IAdvertisementRepository
     /// <param name="dto">Модель поиска объявления.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Список найденных объявлений.</returns>
-    Task<IEnumerable<InfoAdvertisementDto?>> FindAsync(SearchAdvertisementDto dto, CancellationToken cancellationToken);
+    Task<IEnumerable<InfoAdvertisementDto>> FindAsync(SearchAdvertisementDto dto, CancellationToken cancellationToken);
     
     /// <summary>
     /// Получение всех объявлений.

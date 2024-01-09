@@ -1,4 +1,6 @@
-﻿namespace Board.Contracts.Contexts.Accounts;
+﻿using System;
+
+namespace Board.Contracts.Contexts.Accounts;
 
 /// <summary>
 /// Информация об аккаунте.
@@ -33,5 +35,5 @@ public class InfoAccountDto
     /// <summary>
     /// Идентификатор картинки для аватара.
     /// </summary>
-    public Guid? PictureId { get; set; }
+    public Guid PictureId { get; set; }
 }

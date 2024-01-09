@@ -508,5 +508,16 @@
             <param name="services"></param>
             <returns></returns>
         </member>
+        <member name="T:Board.Host.Api.Program">
+            <summary>
+            Startup project
+            </summary>
+        </member>
+        <member name="M:Board.Host.Api.Program.Main(System.String[])">
+            <summary>
+            Main
+            </summary>
+            <param name="args"></param>
+        </member>
     </members>
 </doc>

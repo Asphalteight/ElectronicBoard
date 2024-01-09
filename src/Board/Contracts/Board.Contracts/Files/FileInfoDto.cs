@@ -1,4 +1,6 @@
-﻿namespace Board.Contracts.Files
+﻿using System;
+
+namespace Board.Contracts.Files
 {
     /// <summary>
     /// Модель информации о файле.

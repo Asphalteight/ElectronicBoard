@@ -1,4 +1,6 @@
-﻿namespace Board.Domain.File;
+﻿using System;
+
+namespace Board.Domain.File;
 
 /// <summary>
 /// Файлы.

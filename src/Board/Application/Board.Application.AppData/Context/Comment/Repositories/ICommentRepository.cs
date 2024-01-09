@@ -1,5 +1,8 @@
 ﻿using Board.Contracts.Contexts.Comments;
 using Board.Domain.Comment;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Board.Application.AppData.Context.Comment.Repositories;
 
@@ -38,7 +41,7 @@ public interface ICommentRepository
     /// <param name="id">Идентификатор комментария.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Информация о комментарии.</returns>
-    Task<Comments?> GetByIdAsync(int id, CancellationToken cancellationToken);
+    Task<Comments> GetByIdAsync(int id, CancellationToken cancellationToken);
     
     /// <summary>
     /// Получение всех комментариев.

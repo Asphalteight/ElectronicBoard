@@ -1,5 +1,8 @@
 ﻿using Board.Contracts.Files;
 using Board.Domain.File;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Board.Application.AppData.Context.File.Repositories;
 
@@ -14,7 +17,7 @@ public interface IFileRepository
     /// <param name="id">Идентификатор файла.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Информация о файле.</returns>
-    Task<FileInfoDto?> GetInfoByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<FileInfoDto> GetInfoByIdAsync(Guid id, CancellationToken cancellationToken);
 
     /// <summary>
     /// Загрузка файла в систему.
@@ -30,7 +33,7 @@ public interface IFileRepository
     /// <param name="id">Идентификатор файла.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Информация о скачиваемом файле.</returns>
-    Task<FileDto?> DownloadAsync(Guid id, CancellationToken cancellationToken);
+    Task<FileDto> DownloadAsync(Guid id, CancellationToken cancellationToken);
 
     /// <summary>
     /// Удаление файла по его идентификатору.

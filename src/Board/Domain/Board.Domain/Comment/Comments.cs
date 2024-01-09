@@ -1,5 +1,6 @@
 ﻿using Board.Domain.Account;
 using Board.Domain.Advertisement;
+using System;
 
 namespace Board.Domain.Comment;
 

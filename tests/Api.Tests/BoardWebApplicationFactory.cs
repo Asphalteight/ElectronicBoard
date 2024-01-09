@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Board.Host.Api;
 using Board.Infrastructure.DataAccess;
 using Board.Infrastructure.DataAccess.Interfaces;
 using Microsoft.AspNetCore.Hosting;

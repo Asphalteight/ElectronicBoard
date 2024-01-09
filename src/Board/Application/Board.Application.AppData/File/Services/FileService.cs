@@ -2,6 +2,9 @@
 using Board.Application.AppData.Context.File.Repositories;
 using Board.Contracts.Files;
 using Board.Domain.File;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Board.Application.AppData.Context.File.Services;
 
@@ -27,13 +30,13 @@ public class FileService : IFileService
     }
 
     /// <inheritdoc/>
-    public Task<FileDto?> DownloadAsync(Guid id, CancellationToken cancellationToken)
+    public Task<FileDto> DownloadAsync(Guid id, CancellationToken cancellationToken)
     {
         return _fileRepository.DownloadAsync(id, cancellationToken);
     }
 
     /// <inheritdoc/>
-    public Task<FileInfoDto?> GetInfoByIdAsync(Guid id, CancellationToken cancellationToken)
+    public Task<FileInfoDto> GetInfoByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         return _fileRepository.GetInfoByIdAsync(id, cancellationToken);
     }

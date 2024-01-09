@@ -5,6 +5,10 @@ using Board.Contracts.Files;
 using Board.Domain.File;
 using Board.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Board.Infrastructure.DataAccess.File.Repository
 {
@@ -36,7 +40,7 @@ namespace Board.Infrastructure.DataAccess.File.Repository
         }
 
         /// <inheritdoc/>
-        public Task<FileDto?> DownloadAsync(Guid id, CancellationToken cancellationToken)
+        public Task<FileDto> DownloadAsync(Guid id, CancellationToken cancellationToken)
         {
             return _repository.GetAll().Where(x => x.Id == id)
                               .ProjectTo<FileDto>(_mapper.ConfigurationProvider)
@@ -44,7 +48,7 @@ namespace Board.Infrastructure.DataAccess.File.Repository
         }
 
         /// <inheritdoc/>
-        public Task<FileInfoDto?> GetInfoByIdAsync(Guid id, CancellationToken cancellationToken)
+        public Task<FileInfoDto> GetInfoByIdAsync(Guid id, CancellationToken cancellationToken)
         {
             return _repository.GetAll().Where(x => x.Id == id)
                               .ProjectTo<FileInfoDto>(_mapper.ConfigurationProvider)

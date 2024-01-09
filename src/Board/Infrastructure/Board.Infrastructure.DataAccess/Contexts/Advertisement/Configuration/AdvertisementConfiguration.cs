@@ -1,6 +1,7 @@
 ﻿using Board.Domain.Advertisement;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace Board.Infrastructure.DataAccess.Contexts.Advertisement.Configuration;
 

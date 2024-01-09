@@ -5,6 +5,10 @@ using Board.Contracts.Contexts.Advertisements;
 using Board.Domain.Advertisement;
 using Board.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Board.Infrastructure.DataAccess.Contexts.Advertisement.Repository;
 
@@ -51,7 +55,7 @@ public class AdvertisementRepository : IAdvertisementRepository
     }
     
     /// <inheritdoc/> 
-    public async Task<Advertisements?> GetByIdAsync(int id, CancellationToken cancellationToken)
+    public async Task<Advertisements> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
         var result = await _repository.GetAll().Where(s => s.Id == id)
             .FirstOrDefaultAsync(cancellationToken);
@@ -59,7 +63,7 @@ public class AdvertisementRepository : IAdvertisementRepository
         return result;
     }
 
-    public async Task<IEnumerable<InfoAdvertisementDto?>> FindAsync(SearchAdvertisementDto dto, CancellationToken cancellationToken)
+    public async Task<IEnumerable<InfoAdvertisementDto>> FindAsync(SearchAdvertisementDto dto, CancellationToken cancellationToken)
     {
         var allAdvertisements = _repository.GetAll().ProjectTo<InfoAdvertisementDto>(_mapper.ConfigurationProvider);
 

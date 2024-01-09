@@ -1,4 +1,6 @@
-﻿namespace Board.Domain.Message;
+﻿using System;
+
+namespace Board.Domain.Message;
 
 /// <summary>
 /// Личные сообщения.

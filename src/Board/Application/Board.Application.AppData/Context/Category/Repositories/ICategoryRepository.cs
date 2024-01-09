@@ -1,5 +1,8 @@
 ﻿using Board.Contracts.Contexts.Categories;
 using Board.Domain.Category;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Board.Application.AppData.Context.Category.Repositories;
 
@@ -38,7 +41,7 @@ public interface ICategoryRepository
     /// <param name="id">Идентификатор категории.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Модель категории.</returns>
-    Task<Categories?> GetByIdAsync(int id, CancellationToken cancellationToken);
+    Task<Categories> GetByIdAsync(int id, CancellationToken cancellationToken);
     
     /// <summary>
     /// Получение подкатегорий по идентификатору родителя.
@@ -46,7 +49,7 @@ public interface ICategoryRepository
     /// <param name="id">Идентификатор категории.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Список подкатегорий.</returns>
-    Task<IEnumerable<InfoCategoryDto>?> GetChildByIdAsync(int id, CancellationToken cancellationToken);
+    Task<IEnumerable<InfoCategoryDto>> GetChildByIdAsync(int id, CancellationToken cancellationToken);
     
     /// <summary>
     /// Получение всех категорий.

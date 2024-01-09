@@ -5,6 +5,10 @@ using Board.Contracts.ImageKits;
 using Board.Domain.ImageKit;
 using Board.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Board.Infrastructure.DataAccess.Contexts.ImageKit.Repository;
 
@@ -51,7 +55,7 @@ public class ImageKitRepository : IImageKitRepository
     }
     
     /// <inheritdoc/> 
-    public async Task<ImageKits?> GetByIdAsync(int id, CancellationToken cancellationToken)
+    public async Task<ImageKits> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
         var result = await _repository.GetAll().Where(s => s.AdvertisementId == id)
             .FirstOrDefaultAsync(cancellationToken);

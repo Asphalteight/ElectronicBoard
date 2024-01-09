@@ -2,6 +2,9 @@
 using Board.Application.AppData.Context.Message.Repositories;
 using Board.Contracts.Contexts.Messages;
 using Board.Domain.Message;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Board.Application.AppData.Context.Message.Services;
 
@@ -26,7 +29,7 @@ public class MessageService : IMessageService
     }
 
     /// <inheritdoc/>
-    public async Task<InfoMessageDto?> UpdateMessageAsync(int id, UpdateMessageDto dto, CancellationToken cancellationToken)
+    public async Task<InfoMessageDto> UpdateMessageAsync(int id, UpdateMessageDto dto, CancellationToken cancellationToken)
     {
         var message = await _messageRepository.GetByIdAsync(id, cancellationToken);
         if (message == null)
@@ -48,11 +51,11 @@ public class MessageService : IMessageService
     }
 
     /// <inheritdoc/>
-    public async Task<InfoMessageDto?> GetMessageByIdAsync(int id, CancellationToken cancellationToken)
+    public async Task<InfoMessageDto> GetMessageByIdAsync(int id, CancellationToken cancellationToken)
     {
         var entity = await _messageRepository.GetByIdAsync(id, cancellationToken);
         
-        return _mapper.Map<Messages?, InfoMessageDto>(entity);
+        return _mapper.Map<Messages, InfoMessageDto>(entity);
     }
 
     /// <inheritdoc/>

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Board.Contracts.Contexts.Messages;
 using Board.Domain.Message;
+using System;
 
 namespace Board.Infrastructure.MapProfiles
 {

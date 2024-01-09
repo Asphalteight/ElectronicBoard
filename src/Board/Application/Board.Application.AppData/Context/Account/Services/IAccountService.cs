@@ -1,4 +1,7 @@
 ﻿using Board.Contracts.Contexts.Accounts;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Board.Application.AppData.Context.Account.Services;
 
@@ -28,7 +31,7 @@ public interface IAccountService
     /// </summary>
     /// <param name="cancellation">Токен отмены.</param>
     /// <returns>Текущий пользователь.</returns>
-    Task<InfoAccountDto?> GetCurrentAsync(CancellationToken cancellation);
+    Task<InfoAccountDto> GetCurrentAsync(CancellationToken cancellation);
 
     /// <summary>
     /// Изменение аккаунта.
@@ -37,7 +40,7 @@ public interface IAccountService
     /// <param name="dto">Модель изменения.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Информация об измененном аккаунте.</returns>
-    Task<InfoAccountDto?> UpdateAccountAsync(int id, UpdateAccountDto dto, CancellationToken cancellationToken);
+    Task<InfoAccountDto> UpdateAccountAsync(int id, UpdateAccountDto dto, CancellationToken cancellationToken);
 
     /// <summary>
     /// Удаление аккаунта.
@@ -53,7 +56,7 @@ public interface IAccountService
     /// <param name="id">Идентификатор аккаунта.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Информация об аккаунте.</returns>
-    Task<InfoAccountDto?> GetAccountByIdAsync(int id, CancellationToken cancellationToken);
+    Task<InfoAccountDto> GetAccountByIdAsync(int id, CancellationToken cancellationToken);
 
     /// <summary>
     /// Получение всех аккаунтов.

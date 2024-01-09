@@ -1,11 +1,16 @@
-﻿using System.Linq.Expressions;
-using AutoMapper;
+﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Board.Application.AppData.Context.Account.Repositories;
 using Board.Contracts.Contexts.Accounts;
 using Board.Domain.Account;
 using Board.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Board.Infrastructure.DataAccess.Contexts.Account.Repository;
 
@@ -52,7 +57,7 @@ public class AccountRepository : IAccountRepository
     }
     
     /// <inheritdoc/> 
-    public async Task<Accounts?> GetByIdAsync(int id, CancellationToken cancellationToken)
+    public async Task<Accounts> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
          var result = await _repository.GetAll().Where(s => s.Id == id)
             .FirstOrDefaultAsync(cancellationToken);
@@ -60,7 +65,7 @@ public class AccountRepository : IAccountRepository
     }
 
     /// <inheritdoc/>
-    public async Task<Accounts?> FindWhere(Expression<Func<Accounts, bool>> predicate, CancellationToken cancellation)
+    public async Task<Accounts> FindWhere(Expression<Func<Accounts, bool>> predicate, CancellationToken cancellation)
     {
         var data = _repository.GetAllFiltered(predicate);
 

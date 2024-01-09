@@ -25,89 +25,104 @@ using Board.Infrastructure.DataAccess.File.Repository;
 using Board.Infrastructure.DataAccess.Interfaces;
 using Board.Infrastructure.MapProfiles;
 using Board.Infrastructure.Repository;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using System;
 
-var builder = WebApplication.CreateBuilder(args);
-
-// Add DbContext
-builder.Services.AddSingleton<IDbContextOptionsConfigurator<BoardDbContext>, BoardDbContextConfiguration>();
-        
-builder.Services.AddDbContext<BoardDbContext>((Action<IServiceProvider, DbContextOptionsBuilder>)
-    ((sp, dbOptions) => sp.GetRequiredService<IDbContextOptionsConfigurator<BoardDbContext>>()
-        .Configure((DbContextOptionsBuilder<BoardDbContext>)dbOptions)));
-
-builder.Services.AddScoped((Func<IServiceProvider, DbContext>) (sp => sp.GetRequiredService<BoardDbContext>()));
-
-// Add automapper
-builder.Services.AddSingleton<IMapper>(new Mapper(GetMapperConfiguration()));
-
-// Add repositories to the container.
-builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-builder.Services.AddScoped<IAccountRepository, AccountRepository>();
-builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-builder.Services.AddScoped<IAdvertisementRepository, AdvertisementRepository>();
-builder.Services.AddScoped<ICommentRepository, CommentRepository>();
-builder.Services.AddScoped<IMessageRepository, MessageRepository>();
-builder.Services.AddScoped<IFileRepository, FileRepository>();
-builder.Services.AddScoped<IImageKitRepository, ImageKitRepository>();
-
-// Add services to the container.
-builder.Services.AddScoped<IAccountService, AccountService>();
-builder.Services.AddScoped<ICategoryService, CategoryService>();
-builder.Services.AddScoped<IAdvertisementService, AdvertisementService>();
-builder.Services.AddScoped<ICommentService, CommentService>();
-builder.Services.AddScoped<IMessageService, MessageService>();
-builder.Services.AddScoped<IFileService, FileService>();
-builder.Services.AddScoped<IImageKitService, ImageKitService>();
-
-builder.Services.AddControllers();
-
-// Add Auth & JWT
-builder.Services.AddAuthModule(builder.Configuration);
-
-builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerModule();
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-app.UseSwagger();
-app.UseSwaggerUI();
-
-app.UseHttpsRedirection();
-
-app.UseCors(core => core.WithOrigins("http://localhost:4200"));
-
-app.UseAuthentication();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
-
-static MapperConfiguration GetMapperConfiguration()
+namespace Board.Host.Api
 {
-    var configuration = new MapperConfiguration(cfg => 
+    /// <summary>
+    /// Startup project
+    /// </summary>
+    public class Program
     {
-        cfg.AddProfile<AdvertisementProfile>();
-        cfg.AddProfile<AccountProfile>();
-        cfg.AddProfile<CategoryProfile>();
-        cfg.AddProfile<CommentProfile>();
-        cfg.AddProfile<MessageProfile>();
-        cfg.AddProfile<FileProfile>();
-        cfg.AddProfile<ImageKitProfile>();
-    });
-    configuration.AssertConfigurationIsValid();
-    
-    return configuration;
-}
+        /// <summary>
+        /// Main
+        /// </summary>
+        /// <param name="args"></param>
+        public static void Main(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
 
-public partial class Program
-{
-    
+            // Add DbContext
+            builder.Services.AddSingleton<IDbContextOptionsConfigurator<BoardDbContext>, BoardDbContextConfiguration>();
+
+            builder.Services.AddDbContext<BoardDbContext>(
+                (sp, dbOptions) => sp.GetRequiredService<IDbContextOptionsConfigurator<BoardDbContext>>()
+                    .Configure((DbContextOptionsBuilder<BoardDbContext>)dbOptions));
+
+            builder.Services.AddScoped((Func<IServiceProvider, DbContext>)(sp => sp.GetRequiredService<BoardDbContext>()));
+
+            // Add automapper
+            builder.Services.AddSingleton<IMapper>(new Mapper(GetMapperConfiguration()));
+
+            // Add repositories to the container.
+            builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+            builder.Services.AddScoped<IAdvertisementRepository, AdvertisementRepository>();
+            builder.Services.AddScoped<ICommentRepository, CommentRepository>();
+            builder.Services.AddScoped<IMessageRepository, MessageRepository>();
+            builder.Services.AddScoped<IFileRepository, FileRepository>();
+            builder.Services.AddScoped<IImageKitRepository, ImageKitRepository>();
+
+            // Add services to the container.
+            builder.Services.AddScoped<IAccountService, AccountService>();
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
+            builder.Services.AddScoped<IAdvertisementService, AdvertisementService>();
+            builder.Services.AddScoped<ICommentService, CommentService>();
+            builder.Services.AddScoped<IMessageService, MessageService>();
+            builder.Services.AddScoped<IFileService, FileService>();
+            builder.Services.AddScoped<IImageKitService, ImageKitService>();
+
+            builder.Services.AddControllers();
+
+            // Add Auth & JWT
+            builder.Services.AddAuthModule(builder.Configuration);
+
+            builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerModule();
+
+            var app = builder.Build();
+
+            // Configure the HTTP request pipeline.
+            app.UseSwagger();
+            app.UseSwaggerUI();
+
+            app.UseHttpsRedirection();
+
+            app.UseCors(core => core.WithOrigins("http://localhost:4200"));
+
+            app.UseAuthentication();
+
+            app.UseAuthorization();
+
+            app.MapControllers();
+
+            app.Run();
+
+            static MapperConfiguration GetMapperConfiguration()
+            {
+                var configuration = new MapperConfiguration(cfg =>
+                {
+                    cfg.AddProfile<AdvertisementProfile>();
+                    cfg.AddProfile<AccountProfile>();
+                    cfg.AddProfile<CategoryProfile>();
+                    cfg.AddProfile<CommentProfile>();
+                    cfg.AddProfile<MessageProfile>();
+                    cfg.AddProfile<FileProfile>();
+                    cfg.AddProfile<ImageKitProfile>();
+                });
+                configuration.AssertConfigurationIsValid();
+
+                return configuration;
+            }
+        }
+    }
 }

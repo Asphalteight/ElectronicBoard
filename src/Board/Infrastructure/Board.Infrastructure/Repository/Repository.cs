@@ -1,4 +1,8 @@
-﻿using System.Linq.Expressions;
+﻿using System;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 namespace Board.Infrastructure.Repository;
@@ -36,7 +40,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     }
 
     /// <inheritdoc />
-    public async Task<TEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<TEntity> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         return await DbSet.FindAsync(id, cancellationToken);
     }

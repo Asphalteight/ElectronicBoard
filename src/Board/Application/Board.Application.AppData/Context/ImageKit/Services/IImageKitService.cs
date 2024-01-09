@@ -1,4 +1,7 @@
 ﻿using Board.Contracts.ImageKits;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Board.Application.AppData.Context.ImageKit.Services;
 
@@ -22,7 +25,7 @@ public interface IImageKitService
     /// <param name="dto">Модель изменения.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Информация об измененном наборе изображений.</returns>
-    Task<InfoImageKitDto?> UpdateImageKitAsync(int id, UpdateImageKitDto dto, CancellationToken cancellationToken);
+    Task<InfoImageKitDto> UpdateImageKitAsync(int id, UpdateImageKitDto dto, CancellationToken cancellationToken);
 
     /// <summary>
     /// Удаление набора изображений.
@@ -38,7 +41,7 @@ public interface IImageKitService
     /// <param name="id">Идентификатор набора изображений.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Информация о наборе изображений.</returns>
-    Task<InfoImageKitDto?> GetImageKitByIdAsync(int id, CancellationToken cancellationToken);
+    Task<InfoImageKitDto> GetImageKitByIdAsync(int id, CancellationToken cancellationToken);
 
     /// <summary>
     /// Получение всех наборов изображений.

@@ -1,4 +1,5 @@
-﻿namespace Board.Contracts.Contexts.Messages;
+﻿using System;
+namespace Board.Contracts.Contexts.Messages;
 
 /// <summary>
 /// Информация о личном сообщениии.

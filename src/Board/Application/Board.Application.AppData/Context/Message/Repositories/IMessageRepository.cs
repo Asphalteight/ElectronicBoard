@@ -1,5 +1,8 @@
 ﻿using Board.Contracts.Contexts.Messages;
 using Board.Domain.Message;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Board.Application.AppData.Context.Message.Repositories;
 
@@ -35,7 +38,7 @@ public interface IMessageRepository
     /// <param name="id">Идентификатор сообщения.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Информация о сообщении.</returns>
-    Task<Messages?> GetByIdAsync(int id, CancellationToken cancellationToken);
+    Task<Messages> GetByIdAsync(int id, CancellationToken cancellationToken);
     
     /// <summary>
     /// Получение всех сообщений.

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Board.Contracts.Contexts.Advertisements;
 using Board.Domain.Advertisement;
+using System;
 
 namespace Board.Infrastructure.MapProfiles
 {

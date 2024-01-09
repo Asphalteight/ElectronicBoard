@@ -1,4 +1,5 @@
 ﻿using Board.Domain.Advertisement;
+using System;
 
 namespace Board.Domain.ImageKit;
 
@@ -20,15 +21,15 @@ public class ImageKits
     /// <summary>
     /// Идентификатор главного изображения.
     /// </summary>
-    public Guid? FirstImageId { get; set; }
+    public Guid FirstImageId { get; set; }
     
     /// <summary>
     /// Идентификатор второго изображения.
     /// </summary>
-    public Guid? SecondImageId { get; set; }
+    public Guid SecondImageId { get; set; }
     
     /// <summary>
     /// Идентификатор третьего изображения.
     /// </summary>
-    public Guid? ThirdImageId { get; set; }
+    public Guid ThirdImageId { get; set; }
 }

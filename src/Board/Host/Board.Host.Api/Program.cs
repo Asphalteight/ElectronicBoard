@@ -75,11 +75,8 @@ builder.Services.AddSwaggerModule();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
@@ -108,4 +105,9 @@ static MapperConfiguration GetMapperConfiguration()
     configuration.AssertConfigurationIsValid();
     
     return configuration;
+}
+
+public partial class Program
+{
+    
 }

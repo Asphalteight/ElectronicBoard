@@ -5,6 +5,10 @@ using Board.Contracts.Contexts.Categories;
 using Board.Domain.Category;
 using Board.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Board.Infrastructure.DataAccess.Contexts.Category.Repository;
 
@@ -51,7 +55,7 @@ public class CategoryRepository : ICategoryRepository
     }
     
     /// <inheritdoc/> 
-    public async Task<Categories?> GetByIdAsync(int id, CancellationToken cancellationToken)
+    public async Task<Categories> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
         var result = _repository.GetAll().Where(s => s.Id == id)
             .FirstOrDefaultAsync(cancellationToken);
@@ -59,7 +63,7 @@ public class CategoryRepository : ICategoryRepository
         return await result;
     }
 
-    public async Task<IEnumerable<InfoCategoryDto>?> GetChildByIdAsync(int id, CancellationToken cancellationToken)
+    public async Task<IEnumerable<InfoCategoryDto>> GetChildByIdAsync(int id, CancellationToken cancellationToken)
     {
         var result = _repository.GetAll().ProjectTo<InfoCategoryDto>(_mapper.ConfigurationProvider).Where(s => s.ParentCategoryId == id).ToListAsync(cancellationToken);
         

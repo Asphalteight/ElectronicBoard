@@ -1,4 +1,6 @@
-﻿namespace Board.Contracts.ImageKits;
+﻿using System;
+
+namespace Board.Contracts.ImageKits;
 
 /// <summary>
 /// Модель создания набора изображений для объявления.
@@ -13,7 +15,7 @@ public class CreateImageKitDto
     /// <summary>
     /// Идентификатор главного изображения.
     /// </summary>
-    public Guid? FirstImageId { get; set; }
+    public Guid FirstImageId { get; set; }
     
     /// <summary>
     /// Идентификатор второго изображения.

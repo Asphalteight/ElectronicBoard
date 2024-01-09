@@ -2,6 +2,9 @@
 using Board.Application.AppData.Context.Comment.Repositories;
 using Board.Contracts.Contexts.Comments;
 using Board.Domain.Comment;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Board.Application.AppData.Context.Comment.Services;
 
@@ -26,7 +29,7 @@ public class CommentService : ICommentService
     }
 
     /// <inheritdoc/>
-    public async Task<InfoCommentDto?> UpdateCommentAsync(int id, UpdateCommentDto dto, CancellationToken cancellationToken)
+    public async Task<InfoCommentDto> UpdateCommentAsync(int id, UpdateCommentDto dto, CancellationToken cancellationToken)
     {
         var comment = await _commentRepository.GetByIdAsync(id, cancellationToken);
         if (comment == null)
@@ -48,11 +51,11 @@ public class CommentService : ICommentService
     }
 
     /// <inheritdoc/>
-    public async Task<InfoCommentDto?> GetCommentByIdAsync(int id, CancellationToken cancellationToken)
+    public async Task<InfoCommentDto> GetCommentByIdAsync(int id, CancellationToken cancellationToken)
     {
         var entity = await _commentRepository.GetByIdAsync(id, cancellationToken);
         
-        return _mapper.Map<Comments?, InfoCommentDto>(entity);
+        return _mapper.Map<Comments, InfoCommentDto>(entity);
     }
 
     /// <inheritdoc/>

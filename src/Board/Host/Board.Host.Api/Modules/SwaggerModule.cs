@@ -1,6 +1,10 @@
 ﻿using Board.Contracts.Contexts.Accounts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Board.Host.Api.Modules;
 

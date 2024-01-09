@@ -1,4 +1,5 @@
 ﻿using Board.Domain.Advertisement;
+using System.Collections.Generic;
 
 namespace Board.Domain.Category;
 

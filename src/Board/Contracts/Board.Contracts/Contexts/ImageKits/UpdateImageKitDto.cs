@@ -1,4 +1,6 @@
-﻿namespace Board.Contracts.ImageKits;
+﻿using System;
+
+namespace Board.Contracts.ImageKits;
 
 /// <summary>
 /// Модель обновления набора изображений для объявления.

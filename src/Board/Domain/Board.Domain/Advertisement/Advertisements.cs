@@ -2,6 +2,8 @@
 using Board.Domain.Category;
 using Board.Domain.Comment;
 using Board.Domain.ImageKit;
+using System;
+using System.Collections.Generic;
 
 namespace Board.Domain.Advertisement;
 
@@ -23,7 +25,7 @@ public class Advertisements
     /// <summary>
     /// Описание.
     /// </summary>
-    public string? Description { get; set; }
+    public string Description { get; set; }
     
     /// <summary>
     /// Цена.
@@ -73,5 +75,5 @@ public class Advertisements
     /// <summary>
     /// Список комментариев.
     /// </summary>
-    public virtual List<Comments>? CommentsList { get; set; } 
+    public virtual List<Comments> CommentsList { get; set; } 
 }

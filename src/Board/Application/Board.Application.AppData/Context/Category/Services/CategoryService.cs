@@ -2,6 +2,9 @@
 using Board.Application.AppData.Context.Category.Repositories;
 using Board.Contracts.Contexts.Categories;
 using Board.Domain.Category;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Board.Application.AppData.Context.Category.Services;
 
@@ -26,7 +29,7 @@ public class CategoryService : ICategoryService
     }
     
     /// <inheritdoc/>
-    public async Task<InfoCategoryDto?> UpdateCategoryAsync(int id, UpdateCategoryDto dto, CancellationToken cancellationToken)
+    public async Task<InfoCategoryDto> UpdateCategoryAsync(int id, UpdateCategoryDto dto, CancellationToken cancellationToken)
     {
         var category = await _categoryRepository.GetByIdAsync(id, cancellationToken);
         if (category == null)
@@ -48,14 +51,14 @@ public class CategoryService : ICategoryService
     }
 
     /// <inheritdoc/>
-    public async Task<InfoCategoryDto?> GetCategoryByIdAsync(int id, CancellationToken cancellationToken)
+    public async Task<InfoCategoryDto> GetCategoryByIdAsync(int id, CancellationToken cancellationToken)
     {
         var entity = await _categoryRepository.GetByIdAsync(id, cancellationToken);
         
-        return _mapper.Map<Categories?, InfoCategoryDto>(entity);
+        return _mapper.Map<Categories, InfoCategoryDto>(entity);
     }
 
-    public async Task<IEnumerable<InfoCategoryDto>?> GetChildByIdAsync(int id, CancellationToken cancellationToken)
+    public async Task<IEnumerable<InfoCategoryDto>> GetChildByIdAsync(int id, CancellationToken cancellationToken)
     {
         var entities = _categoryRepository.GetChildByIdAsync(id, cancellationToken);
         

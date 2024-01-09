@@ -1,5 +1,8 @@
 ﻿using Board.Contracts.ImageKits;
 using Board.Domain.ImageKit;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Board.Application.AppData.Context.ImageKit.Repositories;
 
@@ -38,7 +41,7 @@ public interface IImageKitRepository
     /// <param name="id">Идентификатор набора изображений.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Информация о набора изображений.</returns>
-    Task<ImageKits?> GetByIdAsync(int id, CancellationToken cancellationToken);
+    Task<ImageKits> GetByIdAsync(int id, CancellationToken cancellationToken);
     
     /// <summary>
     /// Получение всех наборов изображений.

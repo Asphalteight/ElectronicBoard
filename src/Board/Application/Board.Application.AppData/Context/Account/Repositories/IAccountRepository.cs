@@ -1,6 +1,10 @@
-﻿using System.Linq.Expressions;
+﻿using Board.Contracts.Contexts.Accounts;
 using Board.Domain.Account;
-using Board.Contracts.Contexts.Accounts;
+using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Board.Application.AppData.Context.Account.Repositories;
 
@@ -39,7 +43,7 @@ public interface IAccountRepository
     /// <param name="id">Идентификатор аккаунта.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Модель аккаунта.</returns>
-    Task<Accounts?> GetByIdAsync(int id, CancellationToken cancellationToken);
+    Task<Accounts> GetByIdAsync(int id, CancellationToken cancellationToken);
 
     /// <summary>
     /// Поиск пользователя по фильтру.
@@ -47,7 +51,7 @@ public interface IAccountRepository
     /// <param name="predicate"></param>
     /// <param name="cancellation"></param>
     /// <returns></returns>
-    Task<Accounts?> FindWhere(Expression<Func<Accounts, bool>> predicate, CancellationToken cancellation);
+    Task<Accounts> FindWhere(Expression<Func<Accounts, bool>> predicate, CancellationToken cancellation);
     
     /// <summary>
     /// Получение всех аккаунтов.

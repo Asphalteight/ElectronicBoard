@@ -5,6 +5,10 @@ using Board.Contracts.Contexts.Comments;
 using Board.Domain.Comment;
 using Board.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Board.Infrastructure.DataAccess.Contexts.Comment.Repository;
 
@@ -51,7 +55,7 @@ public class CommentRepository : ICommentRepository
     }
     
     /// <inheritdoc/> 
-    public async Task<Comments?> GetByIdAsync(int id, CancellationToken cancellationToken)
+    public async Task<Comments> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
         var result = await _repository.GetAll().Where(s => s.Id == id)
             .FirstOrDefaultAsync(cancellationToken);

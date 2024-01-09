@@ -1,4 +1,7 @@
 ﻿using Board.Contracts.Contexts.Messages;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Board.Application.AppData.Context.Message.Services;
 
@@ -22,7 +25,7 @@ public interface IMessageService
     /// <param name="dto">Модель изменения.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Информация об измененном сообщении.</returns>
-    Task<InfoMessageDto?> UpdateMessageAsync(int id, UpdateMessageDto dto, CancellationToken cancellationToken);
+    Task<InfoMessageDto> UpdateMessageAsync(int id, UpdateMessageDto dto, CancellationToken cancellationToken);
 
     /// <summary>
     /// Удаление сообщения.
@@ -38,7 +41,7 @@ public interface IMessageService
     /// <param name="id">Идентификатор сообщения.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Информация об сообщении.</returns>
-    Task<InfoMessageDto?> GetMessageByIdAsync(int id, CancellationToken cancellationToken);
+    Task<InfoMessageDto> GetMessageByIdAsync(int id, CancellationToken cancellationToken);
 
     /// <summary>
     /// Получение всех сообщений.

@@ -1,4 +1,6 @@
 ﻿using Board.Domain.Advertisement;
+using System;
+using System.Collections.Generic;
 
 namespace Board.Domain.Account;
 
@@ -25,7 +27,7 @@ public class Accounts
     /// <summary>
     /// Номер телефона.
     /// </summary>
-    public string? Phone { get; set; }
+    public string Phone { get; set; }
     
     /// <summary>
     /// Пароль.
@@ -45,5 +47,5 @@ public class Accounts
     /// <summary>
     /// Список объявлений.
     /// </summary>
-    public virtual List<Advertisements>? AdvertisementsList { get; set; }
+    public virtual List<Advertisements> AdvertisementsList { get; set; }
 }

@@ -1,6 +1,7 @@
 ﻿using Board.Domain.Account;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace Board.Infrastructure.DataAccess.Contexts.Account.Configuration;
 

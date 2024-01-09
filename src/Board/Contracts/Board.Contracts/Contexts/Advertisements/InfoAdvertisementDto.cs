@@ -1,4 +1,6 @@
-﻿namespace Board.Contracts.Contexts.Advertisements;
+﻿using System;
+
+namespace Board.Contracts.Contexts.Advertisements;
 
 /// <summary>
 /// Информация об объявлении.

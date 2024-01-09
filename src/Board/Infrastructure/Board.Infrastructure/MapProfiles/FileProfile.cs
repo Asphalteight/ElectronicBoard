@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Board.Contracts.Files;
 using Board.Domain.File;
+using System;
 
 namespace Board.Infrastructure.MapProfiles
 {

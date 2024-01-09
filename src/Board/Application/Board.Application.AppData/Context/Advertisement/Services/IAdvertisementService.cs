@@ -1,4 +1,7 @@
 ﻿using Board.Contracts.Contexts.Advertisements;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Board.Application.AppData.Context.Advertisement.Services;
 
@@ -22,7 +25,7 @@ public interface IAdvertisementService
     /// <param name="dto">Модель изменения.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Информация об измененном объявлении.</returns>
-    Task<InfoAdvertisementDto?> UpdateAdvertisementAsync(int id, UpdateAdvertisementDto dto, CancellationToken cancellationToken);
+    Task<InfoAdvertisementDto> UpdateAdvertisementAsync(int id, UpdateAdvertisementDto dto, CancellationToken cancellationToken);
 
     /// <summary>
     /// Удаление объявления.
@@ -38,7 +41,7 @@ public interface IAdvertisementService
     /// <param name="id">Идентификатор объявления.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Информация об объявлении.</returns>
-    Task<InfoAdvertisementDto?> GetAdvertisementByIdAsync(int id, CancellationToken cancellationToken);
+    Task<InfoAdvertisementDto> GetAdvertisementByIdAsync(int id, CancellationToken cancellationToken);
     
     /// <summary>
     /// Получение по фильтру.
@@ -46,7 +49,7 @@ public interface IAdvertisementService
     /// <param name="dto">Модель поиска объявления.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Список найденных объявлений.</returns>
-    Task<IEnumerable<InfoAdvertisementDto?>> FindAdvertisementAsync(SearchAdvertisementDto dto, CancellationToken cancellationToken);
+    Task<IEnumerable<InfoAdvertisementDto>> FindAdvertisementAsync(SearchAdvertisementDto dto, CancellationToken cancellationToken);
 
     /// <summary>
     /// Получение всех объявлений.

@@ -1,4 +1,7 @@
 ﻿using Board.Contracts.Contexts.Comments;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Board.Application.AppData.Context.Comment.Services;
 
@@ -22,7 +25,7 @@ public interface ICommentService
     /// <param name="dto">Модель изменения.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Информация об измененном комментарии.</returns>
-    Task<InfoCommentDto?> UpdateCommentAsync(int id, UpdateCommentDto dto, CancellationToken cancellationToken);
+    Task<InfoCommentDto> UpdateCommentAsync(int id, UpdateCommentDto dto, CancellationToken cancellationToken);
 
     /// <summary>
     /// Удаление комментария.
@@ -38,7 +41,7 @@ public interface ICommentService
     /// <param name="id">Идентификатор комментария.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Информация о комментарии.</returns>
-    Task<InfoCommentDto?> GetCommentByIdAsync(int id, CancellationToken cancellationToken);
+    Task<InfoCommentDto> GetCommentByIdAsync(int id, CancellationToken cancellationToken);
 
     /// <summary>
     /// Получение всех комментариев.

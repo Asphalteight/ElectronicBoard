@@ -5,6 +5,10 @@ using Board.Contracts.Contexts.Messages;
 using Board.Domain.Message;
 using Board.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Board.Infrastructure.DataAccess.Contexts.Message.Repository;
 
@@ -51,7 +55,7 @@ public class MessageRepository : IMessageRepository
     }
     
     /// <inheritdoc/> 
-    public async Task<Messages?> GetByIdAsync(int id, CancellationToken cancellationToken)
+    public async Task<Messages> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
         var result = _repository.GetAll().Where(s => s.Id == id)
             .FirstOrDefaultAsync(cancellationToken);

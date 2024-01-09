@@ -1,4 +1,7 @@
 ﻿using Board.Contracts.Contexts.Categories;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Board.Application.AppData.Context.Category.Services;
 
@@ -22,7 +25,7 @@ public interface ICategoryService
     /// <param name="dto">Модель изменения.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Информация об измененной категории.</returns>
-    Task<InfoCategoryDto?> UpdateCategoryAsync(int id, UpdateCategoryDto dto, CancellationToken cancellationToken);
+    Task<InfoCategoryDto> UpdateCategoryAsync(int id, UpdateCategoryDto dto, CancellationToken cancellationToken);
 
     /// <summary>
     /// Удаление категории.
@@ -38,7 +41,7 @@ public interface ICategoryService
     /// <param name="id">Идентификатор категории.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Информация о категории.</returns>
-    Task<InfoCategoryDto?> GetCategoryByIdAsync(int id, CancellationToken cancellationToken);
+    Task<InfoCategoryDto> GetCategoryByIdAsync(int id, CancellationToken cancellationToken);
     
     /// <summary>
     /// Получение подкатегорий по идентификатору родителя.
@@ -46,7 +49,7 @@ public interface ICategoryService
     /// <param name="id">Идентификатор категории.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Список подкатегорий.</returns>
-    Task<IEnumerable<InfoCategoryDto>?> GetChildByIdAsync(int id, CancellationToken cancellationToken);
+    Task<IEnumerable<InfoCategoryDto>> GetChildByIdAsync(int id, CancellationToken cancellationToken);
 
     /// <summary>
     /// Получение всех категорий.

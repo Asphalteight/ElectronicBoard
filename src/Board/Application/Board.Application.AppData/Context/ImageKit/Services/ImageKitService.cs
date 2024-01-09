@@ -2,6 +2,9 @@
 using Board.Application.AppData.Context.ImageKit.Repositories;
 using Board.Contracts.ImageKits;
 using Board.Domain.ImageKit;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Board.Application.AppData.Context.ImageKit.Services;
 
@@ -26,7 +29,7 @@ public class ImageKitService : IImageKitService
     }
 
     /// <inheritdoc/>
-    public async Task<InfoImageKitDto?> UpdateImageKitAsync(int id, UpdateImageKitDto dto, CancellationToken cancellationToken)
+    public async Task<InfoImageKitDto> UpdateImageKitAsync(int id, UpdateImageKitDto dto, CancellationToken cancellationToken)
     {
         var kit = await _imageKitRepository.GetByIdAsync(id, cancellationToken);
         if (kit == null)
@@ -48,11 +51,11 @@ public class ImageKitService : IImageKitService
     }
 
     /// <inheritdoc/>
-    public async Task<InfoImageKitDto?> GetImageKitByIdAsync(int id, CancellationToken cancellationToken)
+    public async Task<InfoImageKitDto> GetImageKitByIdAsync(int id, CancellationToken cancellationToken)
     {
         var entity = await _imageKitRepository.GetByIdAsync(id, cancellationToken);
         
-        return _mapper.Map<ImageKits?, InfoImageKitDto>(entity);
+        return _mapper.Map<ImageKits, InfoImageKitDto>(entity);
     }
 
     /// <inheritdoc/>

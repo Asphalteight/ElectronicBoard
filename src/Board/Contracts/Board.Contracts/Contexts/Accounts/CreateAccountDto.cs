@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Board.Contracts.Contexts.Accounts;
 
@@ -26,7 +27,7 @@ public class CreateAccountDto
     /// Номер телефона.
     /// </summary>
     [StringLength(15, ErrorMessage = "Номер телефона превышает допустимую длину")]
-    public string? Phone { get; set; }
+    public string Phone { get; set; }
     
     /// <summary>
     /// Пароль.
@@ -38,5 +39,5 @@ public class CreateAccountDto
     /// <summary>
     /// Идентификатор картинки для аватара.
     /// </summary>
-    public Guid? PictureId { get; set; }
+    public Guid PictureId { get; set; }
 }

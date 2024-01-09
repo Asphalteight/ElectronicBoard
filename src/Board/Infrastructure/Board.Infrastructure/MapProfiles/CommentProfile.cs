@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Board.Contracts.Contexts.Comments;
 using Board.Domain.Comment;
+using System;
 
 namespace Board.Infrastructure.MapProfiles
 {

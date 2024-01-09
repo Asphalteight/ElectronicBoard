@@ -1,6 +1,7 @@
 ﻿using Board.Domain.Comment;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace Board.Infrastructure.DataAccess.Contexts.Comment.Configuration;
 

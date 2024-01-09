@@ -1,4 +1,6 @@
-﻿namespace Board.Contracts.Contexts.Comments;
+﻿using System;
+
+namespace Board.Contracts.Contexts.Comments;
 
 /// <summary>
 /// Информация о комментарии.

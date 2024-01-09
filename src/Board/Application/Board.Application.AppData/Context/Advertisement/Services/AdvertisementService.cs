@@ -5,6 +5,9 @@ using Board.Application.AppData.Context.ImageKit.Services;
 using Board.Contracts.Contexts.Advertisements;
 using Board.Contracts.ImageKits;
 using Board.Domain.Advertisement;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Board.Application.AppData.Context.Advertisement.Services;
 
@@ -46,7 +49,7 @@ public class AdvertisementService : IAdvertisementService
     }
 
     /// <inheritdoc/>
-    public async Task<InfoAdvertisementDto?> UpdateAdvertisementAsync(int id, UpdateAdvertisementDto dto, CancellationToken cancellationToken)
+    public async Task<InfoAdvertisementDto> UpdateAdvertisementAsync(int id, UpdateAdvertisementDto dto, CancellationToken cancellationToken)
     {
         var advertisement = await _advertisementRepository.GetByIdAsync(id, cancellationToken);
         if (advertisement == null)
@@ -68,14 +71,14 @@ public class AdvertisementService : IAdvertisementService
     }
 
     /// <inheritdoc/>
-    public async Task<InfoAdvertisementDto?> GetAdvertisementByIdAsync(int id, CancellationToken cancellationToken)
+    public async Task<InfoAdvertisementDto> GetAdvertisementByIdAsync(int id, CancellationToken cancellationToken)
     {
         var entity = await _advertisementRepository.GetByIdAsync(id, cancellationToken);
         
-        return _mapper.Map<Advertisements?, InfoAdvertisementDto>(entity);
+        return _mapper.Map<Advertisements, InfoAdvertisementDto>(entity);
     }
 
-    public async Task<IEnumerable<InfoAdvertisementDto?>> FindAdvertisementAsync(SearchAdvertisementDto dto, CancellationToken cancellationToken)
+    public async Task<IEnumerable<InfoAdvertisementDto>> FindAdvertisementAsync(SearchAdvertisementDto dto, CancellationToken cancellationToken)
     {
         var result = _advertisementRepository.FindAsync(dto, cancellationToken);
 

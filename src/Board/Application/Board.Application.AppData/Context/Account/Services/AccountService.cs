@@ -1,13 +1,18 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using AutoMapper;
+﻿using AutoMapper;
 using Board.Application.AppData.Context.Account.Repositories;
 using Board.Contracts.Contexts.Accounts;
 using Board.Domain.Account;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Board.Application.AppData.Context.Account.Services;
 
@@ -140,7 +145,7 @@ public class AccountService : IAccountService
     {
         var entity = await _accountRepository.GetByIdAsync(id, cancellationToken);
         
-        return _mapper.Map<Accounts?, InfoAccountDto>(entity);
+        return _mapper.Map<Accounts, InfoAccountDto>(entity);
     }
 
     /// <inheritdoc/>
